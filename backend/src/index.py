@@ -46,8 +46,8 @@ async def auth_middleware(request: Request, call_next):
         return JSONResponse(status_code=401, content={"message": "Missing token"})
 
     try:
-        user = JWT().decode(token)
-        request.state.user = user
+        user_id = JWT().decode(token)
+        request.state.user_id = user_id
     except PyJWTError:
         return JSONResponse(status_code=401, content={"message": "Invalid token"})
 
