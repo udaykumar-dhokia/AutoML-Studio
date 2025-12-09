@@ -3,14 +3,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { setUser } from "@/store/slices/user.slice";
+import { store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
+  const router = useRouter();
 
   const handleLogin = async () => {
     if (!email || !password) return;
@@ -21,6 +26,7 @@ const page = () => {
       };
       const res = await axiosInstance.post("/auth/login/", payload);
       toast.success(res.data.message);
+      router.push("/dashboard");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }

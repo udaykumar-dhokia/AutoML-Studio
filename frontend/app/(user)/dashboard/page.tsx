@@ -1,5 +1,16 @@
+"use client";
+
+import Navbar from "@/components/custom/Navbar";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+
 const page = () => {
-  return <div>page</div>;
+  const { user } = useSelector((state: RootState) => state.user);
+  return (
+    <div>
+      <Navbar title="Dashboard" />
+    </div>
+  );
 };
 
 export default page;
