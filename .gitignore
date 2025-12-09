@@ -33,3 +33,9 @@ Thumbs.db
 *.swo
 *.bak
 *.orig
+
+# Next.js specific files
+.next/
+node_modules/
+.env.local
+out/
