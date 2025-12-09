@@ -1,0 +1,15 @@
+from dotenv import load_dotenv
+from pydantic_settings import BaseSettings
+
+load_dotenv()
+
+class Settings(BaseSettings):
+    MONGODB_URL: str
+    PORT: int
+    JWT_SECRET: str
+    JWT_ALGORITHM: str
+
+    class Config:
+        env_file = ".env"
+
+settings = Settings()
