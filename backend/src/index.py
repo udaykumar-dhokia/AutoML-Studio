@@ -9,6 +9,7 @@ from jwt import PyJWTError
 
 from .auth.router import router as auth_router
 from .user.router import router as user_router
+from .dataset.router import router as dataset_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -59,3 +60,4 @@ def health_check():
 
 app.include_router(auth_router, prefix="/auth")
 app.include_router(user_router, prefix="/user")
+app.include_router(dataset_router, prefix="/dataset")
