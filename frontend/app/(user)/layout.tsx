@@ -15,6 +15,9 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
     const checkUser = async () => {
       try {
         const res = await axiosInstance.get("/user/");
+        if (res.status == 401) {
+          router.push("/login");
+        }
         store.dispatch(setUser(res.data.user));
       } catch (error: any) {
         toast.error(error.response.data.message);
@@ -29,7 +32,9 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="">
         <SidebarProvider>
           <AppSidebar />
-          <main>{children}</main>
+          <div className="w-full">
+            <main>{children}</main>
+          </div>
         </SidebarProvider>
       </div>
     </>

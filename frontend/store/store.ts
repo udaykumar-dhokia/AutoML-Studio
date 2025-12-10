@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/user.slice";
+import datasetReducer from "./slices/datasets.slice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    dataset: datasetReducer,
   },
 });
 
