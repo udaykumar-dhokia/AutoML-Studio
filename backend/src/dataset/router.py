@@ -18,7 +18,7 @@ async def register_dataset(
     
     dataset_data = DatasetRegister(name=name, description=description)
     
-    dataset_service.upload_dataset(dataset_data, file, middleware_data["user_id"])
+    await dataset_service.upload_dataset(dataset_data, file, middleware_data["user_id"])
     
     return {"message": "Dataset created successfully"}
 

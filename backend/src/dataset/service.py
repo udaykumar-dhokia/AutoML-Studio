@@ -3,10 +3,11 @@ import cloudinary.uploader
 from ..cloudinary import cloudinary
 from ..models.dataset_model import DatasetRegister, Dataset
 from src import database
+from ..queues.basic_analysis_queue import enqueue_task
 
 class DatasetService:
     
-    def upload_dataset(self, dataset: DatasetRegister, file: UploadFile, user_id: str):
+    async def upload_dataset(self, dataset: DatasetRegister, file: UploadFile, user_id: str):
         try:
             result = cloudinary.uploader.upload(file.file, folder=f"AutoML Studio/{user_id}", resource_type="auto")
             
@@ -16,6 +17,14 @@ class DatasetService:
             dataset_dict["user_id"] = user_id
             
             result = database.db.datasets.insert_one(dataset_dict)
+
+            task = {
+                "dataset_id": str(dataset_dict["d_id"]),
+                "user_id": str(user_id),
+                "dataset_url": dataset_dict["url"],
+            } 
+
+            await enqueue_task(task)
 
             return Dataset(**dataset_dict)
         

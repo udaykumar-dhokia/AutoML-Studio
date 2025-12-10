@@ -5,16 +5,23 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from jwt import PyJWTError
-
+from .redis import init_redis
 
 from .auth.router import router as auth_router
 from .user.router import router as user_router
 from .dataset.router import router as dataset_router
+from .workers.basic_analysis_worker import task_worker
 
-@asynccontextmanager
+import asyncio
+
+@asynccontextmanager    
 async def lifespan(app: FastAPI):
     print("Initializing services...")
     await init_db()
+    await init_redis()
+
+    asyncio.create_task(task_worker())
+
     yield
     print("Shutting down services...")
     await close_db()
@@ -23,7 +30,6 @@ app = FastAPI(lifespan=lifespan)
 
 origins = [
     "http://localhost:5173",
-    "*",
 ]
 
 app.add_middleware(
