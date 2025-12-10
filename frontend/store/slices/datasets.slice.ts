@@ -1,7 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 export type TDataset = {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   url: string;

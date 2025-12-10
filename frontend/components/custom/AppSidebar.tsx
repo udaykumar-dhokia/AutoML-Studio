@@ -77,8 +77,8 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <Link
                       href={item.url}
-                      className={`hover:text-amber-700 transition-colors ${
-                        pathname === item.url ? "text-amber-700" : ""
+                      className={`hover:text-blue-900 transition-colors ${
+                        pathname === item.url ? "text-blue-900" : ""
                       }`}
                     >
                       <item.icon />
