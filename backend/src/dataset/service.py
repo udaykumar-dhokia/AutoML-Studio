@@ -12,7 +12,7 @@ class DatasetService:
             
             dataset_dict = dataset.model_dump()
             dataset_dict["url"] = result.get("secure_url")
-            dataset_dict["public_id"] = result.get("public_id")
+            dataset_dict["d_id"] = result.get("public_id")
             dataset_dict["user_id"] = user_id
             
             result = database.db.datasets.insert_one(dataset_dict)
@@ -22,3 +22,11 @@ class DatasetService:
         except Exception as e:
             print(e)
             raise HTTPException(status_code=400, detail=f"Upload failed: {e}")
+        
+    def get_datasets(self, user_id: str):
+        try:
+            datasets = database.db.datasets.find({"user_id": user_id})
+            return [Dataset(**dataset) for dataset in datasets]
+        except Exception as e:
+            print(e)
+            raise HTTPException(status_code=400, detail=f"Get datasets failed: {e}")

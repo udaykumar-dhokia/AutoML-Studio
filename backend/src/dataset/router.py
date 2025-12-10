@@ -21,3 +21,9 @@ async def register_dataset(
     dataset_service.upload_dataset(dataset_data, file, middleware_data["user_id"])
     
     return {"message": "Dataset created successfully"}
+
+@router.get("/")
+async def get_datasets(request: Request):
+    middleware_data = request.state.user_id
+    
+    return dataset_service.get_datasets(middleware_data["user_id"])
