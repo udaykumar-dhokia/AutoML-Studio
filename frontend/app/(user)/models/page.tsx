@@ -8,7 +8,7 @@ const page = () => {
   const { user } = useSelector((state: RootState) => state.user);
   return (
     <div>
-      <Navbar title="Dashboard"></Navbar>
+      <Navbar title="Models"></Navbar>
     </div>
   );
 };

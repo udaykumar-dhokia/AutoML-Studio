@@ -1,4 +1,9 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import axiosInstance from "@/utils/axios";
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 
 export type TUser = {
   _id?: string;
@@ -10,12 +15,23 @@ export type TUser = {
 interface IUserState {
   user: TUser | null;
   isAuthenticated: boolean;
+  loading: boolean;
 }
 
 const initialState: IUserState = {
   user: null,
   isAuthenticated: false,
+  loading: false,
 };
+
+export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
+  try {
+    const response = await axiosInstance.get("/user/");
+    return response.data.user;
+  } catch (error: any) {
+    throw error.response.data.message;
+  }
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -25,6 +41,22 @@ const userSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload;
+      })
+      .addCase(fetchUser.rejected, (state) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+      })
+      .addCase(fetchUser.pending, (state) => {
+        state.loading = true;
+      });
   },
 });
 

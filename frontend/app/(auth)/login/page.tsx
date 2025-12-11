@@ -26,7 +26,7 @@ const page = () => {
       };
       const res = await axiosInstance.post("/auth/login/", payload);
       toast.success(res.data.message);
-      router.push("/dashboard");
+      router.push("/models");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }

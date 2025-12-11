@@ -32,19 +32,14 @@ import { usePathname } from "next/navigation";
 
 const items = [
   {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: Home,
+    title: "Models",
+    url: "/models",
+    icon: BrainCircuit,
   },
   {
     title: "Datasets",
     url: "/datasets",
     icon: Database,
-  },
-  {
-    title: "Models",
-    url: "/models",
-    icon: BrainCircuit,
   },
   {
     title: "Search",

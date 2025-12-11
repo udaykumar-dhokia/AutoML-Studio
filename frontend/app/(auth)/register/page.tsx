@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axiosInstance from "@/utils/axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -13,6 +14,7 @@ const page = () => {
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const router = useRouter();
 
   const handleRegister = async () => {
     if (!firstName || !lastName || !email || !password) return;
@@ -25,6 +27,7 @@ const page = () => {
       };
       const res = await axiosInstance.post("/auth/register/", payload);
       toast.success(res.data.message);
+      router.push("/models");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
