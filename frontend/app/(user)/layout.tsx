@@ -2,6 +2,7 @@
 import { AppSidebar } from "@/components/custom/AppSidebar";
 import Loader from "@/components/custom/Loader";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { fetchAllWorkflows } from "@/store/slices/allWorkflows.slice";
 import { fetchDatasets } from "@/store/slices/datasets.slice";
 import { fetchUser } from "@/store/slices/user.slice";
 import { RootState, store } from "@/store/store";
@@ -18,22 +19,26 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const { loading: datasetLoading } = useSelector(
     (state: RootState) => state.dataset
   );
+  const { loading: workflowLoading } = useSelector(
+    (state: RootState) => state.allWorkflows
+  );
 
   useEffect(() => {
     const checkUser = async () => {
       try {
         await store.dispatch(fetchUser());
         await store.dispatch(fetchDatasets());
+        await store.dispatch(fetchAllWorkflows());
       } catch (error: any) {
         toast.error(error);
-        router.push("/models");
+        router.push("/");
       }
     };
 
     checkUser();
   }, []);
 
-  if (userLoading || datasetLoading) {
+  if (userLoading || datasetLoading || workflowLoading) {
     return <Loader />;
   }
 

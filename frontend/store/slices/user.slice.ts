@@ -29,7 +29,7 @@ export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
     const response = await axiosInstance.get("/user/");
     return response.data.user;
   } catch (error: any) {
-    throw error.response.data.message;
+    throw Error(error.response.data.message);
   }
 });
 

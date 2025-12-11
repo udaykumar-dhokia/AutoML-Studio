@@ -11,20 +11,49 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { addDataset } from "@/store/slices/datasets.slice";
-import { store } from "@/store/store";
+import { addWorkflow } from "@/store/slices/allWorkflows.slice";
+import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
+import { RootState, store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import { Label } from "@radix-ui/react-label";
 import { Loader2, Plus } from "lucide-react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const CreateWorkflowSheet = () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const { workflows } = useSelector((state: RootState) => state.allWorkflows);
+  const [nameExists, setNameExists] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkNameExists = async (workflowName: string) => {
+      if (workflowName.trim() === "") {
+        return;
+      }
+      const workflowExists = workflows.some(
+        (workflow) => workflow.name === workflowName
+      );
+      if (workflowExists) {
+        setNameExists(true);
+      } else {
+        setNameExists(false);
+      }
+    };
+
+    const handler = setTimeout(() => {
+      checkNameExists(name);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [name]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -33,18 +62,15 @@ const CreateWorkflowSheet = () => {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
-      if (file) {
-        formData.append("file", file);
-      }
 
-      const res = await axiosInstance.post("/dataset/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      store.dispatch(addDataset(res.data));
-      toast.success("Dataset uploaded successfully");
+      const res = await axiosInstance.post("/workflow/", formData);
+      store.dispatch(addWorkflow(res.data));
+      toast.success("Workflow created successfully");
+      setName("");
+      setDescription("");
+      store.dispatch(setCurrentWorkflow(res.data));
       setOpen(false);
+      router.push("/workflow");
     } catch (error: any) {
       console.log(error);
       toast.error(error.response.data.message);
@@ -75,32 +101,34 @@ const CreateWorkflowSheet = () => {
               id="sheet-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Dataset Name"
+              placeholder="Workflow Name"
             />
+            {nameExists && (
+              <p className="text-red-500 text-sm">
+                A workflow with this name already exists.
+              </p>
+            )}
           </div>
+
           <div className="grid gap-2">
             <Label htmlFor="sheet-description">Description</Label>
             <Input
               id="sheet-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Dataset Description"
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="sheet-file">File</Label>
-            <Input
-              id="sheet-file"
-              type="file"
-              accept=".csv"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
+              placeholder="Workflow Description"
             />
           </div>
         </div>
 
         <SheetFooter>
-          <Button type="submit" className="bg-black" onClick={handleSubmit}>
-            {loading ? <Loader2 className="animate-spin" /> : "Save changes"}
+          <Button
+            disabled={!name || !description || loading || nameExists}
+            type="submit"
+            className="bg-black"
+            onClick={handleSubmit}
+          >
+            {loading ? <Loader2 className="animate-spin" /> : "Create Workflow"}
           </Button>
           <SheetClose asChild>
             <Button variant="outline">Close</Button>

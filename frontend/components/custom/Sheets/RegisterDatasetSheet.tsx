@@ -99,8 +99,17 @@ const RegisterDatasetSheet = () => {
         </div>
 
         <SheetFooter>
-          <Button type="submit" className="bg-black" onClick={handleSubmit}>
-            {loading ? <Loader2 className="animate-spin" /> : "Save changes"}
+          <Button
+            type="submit"
+            disabled={!name || !description || !file || loading}
+            className="bg-black"
+            onClick={handleSubmit}
+          >
+            {loading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              "Register Dataset"
+            )}
           </Button>
           <SheetClose asChild>
             <Button variant="outline">Close</Button>

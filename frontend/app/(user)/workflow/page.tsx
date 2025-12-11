@@ -1,34 +1,18 @@
-import { ReactFlow, Background, Controls, Panel, MiniMap } from "@xyflow/react";
+"use client";
+
+import { ReactFlow, Background, Controls, MiniMap } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import CenterRightPanel from "./components/CenterRightPanel";
-
-const initialNodes = [
-  {
-    id: "n1",
-    position: { x: 0, y: 0 },
-    data: { label: "Node 1" },
-    type: "input",
-  },
-  {
-    id: "n2",
-    position: { x: 100, y: 100 },
-    data: { label: "Node 2" },
-  },
-];
-
-const initialEdges = [
-  {
-    id: "n1-n2",
-    source: "n1",
-    target: "n2",
-  },
-];
+import TopCenterPanel from "./components/TopCenterPanel";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const page = () => {
+  const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
   return (
     <div style={{ height: "100vh", width: "100%" }}>
-      <ReactFlow nodes={initialNodes} edges={initialEdges}>
-        <Panel position="top-center">top-center</Panel>
+      <ReactFlow nodes={workflow?.nodes || []} edges={workflow?.edges || []}>
+        <TopCenterPanel />
         <CenterRightPanel />
         <MiniMap />
         <Background />

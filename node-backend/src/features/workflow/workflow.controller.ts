@@ -4,7 +4,7 @@ import { TWorkflow } from "./workflow.type";
 
 const workflowController = {
   createWorkflow: async (req, res) => {
-    const userId = req.user.id;
+    const userId = req.id;
     if (!userId) {
       return res
         .status(httpStatus.UNAUTHORIZED)
@@ -45,7 +45,7 @@ const workflowController = {
   },
 
   getWorkflows: async (req, res) => {
-    const userId = req.user.id;
+    const userId = req.id;
     if (!userId) {
       return res
         .status(httpStatus.UNAUTHORIZED)

@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/user.slice";
 import datasetReducer from "./slices/datasets.slice";
+import allWorkflowsReducer from "./slices/allWorkflows.slice";
+import currentWorkflowReducer from "./slices/currentWorkflow.slice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     dataset: datasetReducer,
+    allWorkflows: allWorkflowsReducer,
+    currentWorkflow: currentWorkflowReducer,
   },
 });
 

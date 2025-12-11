@@ -16,12 +16,11 @@ const page = () => {
         <RegisterDatasetSheet />
       </Navbar>
       <div className="p-6">
-        <h2 className="text-sm font-medium text-gray-500 mb-4">Files</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {datasets?.map((dataset: TDataset) => (
             <div
               key={dataset._id}
-              className="group bg-white border rounded-xl p-3 shadow-sm transition-shadow cursor-pointer flex flex-col h-44"
+              className="group bg-white border rounded-xl p-3 shadow-sm transition-shadow cursor-pointer flex flex-col h-44 hover:border-blue-500 "
             >
               <div className="flex justify-between items-start">
                 <div className="rounded-lg">
@@ -41,7 +40,7 @@ const page = () => {
                 </p>
               </div>
 
-              <div className="border-t pt-2 flex justify-end gap-1  transition-opacity">
+              <div className="border-t pt-2 flex justify-end gap-1 transition-opacity">
                 <Button
                   variant="ghost"
                   size="icon"
@@ -59,7 +58,7 @@ const page = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-7 w-7 hover:bg-black hover:text-black"
+                  className="h-7 w-7 hover:bg-blue-50 hover:text-black"
                 >
                   <BrainCircuit className="w-3.5 h-3.5" />
                 </Button>
