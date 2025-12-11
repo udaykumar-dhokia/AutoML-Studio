@@ -1,4 +1,9 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import axiosInstance from "@/utils/axios";
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 
 export type TDataset = {
   _id: string;
@@ -6,15 +11,26 @@ export type TDataset = {
   description: string;
   url: string;
   d_id: string;
-  user_id: string;
+  userId: string;
 };
 
 interface IDatasetState {
   datasets: TDataset[];
+  loading: boolean;
 }
+
+export const fetchDatasets = createAsyncThunk("dataset/fetch", async () => {
+  try {
+    const response = await axiosInstance.get("/dataset/");
+    return response.data;
+  } catch (error: any) {
+    throw error.response.data.message;
+  }
+});
 
 const initialState: IDatasetState = {
   datasets: [],
+  loading: false,
 };
 
 const datasetSlice = createSlice({
@@ -24,8 +40,25 @@ const datasetSlice = createSlice({
     setDatasets: (state, action: PayloadAction<TDataset[]>) => {
       state.datasets = action.payload;
     },
+    addDataset: (state, action: PayloadAction<TDataset>) => {
+      state.datasets.push(action.payload);
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchDatasets.fulfilled, (state, action) => {
+        state.loading = false;
+        state.datasets = action.payload;
+      })
+      .addCase(fetchDatasets.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchDatasets.rejected, (state) => {
+        state.loading = false;
+        state.datasets = [];
+      });
   },
 });
 
-export const { setDatasets } = datasetSlice.actions;
+export const { setDatasets, addDataset } = datasetSlice.actions;
 export default datasetSlice.reducer;

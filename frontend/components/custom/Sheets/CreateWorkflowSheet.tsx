@@ -19,7 +19,7 @@ import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const RegisterDatasetSheet = () => {
+const CreateWorkflowSheet = () => {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -58,14 +58,14 @@ const RegisterDatasetSheet = () => {
       <SheetTrigger className="bg-black rounded-md">
         <Button className="bg-black rounded-md" disabled={loading}>
           <Plus className="" />
-          Register Dataset
+          Create Workflow
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Register Dataset</SheetTitle>
+          <SheetTitle>Create Workflow</SheetTitle>
           <SheetDescription>
-            Register your dataset here. Click save when you&apos;re done.
+            Create your workflow here. Click save when you&apos;re done.
           </SheetDescription>
         </SheetHeader>
         <div className="grid flex-1 auto-rows-min gap-4 p-4">
@@ -111,4 +111,4 @@ const RegisterDatasetSheet = () => {
   );
 };
 
-export default RegisterDatasetSheet;
+export default CreateWorkflowSheet;

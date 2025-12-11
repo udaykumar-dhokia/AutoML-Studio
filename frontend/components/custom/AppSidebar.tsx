@@ -69,11 +69,16 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className={`${
+                      pathname === item.url ? "bg-black" : ""
+                    } transition-colors hover:bg-black hover:text-white`}
+                  >
                     <Link
                       href={item.url}
-                      className={`hover:text-blue-900 transition-colors ${
-                        pathname === item.url ? "text-blue-900" : ""
+                      className={`hover:text-black transition-colors ${
+                        pathname === item.url ? "text-white" : ""
                       }`}
                     >
                       <item.icon />
