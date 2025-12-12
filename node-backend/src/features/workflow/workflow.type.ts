@@ -1,3 +1,9 @@
+import {
+  TDatasetNode,
+  TModelNode,
+  TPreprocessingNode,
+} from "../nodes/node.type";
+
 export type TNode = {
   id: string;
   type: string;
@@ -22,7 +28,7 @@ export type TEdge = {
 export type TWorkflow = {
   name: string;
   description: string;
-  nodes: TNode[];
+  nodes: TDatasetNode[] | TPreprocessingNode[] | TModelNode[];
   edges: TEdge[];
   userId: string;
 };

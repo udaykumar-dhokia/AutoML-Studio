@@ -9,6 +9,7 @@ import authRoutes from "./features/auth/auth.routes";
 import userRoutes from "./features/user/user.routes";
 import datasetRoutes from "./features/dataset/dataset.routes";
 import workflowRoutes from "./features/workflow/workflow.routes";
+import nodeRoutes from "./features/nodes/node.routes";
 
 const app = express();
 const server = http.createServer(app);
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/dataset", datasetRoutes);
 app.use("/api/workflow", workflowRoutes);
+app.use("/api/node", nodeRoutes);
 
 server.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port ${process.env.PORT || 3000}`);
