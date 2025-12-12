@@ -13,31 +13,20 @@ import {
 import { useSelector } from "react-redux";
 import { RootState, store } from "@/store/store";
 import { addNode } from "@/store/slices/currentWorkflow.slice";
+import { TWorkflowNode } from "@/store/slices/node.slice";
 
-const NODE_TYPES = [
-  {
-    type: "dataset",
-    icon: FileSpreadsheet,
-    label: "Dataset Node",
-  },
-  {
-    type: "preprocessing",
-    icon: FileEditIcon,
-    label: "Preprocessing Node",
-  },
-  {
-    type: "model",
-    icon: BrainCircuit,
-    label: "Model Node",
-  },
-  {
-    type: "evaluation",
-    icon: LandPlot,
-    label: "Evaluation Node",
-  },
-];
+const iconMap: Record<string, React.ElementType> = {
+  BrainCircuit,
+  FileEditIcon,
+  FileSpreadsheet,
+  LandPlot,
+};
 
-const CenterRightPanel = () => {
+const CenterRightPanel = ({
+  availableNodes,
+}: {
+  availableNodes: TWorkflowNode[];
+}) => {
   const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
   const rf = useReactFlow();
 
@@ -67,24 +56,28 @@ const CenterRightPanel = () => {
         position="center-right"
         className="flex flex-col gap-2 bg-gray-50 p-2 rounded-md"
       >
-        {NODE_TYPES.map((nodeType) => (
-          <div
-            className=""
-            key={nodeType.type}
-            onClick={() => addNewNode(nodeType)}
-          >
-            <Tooltip>
-              <TooltipTrigger>
-                <div className="border p-2 rounded-md cursor-pointer">
-                  <nodeType.icon />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{nodeType.label}</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        ))}
+        {availableNodes.map((nodeType) => {
+          const Icon = iconMap[nodeType.icon];
+
+          return (
+            <div
+              className=""
+              key={nodeType.type}
+              onClick={() => addNewNode(nodeType)}
+            >
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="border p-2 rounded-md cursor-pointer">
+                    {Icon && <Icon />}
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{nodeType.label}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          );
+        })}
       </Panel>
     </>
   );

@@ -3,6 +3,7 @@ import userReducer from "./slices/user.slice";
 import datasetReducer from "./slices/datasets.slice";
 import allWorkflowsReducer from "./slices/allWorkflows.slice";
 import currentWorkflowReducer from "./slices/currentWorkflow.slice";
+import nodeReducer from "./slices/node.slice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     dataset: datasetReducer,
     allWorkflows: allWorkflowsReducer,
     currentWorkflow: currentWorkflowReducer,
+    node: nodeReducer,
   },
 });
 

@@ -16,11 +16,15 @@ import { RootState, store } from "@/store/store";
 import { useCallback, useEffect, useState } from "react";
 import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { TNode, TEdge } from "@/store/slices/allWorkflows.slice";
+import { fetchAvailableNodes } from "@/store/slices/node.slice";
 
 const page = () => {
   const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
   const [nodes, setNodes] = useState<TNode[]>([]);
   const [edges, setEdges] = useState<TEdge[]>([]);
+  const { nodes: availableNodes } = useSelector(
+    (state: RootState) => state.node
+  );
 
   useEffect(() => {
     const workflowId = localStorage.getItem("currentWorkflow");
@@ -33,6 +37,7 @@ const page = () => {
     if (workflow) {
       setNodes(workflow.nodes || []);
       setEdges(workflow.edges || []);
+      store.dispatch(fetchAvailableNodes());
     }
   }, [workflow]);
 
@@ -56,7 +61,7 @@ const page = () => {
         onEdgesChange={onEdgesChange}
       >
         <TopCenterPanel />
-        <CenterRightPanel />
+        <CenterRightPanel availableNodes={availableNodes} />
         <MiniMap />
         <Background />
         <Controls />
