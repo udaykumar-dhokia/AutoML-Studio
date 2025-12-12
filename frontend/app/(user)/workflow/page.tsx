@@ -17,6 +17,12 @@ import { useCallback, useEffect, useState } from "react";
 import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { TNode, TEdge } from "@/store/slices/allWorkflows.slice";
 import { fetchAvailableNodes } from "@/store/slices/node.slice";
+import DatasetNode from "@/components/custom/Nodes/DatasetNode";
+import BottomCenterPanel from "./components/BottomCenterPanel";
+
+const nodeTypes = {
+  datasetNode: DatasetNode,
+};
 
 const page = () => {
   const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
@@ -30,16 +36,16 @@ const page = () => {
     const workflowId = localStorage.getItem("currentWorkflow");
     if (workflowId) {
       store.dispatch(setCurrentWorkflow(JSON.parse(workflowId)));
+      store.dispatch(fetchAvailableNodes());
     }
   }, []);
 
   useEffect(() => {
-    if (workflow) {
-      setNodes(workflow.nodes || []);
-      setEdges(workflow.edges || []);
-      store.dispatch(fetchAvailableNodes());
-    }
-  }, [workflow]);
+    if (!workflow) return;
+
+    setNodes(workflow.nodes || []);
+    setEdges(workflow.edges || []);
+  }, []);
 
   const onNodesChange = useCallback(
     (changes: any) =>
@@ -59,9 +65,12 @@ const page = () => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        nodeTypes={nodeTypes}
+        fitView={false}
       >
         <TopCenterPanel />
         <CenterRightPanel availableNodes={availableNodes} />
+        <BottomCenterPanel />
         <MiniMap />
         <Background />
         <Controls />

@@ -31,23 +31,20 @@ const CenterRightPanel = ({
   const rf = useReactFlow();
 
   const addNewNode = (nodeType: any) => {
-    if (!workflow) return;
-
-    const { x, y, zoom } = rf.getViewport();
-
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
     const position = rf.screenToFlowPosition({ x: centerX, y: centerY });
 
-    store.dispatch(
-      addNode({
+    rf.setNodes((nodes) => [
+      ...nodes,
+      {
         id: crypto.randomUUID(),
-        type: nodeType.type,
+        type: nodeType.type === "dataset" ? "datasetNode" : nodeType.type,
         position,
         data: { label: nodeType.label },
-      })
-    );
+      },
+    ]);
   };
 
   return (
