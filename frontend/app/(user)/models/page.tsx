@@ -7,7 +7,7 @@ import CreateWorkflowSheet from "@/components/custom/Sheets/CreateWorkflowSheet"
 import { useRouter } from "next/navigation";
 import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { Button } from "@/components/ui/button";
-import { BrainCircuit, Play, Share2, Trash } from "lucide-react";
+import { Play, Share2, Trash } from "lucide-react";
 
 const page = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
@@ -25,6 +25,10 @@ const page = () => {
               key={workflow._id}
               onClick={() => {
                 store.dispatch(setCurrentWorkflow(workflow));
+                localStorage.setItem(
+                  "currentWorkflow",
+                  JSON.stringify(workflow)
+                );
                 router.push(`/workflow`);
               }}
               className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md hover:border-blue-500 transition-all duration-200 cursor-pointer flex flex-col justify-between h-44"
@@ -57,7 +61,7 @@ const page = () => {
                   size="icon"
                   className="h-7 w-7 hover:bg-blue-50 hover:text-black"
                 >
-                  <BrainCircuit className="w-3.5 h-3.5" />
+                  <Play className="w-3.5 h-3.5" />
                 </Button>
               </div>
             </div>

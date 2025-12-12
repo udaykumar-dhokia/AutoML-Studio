@@ -11,7 +11,7 @@ const page = () => {
   const { datasets } = useSelector((state: RootState) => state.dataset);
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-white min-h-screen">
       <Navbar title="Datasets">
         <RegisterDatasetSheet />
       </Navbar>
