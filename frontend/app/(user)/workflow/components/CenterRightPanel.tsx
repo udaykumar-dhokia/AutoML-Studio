@@ -10,10 +10,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSelector } from "react-redux";
-import { RootState, store } from "@/store/store";
-import { addNode } from "@/store/slices/currentWorkflow.slice";
 import { TWorkflowNode } from "@/store/slices/node.slice";
+import { toast } from "sonner";
 
 const iconMap: Record<string, React.ElementType> = {
   BrainCircuit,
@@ -27,10 +25,19 @@ const CenterRightPanel = ({
 }: {
   availableNodes: TWorkflowNode[];
 }) => {
-  const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
   const rf = useReactFlow();
 
   const addNewNode = (nodeType: any) => {
+    const actualType =
+      nodeType.type === "dataset" ? "datasetNode" : nodeType.type;
+
+    const exists = rf.getNodes().some((n) => n.type === actualType);
+
+    if (exists) {
+      toast.info("You cannot add more than one dataset node");
+      return;
+    }
+
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
@@ -40,7 +47,7 @@ const CenterRightPanel = ({
       ...nodes,
       {
         id: crypto.randomUUID(),
-        type: nodeType.type === "dataset" ? "datasetNode" : nodeType.type,
+        type: actualType,
         position,
         data: { label: nodeType.label },
       },

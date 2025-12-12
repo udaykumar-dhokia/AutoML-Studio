@@ -58,6 +58,12 @@ const page = () => {
     []
   );
 
+  const onNodesDelete = useCallback((deletedNodes: any) => {
+    setNodes((nds) =>
+      nds.filter((n) => !deletedNodes.some((d: any) => d.id === n.id))
+    );
+  }, []);
+
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <ReactFlow
@@ -65,6 +71,7 @@ const page = () => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
+        onNodesDelete={onNodesDelete}
         nodeTypes={nodeTypes}
         fitView={false}
       >
