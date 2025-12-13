@@ -25,10 +25,7 @@ const page = () => {
               key={workflow._id}
               onClick={() => {
                 store.dispatch(setCurrentWorkflow(workflow));
-                localStorage.setItem(
-                  "currentWorkflow",
-                  JSON.stringify(workflow)
-                );
+                localStorage.setItem("currentWorkflowId", workflow._id);
                 router.push(`/workflow`);
               }}
               className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md hover:border-blue-500 transition-all duration-200 cursor-pointer flex flex-col justify-between h-44"

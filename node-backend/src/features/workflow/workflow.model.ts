@@ -25,8 +25,8 @@ const workflowSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     description: { type: String },
-    nodes: { type: [nodeSchema], default: [] },
-    edges: { type: [edgeSchema], default: [] },
+    nodes: { type: [], default: [] },
+    edges: { type: [], default: [] },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

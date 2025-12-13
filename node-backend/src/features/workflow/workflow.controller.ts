@@ -62,6 +62,80 @@ const workflowController = {
         .json({ message: "Internal server error" });
     }
   },
+
+  getWorkflowById: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    try {
+      const workflow = await workflowDao.getWorkflowById(req.params.id);
+      return res.status(httpStatus.OK).json(workflow);
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Internal server error" });
+    }
+  },
+
+  updateWorkflowById: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const { nodes, edges } = req.body;
+    if (!nodes || !edges) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Nodes and edges are required" });
+    }
+
+    try {
+      const workflow = await workflowDao.updateWorkflowById(req.params.id, {
+        nodes,
+        edges,
+      });
+      return res.status(httpStatus.OK).json(workflow);
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Internal server error" });
+    }
+  },
+
+  deleteWorkflowById: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const { id } = req.body;
+    if (!id) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Id is required" });
+    }
+
+    try {
+      const workflow = await workflowDao.deleteWorkflowById(id);
+      return res.status(httpStatus.OK).json(workflow);
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Internal server error" });
+    }
+  },
 };
 
 export default workflowController;

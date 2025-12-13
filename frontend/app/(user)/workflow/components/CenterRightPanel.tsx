@@ -49,7 +49,12 @@ const CenterRightPanel = ({
         id: crypto.randomUUID(),
         type: actualType,
         position,
-        data: { label: nodeType.label },
+        data: {
+          label: nodeType.label,
+          ...(actualType === "datasetNode" && {
+            selectedDataset: null,
+          }),
+        },
       },
     ]);
   };

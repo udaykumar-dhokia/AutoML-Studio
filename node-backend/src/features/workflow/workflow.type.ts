@@ -28,7 +28,7 @@ export type TEdge = {
 export type TWorkflow = {
   name: string;
   description: string;
-  nodes: TDatasetNode[] | TPreprocessingNode[] | TModelNode[];
+  nodes: (TDatasetNode[] | TPreprocessingNode[] | TModelNode[])[];
   edges: TEdge[];
   userId: string;
 };

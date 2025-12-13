@@ -11,6 +11,7 @@ export type TNode = {
   position: { x: number; y: number };
   data: {
     label?: string;
+    selectedDataset?: string;
   };
 };
 

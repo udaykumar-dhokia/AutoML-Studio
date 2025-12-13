@@ -1,4 +1,4 @@
-import { memo, useCallback, useState } from "react";
+import { memo } from "react";
 import { Handle, Position, useReactFlow } from "@xyflow/react";
 import {
   Select,
@@ -8,22 +8,35 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { RootState, store } from "@/store/store";
 import { Button } from "@/components/ui/button";
 import { Play, TriangleAlert, X } from "lucide-react";
+import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.slice";
 
-function DatasetNode({ data, isConnectable }: any) {
+function DatasetNode({ id, data, isConnectable }: any) {
   const { datasets } = useSelector((state: RootState) => state.dataset);
-  const [selectedDataset, setSelectedDataset] = useState<string | null>(null);
+  const selectedDataset = data.selectedDataset ?? "";
   const rf = useReactFlow();
 
-  const handleSelect = useCallback((value: string) => {
-    setSelectedDataset(value);
-  }, []);
+  const handleSelect = (value: string) => {
+    rf.setNodes((nodes) =>
+      nodes.map((node) =>
+        node.id === id
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                selectedDataset: value,
+              },
+            }
+          : node
+      )
+    );
+  };
 
   const deleteNode = () => {
-    const id = rf.getNodes().find((n) => n.type === "datasetNode")?.id;
-    if (id) rf.deleteElements({ nodes: [{ id }] });
+    rf.deleteElements({ nodes: [{ id }] });
+    store.dispatch(deleteNodeAction({ id }));
   };
 
   return (
@@ -57,7 +70,7 @@ function DatasetNode({ data, isConnectable }: any) {
       </div>
 
       <div className="p-4 space-y-3">
-        <Select value={selectedDataset ?? ""} onValueChange={handleSelect}>
+        <Select value={selectedDataset!} onValueChange={handleSelect}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select Dataset" />
           </SelectTrigger>

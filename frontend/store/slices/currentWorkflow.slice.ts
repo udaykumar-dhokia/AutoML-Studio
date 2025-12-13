@@ -20,9 +20,16 @@ const currentWorkflowSlice = createSlice({
         state.workflow.nodes.push(action.payload);
       }
     },
+    deleteNode: (state, action: PayloadAction<{ id: string }>) => {
+      if (state.workflow) {
+        state.workflow.nodes = state.workflow.nodes.filter(
+          (node) => node.id !== action.payload.id
+        );
+      }
+    },
   },
 });
 
-export const { setCurrentWorkflow, clearCurrentWorkflow, addNode } =
+export const { setCurrentWorkflow, clearCurrentWorkflow, addNode, deleteNode } =
   currentWorkflowSlice.actions;
 export default currentWorkflowSlice.reducer;

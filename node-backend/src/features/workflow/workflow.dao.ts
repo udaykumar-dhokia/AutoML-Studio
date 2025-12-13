@@ -13,6 +13,18 @@ class WorkflowDao {
   async getWorkflowByNameAndUserId(name: string, userId: string) {
     return await Workflow.findOne({ name, userId });
   }
+
+  async getWorkflowById(id: string) {
+    return await Workflow.findById(id);
+  }
+
+  async updateWorkflowById(id: string, workflowData: { nodes: []; edges: [] }) {
+    return await Workflow.findByIdAndUpdate(id, workflowData);
+  }
+
+  async deleteWorkflowById(id: string) {
+    return await Workflow.findByIdAndDelete(id);
+  }
 }
 
 export default new WorkflowDao();

@@ -19,6 +19,10 @@ import { TNode, TEdge } from "@/store/slices/allWorkflows.slice";
 import { fetchAvailableNodes } from "@/store/slices/node.slice";
 import DatasetNode from "@/components/custom/Nodes/DatasetNode";
 import BottomCenterPanel from "./components/BottomCenterPanel";
+import axiosInstance from "@/utils/axios";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Loader from "@/components/custom/Loader";
 
 const nodeTypes = {
   datasetNode: DatasetNode,
@@ -31,12 +35,32 @@ const page = () => {
   const { nodes: availableNodes } = useSelector(
     (state: RootState) => state.node
   );
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   useEffect(() => {
-    const workflowId = localStorage.getItem("currentWorkflow");
+    setLoading(true);
+    const getWorkflow = async (workflowId: string) => {
+      try {
+        const res = await axiosInstance.get(`/workflow/${workflowId}`);
+        store.dispatch(setCurrentWorkflow(res.data));
+      } catch (error: any) {
+        toast.error(error.response.data.message);
+        localStorage.removeItem("currentWorkflowId");
+        router.push("/models");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const workflowId = localStorage.getItem("currentWorkflowId");
     if (workflowId) {
-      store.dispatch(setCurrentWorkflow(JSON.parse(workflowId)));
       store.dispatch(fetchAvailableNodes());
+      getWorkflow(workflowId);
+    } else {
+      setLoading(false);
+      router.push("/models");
     }
   }, []);
 
@@ -63,6 +87,8 @@ const page = () => {
       nds.filter((n) => !deletedNodes.some((d: any) => d.id === n.id))
     );
   }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <div style={{ height: "100vh", width: "100%" }}>
