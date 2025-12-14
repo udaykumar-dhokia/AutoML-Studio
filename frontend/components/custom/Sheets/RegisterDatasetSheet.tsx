@@ -55,8 +55,11 @@ const RegisterDatasetSheet = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="bg-black rounded-md">
-        <Button className="bg-black rounded-md" disabled={loading}>
+      <SheetTrigger className="bg-black dark:bg-white rounded-md">
+        <Button
+          className="bg-black dark:bg-white rounded-md"
+          disabled={loading}
+        >
           <Plus className="" />
           Register Dataset
         </Button>
@@ -102,7 +105,7 @@ const RegisterDatasetSheet = () => {
           <Button
             type="submit"
             disabled={!name || !description || !file || loading}
-            className="bg-black"
+            className="bg-black dark:bg-white"
             onClick={handleSubmit}
           >
             {loading ? (

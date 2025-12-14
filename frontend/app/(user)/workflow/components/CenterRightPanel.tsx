@@ -63,14 +63,14 @@ const CenterRightPanel = ({
     <>
       <Panel
         position="center-right"
-        className="flex flex-col gap-2 bg-gray-50 p-2 rounded-md"
+        className="flex flex-col gap-2 bg-gray-50 dark:bg-sidebar p-2 rounded-md"
       >
         {availableNodes.map((nodeType) => {
           const Icon = iconMap[nodeType.icon];
 
           return (
             <div
-              className=""
+              className="dark:bg-sidebar"
               key={nodeType.type}
               onClick={() => addNewNode(nodeType)}
             >

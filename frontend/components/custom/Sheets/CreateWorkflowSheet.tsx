@@ -82,7 +82,10 @@ const CreateWorkflowSheet = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger className="bg-black rounded-md">
-        <Button className="bg-black rounded-md" disabled={loading}>
+        <Button
+          className="bg-black dark:bg-white rounded-md"
+          disabled={loading}
+        >
           <Plus className="" />
           Create Workflow
         </Button>
@@ -125,7 +128,7 @@ const CreateWorkflowSheet = () => {
           <Button
             disabled={!name || !description || loading || nameExists}
             type="submit"
-            className="bg-black"
+            className="bg-black dark:bg-white"
             onClick={handleSubmit}
           >
             {loading ? <Loader2 className="animate-spin" /> : "Create Workflow"}

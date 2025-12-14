@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { store } from "../store/store";
-import { Provider } from "react-redux";
 import { ClientProviders } from "./providers";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -32,11 +31,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${raleway.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ClientProviders>{children}</ClientProviders>
+        <ThemeProvider defaultTheme="system" attribute="class" enableSystem>
+          <ClientProviders>{children}</ClientProviders>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

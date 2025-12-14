@@ -29,6 +29,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ModeToggle } from "../ModeToggle";
 
 const items = [
   {
@@ -62,7 +63,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="my-4 text-black">
+          <SidebarGroupLabel className="my-4 text-black dark:text-white">
             <h1 className="text-xl font-bold">AutoML Studio</h1>
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -111,6 +112,9 @@ export function AppSidebar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <span>Sign out</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <ModeToggle />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
