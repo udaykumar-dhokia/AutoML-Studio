@@ -1,5 +1,6 @@
 import operationsAxios from "../../utils/axios";
 import { httpStatus } from "../../utils/httpStatus";
+import datasetDao from "../dataset/dataset.dao";
 
 const DATASET_OPERATIONS = ["/head", "/tail", "/info", "/describe", "/columns"];
 
@@ -12,18 +13,25 @@ const operationsController = {
         .json({ message: "Unauthorized" });
     }
 
-    const url = req.query.url;
-    if (!url) {
+    const id = req.query.id;
+    if (!id) {
       return res
         .status(httpStatus.BAD_REQUEST)
-        .json({ message: "Dataset URL is required" });
+        .json({ message: "Dataset ID is required" });
     }
 
     try {
+      const dataset = await datasetDao.getDatasetById(id);
+      if (!dataset) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "Dataset not found" });
+      }
+
       const results = await Promise.all(
         DATASET_OPERATIONS.map(async (operationPath) => {
           const response = await operationsAxios.get(
-            `/dataset${operationPath}?url=${url}`
+            `/dataset${operationPath}?url=${dataset.url}`
           );
           const operationKey = operationPath.substring(1);
           return { [operationKey]: response.data };

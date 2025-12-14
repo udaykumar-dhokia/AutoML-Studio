@@ -9,6 +9,10 @@ class DatasetDao {
   createDataset(dataset: TDataset) {
     return Dataset.create(dataset);
   }
+
+  getDatasetById(id: string) {
+    return Dataset.findById(id);
+  }
 }
 
 export default new DatasetDao();
