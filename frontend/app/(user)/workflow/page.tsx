@@ -7,6 +7,7 @@ import {
   MiniMap,
   applyEdgeChanges,
   applyNodeChanges,
+  addEdge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import CenterRightPanel from "./components/CenterRightPanel";
@@ -23,9 +24,16 @@ import axiosInstance from "@/utils/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/custom/Loader";
+import PreprocessingNode from "@/components/custom/Nodes/PreprocessingNode";
+import Edge from "@/components/custom/Edge/Edge";
 
 const nodeTypes = {
   datasetNode: DatasetNode,
+  preprocessingNode: PreprocessingNode,
+};
+
+const edgeTypes = {
+  edge: Edge,
 };
 
 const page = () => {
@@ -88,6 +96,12 @@ const page = () => {
     );
   }, []);
 
+  const onConnect = useCallback(
+    (params: any) =>
+      setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    []
+  );
+
   if (loading) return <Loader />;
 
   return (
@@ -99,7 +113,13 @@ const page = () => {
         onEdgesChange={onEdgesChange}
         onNodesDelete={onNodesDelete}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onConnect={onConnect}
         fitView={false}
+        defaultEdgeOptions={{
+          type: "edge",
+          animated: true,
+        }}
       >
         <TopCenterPanel />
         <CenterRightPanel availableNodes={availableNodes} />

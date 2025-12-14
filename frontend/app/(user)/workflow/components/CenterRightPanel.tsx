@@ -29,7 +29,11 @@ const CenterRightPanel = ({
 
   const addNewNode = (nodeType: any) => {
     const actualType =
-      nodeType.type === "dataset" ? "datasetNode" : nodeType.type;
+      nodeType.type === "dataset"
+        ? "datasetNode"
+        : nodeType.type === "preprocessing"
+        ? "preprocessingNode"
+        : nodeType.type;
 
     const exists = rf.getNodes().some((n) => n.type === actualType);
 

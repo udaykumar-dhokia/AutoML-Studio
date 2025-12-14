@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
+import { Button } from "./ui/button";
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
@@ -15,11 +16,22 @@ export function ModeToggle() {
   if (!mounted) return null;
 
   return (
-    <button
+    <Button
+      variant={"outline"}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800"
+      className="w-full rounded-md flex items-center gap-2"
     >
-      {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
-    </button>
+      {theme === "dark" ? (
+        <div className="flex items-center gap-2">
+          <Sun size={20} />
+          <p>Light</p>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+          <Moon size={20} />
+          <p>Dark</p>
+        </div>
+      )}
+    </Button>
   );
 }
