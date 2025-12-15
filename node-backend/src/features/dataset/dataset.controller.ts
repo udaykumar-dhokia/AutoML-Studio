@@ -76,5 +76,58 @@ const datasetController = {
         .json({ message: "Internal Server Error" });
     }
   },
+
+  deleteDataset: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const { id } = req.params;
+    if (!id) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "No id provided" });
+    }
+
+    try {
+      const dataset = await datasetDao.getDatasetById(id);
+
+      if (!dataset) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "Dataset not found" });
+      }
+
+      console.log(dataset.userId, userId);
+
+      if (dataset.userId.toString() !== userId) {
+        return res
+          .status(httpStatus.UNAUTHORIZED)
+          .json({ message: "Unauthorized" });
+      }
+
+      try {
+        await cloudinary.uploader.destroy(dataset.d_id, {
+          resource_type: "raw",
+        });
+      } catch (err) {
+        console.warn("Cloudinary delete failed:", err);
+      }
+
+      const deletedDataset = await datasetDao.deleteDatasetById(id);
+
+      return res.status(httpStatus.OK).json({
+        message: "Dataset deleted successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Internal Server Error" });
+    }
+  },
 };
 export default datasetController;

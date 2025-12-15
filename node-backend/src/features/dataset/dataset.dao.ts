@@ -13,6 +13,10 @@ class DatasetDao {
   getDatasetById(id: string) {
     return Dataset.findById(id);
   }
+
+  deleteDatasetById(id: string) {
+    return Dataset.findByIdAndDelete(id);
+  }
 }
 
 export default new DatasetDao();

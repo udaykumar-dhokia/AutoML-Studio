@@ -12,5 +12,6 @@ router.post(
   upload.single("file"),
   datasetController.createDataset
 );
+router.delete("/:id", authMiddleware, datasetController.deleteDataset);
 
 export default router;
