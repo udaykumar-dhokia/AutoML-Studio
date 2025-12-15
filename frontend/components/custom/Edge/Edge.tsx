@@ -8,6 +8,7 @@ import {
 
 export default function Edge({
   id,
+  data,
   sourceX,
   sourceY,
   targetX,
@@ -39,6 +40,7 @@ export default function Edge({
             pointerEvents: "all",
           }}
         >
+          {data.itemCount > 1 && <p className="text-xs">{data.itemCount}</p>}
           <Button
             variant="outline"
             size="icon-sm"

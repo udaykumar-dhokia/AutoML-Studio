@@ -45,7 +45,7 @@ const datasetController = {
               resource_type: "raw",
               use_filename: true,
               unique_filename: false,
-              filename_override: req.file.originalname,
+              filename_override: `${Date.now()}-${req.file.originalname}`,
             },
             (error, result) => {
               if (error) reject(error);

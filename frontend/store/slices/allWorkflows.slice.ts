@@ -12,6 +12,7 @@ export type TNode = {
   data: {
     label?: string;
     selectedDataset?: string;
+    columns?: string[];
   };
 };
 
@@ -63,6 +64,11 @@ const allWorkflowsSlice = createSlice({
     addWorkflow: (state, action: PayloadAction<TWorflow>) => {
       state.workflows.push(action.payload);
     },
+    updateWorkflow: (state, action: PayloadAction<TWorflow>) => {
+      state.workflows = state.workflows.map((workflow) =>
+        workflow._id === action.payload._id ? action.payload : workflow
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllWorkflows.pending, (state) => {
@@ -78,6 +84,6 @@ const allWorkflowsSlice = createSlice({
   },
 });
 
-export const { addWorkflow } = allWorkflowsSlice.actions;
+export const { addWorkflow, updateWorkflow } = allWorkflowsSlice.actions;
 
 export default allWorkflowsSlice.reducer;

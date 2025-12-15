@@ -35,11 +35,13 @@ const CenterRightPanel = ({
         ? "preprocessingNode"
         : nodeType.type;
 
-    const exists = rf.getNodes().some((n) => n.type === actualType);
+    if (actualType == "datasetNode") {
+      const exists = rf.getNodes().some((n) => n.type === actualType);
 
-    if (exists) {
-      toast.info("You cannot add more than one dataset node");
-      return;
+      if (exists) {
+        toast.info("You cannot add more than one dataset node");
+        return;
+      }
     }
 
     const centerX = window.innerWidth / 2;

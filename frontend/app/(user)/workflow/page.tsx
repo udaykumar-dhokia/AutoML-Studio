@@ -8,6 +8,7 @@ import {
   applyEdgeChanges,
   applyNodeChanges,
   addEdge,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import CenterRightPanel from "./components/CenterRightPanel";
@@ -96,11 +97,41 @@ const page = () => {
     );
   }, []);
 
-  const onConnect = useCallback(
-    (params: any) =>
-      setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
-    []
-  );
+  const onConnect = useCallback((params: any) => {
+    setEdges((edgesSnapshot) => {
+      const sourceNode = nodes.find((n) => n.id === params.source);
+      const columns = sourceNode?.data?.columns ?? [];
+
+      return addEdge(
+        {
+          ...params,
+          type: "edge",
+          data: {
+            itemCount: columns.length,
+          },
+        },
+        edgesSnapshot
+      );
+    });
+
+    setNodes((nodesSnapshot) => {
+      const sourceNode = nodesSnapshot.find((n) => n.id === params.source);
+
+      if (!sourceNode?.data?.columns) return nodesSnapshot;
+
+      return nodesSnapshot.map((node) =>
+        node.id === params.target
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                columns: sourceNode.data.columns,
+              },
+            }
+          : node
+      );
+    });
+  }, []);
 
   if (loading) return <Loader />;
 

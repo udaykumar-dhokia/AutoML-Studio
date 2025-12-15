@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { RootState } from "@/store/store";
+import { updateWorkflow } from "@/store/slices/allWorkflows.slice";
+import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
+import { RootState, store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import { Panel, useReactFlow } from "@xyflow/react";
 import { CloudUpload, Download, Loader2 } from "lucide-react";
@@ -10,6 +12,7 @@ import { toast } from "sonner";
 
 const TopCenterPanel = () => {
   const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
+  const { workflows } = useSelector((state: RootState) => state.allWorkflows);
   const rf = useReactFlow();
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -26,8 +29,12 @@ const TopCenterPanel = () => {
         nodes,
         edges,
       };
-      await axiosInstance.put(`/workflow/${workflow?._id}`, updatedWorkflow);
-
+      const res = await axiosInstance.put(
+        `/workflow/${workflow?._id}`,
+        updatedWorkflow
+      );
+      store.dispatch(setCurrentWorkflow(res.data));
+      store.dispatch(updateWorkflow(res.data));
       toast.success("Workflow saved successfully");
     } catch (error) {
       toast.error("Failed to save workflow");

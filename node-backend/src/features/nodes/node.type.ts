@@ -3,6 +3,7 @@ import { TNode } from "../workflow/workflow.type";
 export type TDatasetNode = TNode & {
   type: "dataset";
   datasetId: string;
+  columns?: string[];
 };
 
 export type TPreprocessingNode = TNode & {
@@ -16,6 +17,7 @@ export type TPreprocessingNode = TNode & {
     | "Normalization"
     | "Standardization"
     | "No Operation";
+  column?: string;
 };
 
 export type TModelNode = TNode & {

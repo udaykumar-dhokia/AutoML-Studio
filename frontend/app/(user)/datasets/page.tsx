@@ -2,13 +2,37 @@
 import Navbar from "@/components/custom/Navbar";
 import RegisterDatasetSheet from "@/components/custom/Sheets/RegisterDatasetSheet";
 import { Button } from "@/components/ui/button";
-import { TDataset } from "@/store/slices/datasets.slice";
-import { RootState } from "@/store/store";
-import { BrainCircuit, FileSpreadsheet, Share2, Trash } from "lucide-react";
+import { deleteDataset, TDataset } from "@/store/slices/datasets.slice";
+import { RootState, store } from "@/store/store";
+import axiosInstance from "@/utils/axios";
+import {
+  BrainCircuit,
+  FileSpreadsheet,
+  Loader2,
+  Share2,
+  Trash,
+} from "lucide-react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const page = () => {
   const { datasets } = useSelector((state: RootState) => state.dataset);
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async (id: string) => {
+    if (!id) return;
+    try {
+      setLoading(true);
+      const res = await axiosInstance.delete(`/dataset/${id}`);
+      store.dispatch(deleteDataset(id));
+      toast.success(res.data.message);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className=" min-h-screen">
@@ -66,9 +90,16 @@ const page = () => {
                   <Button
                     variant="ghost"
                     size="icon"
+                    onClick={() => {
+                      handleDelete(dataset._id);
+                    }}
                     className="h-7 w-7 hover:bg-red-50 hover:text-red-600"
                   >
-                    <Trash className="w-3.5 h-3.5 dark:text-gray-400" />
+                    {loading ? (
+                      <Loader2 className="w-3.5 h-3.5 dark:text-gray-400 animate-spin" />
+                    ) : (
+                      <Trash className="w-3.5 h-3.5 dark:text-gray-400" />
+                    )}
                   </Button>
                   <Button
                     variant="ghost"

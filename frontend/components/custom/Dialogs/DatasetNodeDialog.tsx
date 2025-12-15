@@ -26,17 +26,27 @@ const DatasetNodeDialog = ({
   open,
   onOpenChange,
   datasetId,
+  onColumnsUpdate,
+  head,
+  tail,
+  info,
+  describe,
+  columns,
+  loading,
+  setLoading,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   datasetId: string;
+  onColumnsUpdate?: (columns: string[]) => void;
+  head: any[] | null;
+  tail: any[] | null;
+  info: any | null;
+  describe: any | null;
+  columns: string[] | null;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
 }) => {
-  const [head, setHead] = useState<any[] | null>(null);
-  const [tail, setTail] = useState<any[] | null>(null);
-  const [info, setInfo] = useState<any | null>(null);
-  const [describe, setDescribe] = useState<any | null>(null);
-  const [columns, setColumns] = useState<string[] | null>(null);
-  const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
 
   const handleExecute = async () => {
@@ -48,11 +58,14 @@ const DatasetNodeDialog = ({
           id: datasetId,
         },
       });
-      setHead(res.data["head"] || null);
-      setTail(res.data["tail"] || null);
-      setInfo(res.data["info"] || null);
-      setDescribe(res.data["describe"] || null);
-      setColumns(res.data["columns"] || null);
+      head = res.data["head"] || null;
+      tail = res.data["tail"] || null;
+      info = res.data["info"] || null;
+      describe = res.data["describe"] || null;
+      columns = res.data["columns"] || null;
+      if (onColumnsUpdate && res.data["columns"]) {
+        onColumnsUpdate(res.data["columns"]);
+      }
     } catch (error: any) {
       toast.error(error.response?.data?.message || "An error occurred");
     } finally {

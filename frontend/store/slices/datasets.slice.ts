@@ -43,6 +43,9 @@ const datasetSlice = createSlice({
     addDataset: (state, action: PayloadAction<TDataset>) => {
       state.datasets.push(action.payload);
     },
+    deleteDataset: (state, action: PayloadAction<string>) => {
+      state.datasets = state.datasets.filter((d) => d._id !== action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,5 +63,5 @@ const datasetSlice = createSlice({
   },
 });
 
-export const { setDatasets, addDataset } = datasetSlice.actions;
+export const { setDatasets, addDataset, deleteDataset } = datasetSlice.actions;
 export default datasetSlice.reducer;
