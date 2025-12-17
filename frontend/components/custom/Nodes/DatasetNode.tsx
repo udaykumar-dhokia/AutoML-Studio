@@ -27,18 +27,19 @@ function DatasetNode({ id, data, isConnectable }: any) {
   const [info, setInfo] = useState<any | null>(null);
   const [describe, setDescribe] = useState<any | null>(null);
   const [columns, setColumns] = useState<string[] | null>(null);
+  const [hasRun, setHasRun] = useState<boolean | null>(null);
 
   const handleSelect = (value: string) => {
     rf.setNodes((nodes) =>
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                selectedDataset: value,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              selectedDataset: value,
+            },
+          }
           : node
       )
     );
@@ -91,6 +92,7 @@ function DatasetNode({ id, data, isConnectable }: any) {
                 data: {
                   ...node.data,
                   columns: cols,
+                  selectedDataset: selectedDataset,
                 },
               };
             }
@@ -100,15 +102,18 @@ function DatasetNode({ id, data, isConnectable }: any) {
                 data: {
                   ...node.data,
                   columns: cols,
+                  selectedDataset: selectedDataset,
                 },
               };
             }
             return node;
           })
         );
+        setHasRun(true);
         toast.success("Dataset executed successfully");
       }
     } catch (error: any) {
+      setHasRun(false);
       toast.error(error.response?.data?.message || "Failed to execute dataset");
     } finally {
       setLoading(false);
@@ -120,12 +125,13 @@ function DatasetNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                columns: columns,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              columns: columns,
+              selectedDataset: selectedDataset,
+            },
+          }
           : node
       )
     );
@@ -134,9 +140,8 @@ function DatasetNode({ id, data, isConnectable }: any) {
   return (
     <>
       <div
-        className={`relative w-[220px] rounded-lg shadow-sm bg-white dark:bg-sidebar border cursor-pointer ${
-          selectedDataset ? "" : "border-red-500"
-        } ${loading ? "animate-pulse border-primary-500" : ""}`}
+        className={`relative w-[220px] rounded-lg shadow-sm bg-white dark:bg-sidebar border cursor-pointer ${selectedDataset ? "" : "border-red-500"
+          } ${loading ? "animate-pulse border-primary-500" : ""} ${hasRun ? "border-green-500" : ""}`}
         onDoubleClickCapture={handleDoubleClick}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar rounded-t-lg border-b">

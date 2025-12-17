@@ -8,7 +8,6 @@ import {
   applyEdgeChanges,
   applyNodeChanges,
   addEdge,
-  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import CenterRightPanel from "./components/CenterRightPanel";
@@ -101,7 +100,7 @@ const page = () => {
     setEdges((edgesSnapshot) => {
       const sourceNode = nodes.find((n) => n.id === params.source);
       const columns = sourceNode?.data?.columns ?? [];
-
+      
       return addEdge(
         {
           ...params,
@@ -113,9 +112,10 @@ const page = () => {
         edgesSnapshot
       );
     });
-
+    
     setNodes((nodesSnapshot) => {
       const sourceNode = nodesSnapshot.find((n) => n.id === params.source);
+      const datasetId = sourceNode?.data?.selectedDataset;
 
       if (!sourceNode?.data?.columns) return nodesSnapshot;
 
@@ -126,6 +126,7 @@ const page = () => {
               data: {
                 ...node.data,
                 columns: sourceNode.data.columns,
+                selectedDataset: datasetId,
               },
             }
           : node

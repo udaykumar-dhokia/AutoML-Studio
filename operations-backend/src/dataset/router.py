@@ -1,7 +1,13 @@
 from fastapi import APIRouter
 import pandas as pd
-
+from pydantic import BaseModel
 import numpy as np
+
+class MissingValueRequest(BaseModel):
+    url: str
+    strategy: str
+    column: str
+
 
 router = APIRouter()
 
@@ -41,3 +47,32 @@ def info(url: str):
 def columns(url: str):
     df = pd.read_csv(url)
     return df.columns.to_list()
+
+@router.post("/handle_missing_values")
+def handle_missing_values(request: MissingValueRequest):
+    df = pd.read_csv(request.url)
+
+    column = request.column
+    strategy = request.strategy
+
+    if column not in df.columns:
+        raise HTTPException(status_code=400, detail=f"Column '{column}' not found")
+
+    if strategy == "Drop Rows":
+        df = df.dropna(subset=[column])
+    elif strategy == "Replace with Mean":
+        df[column] = df[column].fillna(df[column].mean())
+    elif strategy == "Replace with Median":
+        df[column] = df[column].fillna(df[column].median())
+    elif strategy == "Replace with Min":
+        df[column] = df[column].fillna(df[column].min())
+    elif strategy == "Replace with Max":
+        df[column] = df[column].fillna(df[column].max())
+    else:
+        raise HTTPException(status_code=400, detail="Invalid strategy")
+
+    return {
+        "columns": df.columns.tolist(),
+        "data": df.head().replace({np.nan: None}).to_dict(orient="records"),
+        "null_count": int(df[column].isna().sum()),
+    }

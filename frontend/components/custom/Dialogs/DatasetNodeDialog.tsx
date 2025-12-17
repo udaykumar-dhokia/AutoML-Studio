@@ -270,9 +270,9 @@ const DatasetNodeDialog = ({
                                 {describe[col][stat] !== null
                                   ? typeof describe[col][stat] === "number"
                                     ? describe[col][stat].toLocaleString(
-                                        undefined,
-                                        { maximumFractionDigits: 2 }
-                                      )
+                                      undefined,
+                                      { maximumFractionDigits: 2 }
+                                    )
                                     : describe[col][stat]
                                   : "-"}
                               </TableCell>

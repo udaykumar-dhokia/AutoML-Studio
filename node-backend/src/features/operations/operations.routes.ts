@@ -10,4 +10,10 @@ router.get(
   operationsController.getDatasetOperations
 );
 
+router.post(
+  "/handle_missing_values",
+  authMiddleware,
+  operationsController.handleMissingValues
+);
+
 export default router;

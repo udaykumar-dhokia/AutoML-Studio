@@ -2,6 +2,8 @@
 
 **AutoML Studio** is a powerful No-Code Machine Learning Platform that empowers users to build, train, and evaluate machine learning models using an intuitive drag-and-drop interface. Whether you are a data scientist or a beginner, AutoML Studio streamlines the complex process of ML workflows into simple, visual steps.
 
+![AutoML Studio Workflow](https://drive.google.com/uc?export=view&id=1E03bhi8-yiE4zCh7Gt4stW_t7J3y2J1t)
+
 ## Key Features
 
 *   **Visual Workflow Builder**: Create complex ML pipelines by dragging and dropping nodes (powered by `@xyflow/react`).

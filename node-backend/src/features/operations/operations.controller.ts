@@ -51,6 +51,43 @@ const operationsController = {
         .json({ message: "Something went wrong" });
     }
   },
+  handleMissingValues: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const { id, strategy, column } = req.body;
+    if (!id) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Dataset ID is required" });
+    }
+
+    try {
+      const dataset = await datasetDao.getDatasetById(id);
+      if (!dataset) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "Dataset not found" });
+      }
+
+      const response = await operationsAxios.post(
+        `/dataset/handle_missing_values`,
+        { url: dataset.url, strategy, column }
+      );
+      const combinedResults = { handle_missing_values: response.data };
+
+      return res.status(httpStatus.OK).json(combinedResults);
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Something went wrong" });
+    }
+  },
 };
 
 export default operationsController;
