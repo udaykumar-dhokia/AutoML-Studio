@@ -4,6 +4,7 @@ import {
   FileEditIcon,
   FileSpreadsheet,
   LandPlot,
+  Split,
 } from "lucide-react";
 import {
   Tooltip,
@@ -16,6 +17,7 @@ import { toast } from "sonner";
 const iconMap: Record<string, React.ElementType> = {
   BrainCircuit,
   FileEditIcon,
+  Split,
   FileSpreadsheet,
   LandPlot,
 };

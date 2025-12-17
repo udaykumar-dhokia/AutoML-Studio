@@ -1,3 +1,4 @@
+import { type } from "node:os";
 import { httpStatus } from "../../utils/httpStatus";
 import Node from "./node.model";
 
@@ -20,6 +21,7 @@ const nodeController = {
           description: "Input node for loading datasets",
           category: "Dataset",
           type: "dataset",
+          icon: "FileSpreadsheet",
           dataSchema: {
             datasetId: { type: "string", required: true, label: "Dataset ID" },
           },
@@ -29,6 +31,7 @@ const nodeController = {
           description: "Node for data cleaning and transformation",
           category: "Preprocessing",
           type: "preprocessing",
+          icon: "FileEditIcon",
           dataSchema: {
             datasetId: { type: "string", required: true, label: "Dataset ID" },
             operation: {
@@ -37,8 +40,6 @@ const nodeController = {
               enum: [
                 "Handle Missing Values",
                 "Handle Outliers",
-                "Feature Scaling",
-                "Feature Selection",
                 "Normalization",
                 "Standardization",
                 "No Operation",
@@ -53,6 +54,7 @@ const nodeController = {
           description: "Machine Learning model node",
           category: "Model",
           type: "model",
+          icon: "BrainCircuit",
           dataSchema: {
             datasetId: { type: "string", required: true, label: "Dataset ID" },
             model: {
@@ -75,6 +77,30 @@ const nodeController = {
               type: "object",
               required: false,
               label: "Hyperparameters",
+            },
+          }
+        },
+        {
+          label: "Train Test Split",
+          description: "Split dataset into training and testing sets",
+          category: "Splitting",
+          type: "trainTestSplit",
+          icon: "Split",
+          dataSchema: {
+            testSize: {
+              type: "number",
+              required: true,
+              label: "Test Size (0-1)",
+              min: 0.1,
+              max: 0.9,
+              step: 0.1,
+              default: 0.2,
+            },
+            randomState: {
+              type: "number",
+              required: false,
+              label: "Random State",
+              default: 42,
             },
           },
         },

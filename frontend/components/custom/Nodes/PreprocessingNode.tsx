@@ -12,18 +12,31 @@ import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.s
 import { store } from "@/store/store";
 import { memo } from "react";
 
+const operationOptionsMap: Record<string, string[]> = {
+  "Handle Missing Values": [
+    "Replace with Mean",
+    "Replace with Median",
+    "Replace with Min",
+    "Replace with Max",
+    "Drop Rows",
+  ],
+  "Handle Outliers": ["IQR Method", "Z-Score Method", "Capping"],
+  Normalization: ["Min-Max Scaling", "Max Abs Scaling"],
+  Standardization: ["Z-Score Standardization"],
+  "No Operation": [],
+};
+
 function PreprocessingNode({ id, data, isConnectable }: any) {
   const rf = useReactFlow();
 
   const selectedOperation = data.operation ?? "";
   const selectedColumn = data.column ?? "";
   const columns: string[] = data.columns ?? [];
+  const selectedStrategy = data.strategy ?? "";
 
   const operations = [
     "Handle Missing Values",
     "Handle Outliers",
-    "Feature Scaling",
-    "Feature Selection",
     "Normalization",
     "Standardization",
     "No Operation",
@@ -33,7 +46,24 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
     rf.setNodes((nodes) =>
       nodes.map((node) =>
         node.id === id
-          ? { ...node, data: { ...node.data, operation: value } }
+          ? {
+              ...node,
+              data: {
+                ...node.data,
+                operation: value,
+                strategy: "",
+              },
+            }
+          : node
+      )
+    );
+  };
+
+  const handleSelectStrategy = (value: string) => {
+    rf.setNodes((nodes) =>
+      nodes.map((node) =>
+        node.id === id
+          ? { ...node, data: { ...node.data, strategy: value } }
           : node
       )
     );
@@ -57,7 +87,7 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
   return (
     <div
       className={`relative w-[220px] rounded-lg shadow-sm bg-white dark:bg-sidebar border cursor-pointer ${
-        selectedOperation ? "" : "border-red-500"
+        selectedOperation && selectedStrategy ? "" : "border-red-500"
       }`}
     >
       <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar rounded-t-lg border-b">
@@ -75,40 +105,80 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
         </div>
       </div>
 
-      <div className="p-4 space-y-3">
-        <Select value={selectedOperation} onValueChange={handleSelectOperation}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Operation" />
-          </SelectTrigger>
-          <SelectContent>
-            {operations.map((op) => (
-              <SelectItem key={op} value={op}>
-                {op}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="p-4 space-y-2">
+        {/* Operation */}
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
+            Operation
+          </label>
+          <Select
+            value={selectedOperation}
+            onValueChange={handleSelectOperation}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select Operation" />
+            </SelectTrigger>
+            <SelectContent>
+              {operations.map((op) => (
+                <SelectItem key={op} value={op}>
+                  {op}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Select
-          value={selectedColumn}
-          onValueChange={handleSelectColumn}
-          disabled={columns.length === 0}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue
-              placeholder={
-                columns.length ? "Select Column" : "No columns available"
-              }
-            />
-          </SelectTrigger>
-          <SelectContent>
-            {columns.map((col) => (
-              <SelectItem key={col} value={col}>
-                {col}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        {/* Strategy / Method (conditional) */}
+        {selectedOperation &&
+          operationOptionsMap[selectedOperation]?.length > 0 && (
+            <div className="space-y2">
+              <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                Method
+              </label>
+              <Select
+                value={selectedStrategy}
+                onValueChange={handleSelectStrategy}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Method" />
+                </SelectTrigger>
+                <SelectContent>
+                  {operationOptionsMap[selectedOperation].map((option) => (
+                    <SelectItem key={option} value={option}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+        {/* Column */}
+        <div className="space-y-2">
+          <label className="text-xs font-medium text-gray-600 dark:text-gray-400">
+            Column
+          </label>
+          <Select
+            value={selectedColumn}
+            onValueChange={handleSelectColumn}
+            disabled={columns.length === 0}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue
+                placeholder={
+                  columns.length ? "Select Column" : "No columns available"
+                }
+              />
+            </SelectTrigger>
+            <SelectContent>
+              {columns.map((col) => (
+                <SelectItem key={col} value={col}>
+                  {col}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <Handle

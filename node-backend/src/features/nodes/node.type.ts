@@ -12,8 +12,6 @@ export type TPreprocessingNode = TNode & {
   operation:
     | "Handle Missing Values"
     | "Handle Outliers"
-    | "Feature Scaling"
-    | "Feature Selection"
     | "Normalization"
     | "Standardization"
     | "No Operation";
@@ -36,3 +34,10 @@ export type TModelNode = TNode & {
     | "Random Forest"
     | "No Operation";
 };
+
+export type TTrainTestSplitNode = TNode & {
+  type: "trainTestSplit";
+  testSize: number;
+  randomState?: number;
+};
+

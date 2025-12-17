@@ -11,7 +11,12 @@ const nodeSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ["Dataset", "Preprocessing", "Model"],
+    enum: ["Dataset", "Preprocessing", "Model", "Splitting"],
+  },
+  icon: {
+    type: String,
+    required: true,
+    default: "Circle",
   },
   type: {
     type: String,
