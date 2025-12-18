@@ -9,12 +9,13 @@ import {
 import { useSelector } from "react-redux";
 import { RootState, store } from "@/store/store";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, Play, X } from "lucide-react";
+import { ArrowUpRight, FileSpreadsheet, Play, X } from "lucide-react";
 import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.slice";
-import { useState, memo, useEffect } from "react";
+import { useState, memo } from "react";
 import DatasetNodeDialog from "../Dialogs/DatasetNodeDialog";
 import axiosInstance from "@/utils/axios";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function DatasetNode({ id, data, isConnectable }: any) {
   const { datasets } = useSelector((state: RootState) => state.dataset);
@@ -28,6 +29,7 @@ function DatasetNode({ id, data, isConnectable }: any) {
   const [describe, setDescribe] = useState<any | null>(null);
   const [columns, setColumns] = useState<string[] | null>(null);
   const [hasRun, setHasRun] = useState<boolean | null>(null);
+  const router = useRouter()
 
   const handleSelect = (value: string) => {
     rf.setNodes((nodes) =>
@@ -115,6 +117,9 @@ function DatasetNode({ id, data, isConnectable }: any) {
     } catch (error: any) {
       setHasRun(false);
       toast.error(error.response?.data?.message || "Failed to execute dataset");
+      if (error.status === 401) {
+        router.push("/login");
+      }
     } finally {
       setLoading(false);
     }
@@ -146,6 +151,7 @@ function DatasetNode({ id, data, isConnectable }: any) {
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar rounded-t-lg border-b">
           <span className="flex items-center gap-1 font-semibold text-sm text-gray-700 dark:text-white">
+            <FileSpreadsheet className="w-4 h-4" />
             <p>Dataset</p>
           </span>
 

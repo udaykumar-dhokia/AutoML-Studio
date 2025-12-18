@@ -16,4 +16,10 @@ router.post(
   operationsController.handleMissingValues
 );
 
+router.post(
+  "/visualise/univariate",
+  authMiddleware,
+  operationsController.univariateAnalysis
+);
+
 export default router;

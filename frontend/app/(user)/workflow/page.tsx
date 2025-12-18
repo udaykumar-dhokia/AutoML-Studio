@@ -26,10 +26,12 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/custom/Loader";
 import PreprocessingNode from "@/components/custom/Nodes/PreprocessingNode";
 import Edge from "@/components/custom/Edge/Edge";
+import DataVisualisationNode from "@/components/custom/Nodes/DataVisualisationNode";
 
 const nodeTypes = {
   datasetNode: DatasetNode,
   preprocessingNode: PreprocessingNode,
+  dataVisualisationNode: DataVisualisationNode,
 };
 
 const edgeTypes = {
@@ -100,7 +102,7 @@ const page = () => {
     setEdges((edgesSnapshot) => {
       const sourceNode = nodes.find((n) => n.id === params.source);
       const columns = sourceNode?.data?.columns ?? [];
-      
+
       return addEdge(
         {
           ...params,
@@ -112,7 +114,7 @@ const page = () => {
         edgesSnapshot
       );
     });
-    
+
     setNodes((nodesSnapshot) => {
       const sourceNode = nodesSnapshot.find((n) => n.id === params.source);
       const datasetId = sourceNode?.data?.selectedDataset;
@@ -122,13 +124,13 @@ const page = () => {
       return nodesSnapshot.map((node) =>
         node.id === params.target
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                columns: sourceNode.data.columns,
-                selectedDataset: datasetId,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              columns: sourceNode.data.columns,
+              selectedDataset: datasetId,
+            },
+          }
           : node
       );
     });

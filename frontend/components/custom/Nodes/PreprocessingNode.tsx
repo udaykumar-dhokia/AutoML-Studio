@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, Play, X } from "lucide-react";
+import { ArrowUpRight, FileEditIcon, Play, X } from "lucide-react";
 import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.slice";
 import { store } from "@/store/store";
 import { memo, useState } from "react";
@@ -44,6 +44,10 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
     "Standardization",
     "No Operation",
   ];
+
+  const handlePlay = () => {
+    setOpen(true);
+  }
 
   const handleSelectOperation = (value: string) => {
     rf.setNodes((nodes) =>
@@ -96,19 +100,22 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
     <>
       <div
         onDoubleClickCapture={handleDoubleClick}
-        className={`relative w-[220px] rounded-lg shadow-sm bg-white dark:bg-sidebar border cursor-pointer ${selectedOperation && selectedStrategy ? "" : "border-red-500"
+        className={`relative w-[240px] rounded-lg shadow-sm bg-white dark:bg-sidebar border cursor-pointer ${selectedOperation && selectedStrategy ? "" : "border-red-500"
           }`}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar rounded-t-lg border-b">
-          <p className="font-semibold text-sm">Preprocessing</p>
+          <span className="flex items-center gap-1 font-semibold text-sm text-gray-700 dark:text-white">
+            <FileEditIcon className="w-4 h-4" />
+            <p>Preprocessing</p>
+          </span>
           <div className="">
             <Button size="icon-sm" variant="ghost" onClick={deleteNode}>
               <X className="w-4 h-4" />
             </Button>
-            <Button size="icon-sm" variant="ghost" onClick={deleteNode}>
+            <Button size="icon-sm" variant="ghost" onClick={handlePlay}>
               <ArrowUpRight className="w-4 h-4" />
             </Button>
-            <Button size="icon-sm" variant="ghost" onClick={deleteNode}>
+            <Button size="icon-sm" variant="ghost" onClick={handlePlay}>
               <Play className="w-4 h-4" />
             </Button>
           </div>

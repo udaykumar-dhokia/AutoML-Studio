@@ -1,6 +1,7 @@
 import { Panel, useReactFlow } from "@xyflow/react";
 import {
   BrainCircuit,
+  ChartLine,
   FileEditIcon,
   FileSpreadsheet,
   LandPlot,
@@ -18,6 +19,7 @@ const iconMap: Record<string, React.ElementType> = {
   BrainCircuit,
   FileEditIcon,
   Split,
+  ChartLine,
   FileSpreadsheet,
   LandPlot,
 };
@@ -34,8 +36,10 @@ const CenterRightPanel = ({
       nodeType.type === "dataset"
         ? "datasetNode"
         : nodeType.type === "preprocessing"
-        ? "preprocessingNode"
-        : nodeType.type;
+          ? "preprocessingNode"
+          : nodeType.type === "dataVisualisation"
+            ? "dataVisualisationNode"
+            : nodeType.type;
 
     if (actualType == "datasetNode") {
       const exists = rf.getNodes().some((n) => n.type === actualType);

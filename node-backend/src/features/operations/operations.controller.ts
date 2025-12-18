@@ -88,6 +88,54 @@ const operationsController = {
         .json({ message: "Something went wrong" });
     }
   },
+  univariateAnalysis: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const { id, column, visualiseType } = req.body;
+    if (!id || !column || !visualiseType) {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        message: "Dataset ID, column, and visualise type are required",
+      });
+    }
+
+    try {
+      const dataset = await datasetDao.getDatasetById(id);
+      if (!dataset) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "Dataset not found" });
+      }
+
+      const response = await operationsAxios.post(
+        `/dataset/visualise/univariate`,
+        {
+          url: dataset.url,
+          column,
+          visualiseType,
+        },
+        {
+          responseType: "arraybuffer",
+        }
+      );
+
+      const base64Image = Buffer.from(response.data, "binary").toString(
+        "base64"
+      );
+      const combinedResults = { univariate_analysis: base64Image };
+
+      return res.status(httpStatus.OK).json(combinedResults);
+    } catch (error) {
+      console.log(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Something went wrong" });
+    }
+  },
 };
 
 export default operationsController;

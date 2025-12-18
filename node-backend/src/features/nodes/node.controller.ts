@@ -78,7 +78,7 @@ const nodeController = {
               required: false,
               label: "Hyperparameters",
             },
-          }
+          },
         },
         {
           label: "Train Test Split",
@@ -102,6 +102,16 @@ const nodeController = {
               label: "Random State",
               default: 42,
             },
+          },
+        },
+        {
+          label: "Data Visualisation Node",
+          description: "Node for visualising the data",
+          category: "Visualisation",
+          type: "dataVisualisation",
+          icon: "ChartLine",
+          dataSchema: {
+            datasetId: { type: "string", required: true, label: "Dataset ID" },
           },
         },
       ];
