@@ -2,10 +2,13 @@ from fastapi import APIRouter
 import pandas as pd
 from pydantic import BaseModel
 import numpy as np
-import matplotlib.pyplot as plt
 import uuid
 from fastapi.responses import StreamingResponse
 from io import BytesIO
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 
 class MissingValueRequest(BaseModel):
     url: str

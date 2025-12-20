@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
+import logo from "@/public/logo/icons8-workflow-48.png";
+import Image from "next/image";
 
 const Header = () => {
   return (
@@ -9,8 +11,11 @@ const Header = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="md:flex md:items-center md:gap-12">
-              <Link className="block" href="/">
-                <h1 className="text-2xl font-bold">AutoML Studio</h1>
+              <Link className="block" href="/" >
+                <div className="flex items-center gap-2">
+                  <Image src={logo} alt="logo" width={24} height={24} />
+                  <h1 className="text-2xl font-bold">AutoML Studio</h1>
+                </div>
               </Link>
             </div>
 

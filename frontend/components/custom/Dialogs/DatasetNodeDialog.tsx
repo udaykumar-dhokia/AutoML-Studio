@@ -330,7 +330,7 @@ const DatasetNodeDialog = ({
             {loading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <Play className="mr-2 h-4 w-4" />
+              <Play className="h-4 w-4" />
             )}
             Execute
           </Button>

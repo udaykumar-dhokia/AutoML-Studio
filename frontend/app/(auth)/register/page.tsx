@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import logo from "@/public/logo/icons8-workflow-48.png";
+import Image from "next/image";
 
 const page = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -37,7 +39,8 @@ const page = () => {
     <>
       <div className="flex justify-center items-center min-h-screen">
         <div className="border border-dashed p-6 w-84 space-y-4 rounded-md">
-          <div className="space-y-1">
+          <div className="space-y-2">
+            <Image src={logo} alt="logo" width={24} height={24} />
             <h1 className="text-xl font-bold">Get Started for FREE</h1>
             <p className="text-sm text-gray-500">
               Enter below details to register

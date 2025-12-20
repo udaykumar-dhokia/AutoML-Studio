@@ -1,13 +1,12 @@
 import {
   ChevronUp,
-  Home,
   Search,
   Settings,
   User2,
   Database,
   BrainCircuit,
 } from "lucide-react";
-
+import logo from "@/public/logo/icons8-workflow-48.png";
 import {
   Sidebar,
   SidebarContent,
@@ -30,6 +29,7 @@ import { RootState } from "@/store/store";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "../ModeToggle";
+import Image from "next/image";
 
 const items = [
   {
@@ -64,7 +64,10 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="my-4 text-black dark:text-white">
-            <h1 className="text-xl font-bold">AutoML Studio</h1>
+            <div className="flex items-center gap-2">
+              <Image src={logo} alt="logo" width={24} height={24} />
+              <h1 className="text-xl font-bold">AutoML Studio</h1>
+            </div>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -72,15 +75,13 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className={`${
-                      pathname === item.url ? "bg-black" : ""
-                    } transition-colors hover:bg-black hover:text-white`}
+                    className={`${pathname === item.url ? "bg-black" : ""
+                      } transition-colors hover:bg-black hover:text-white`}
                   >
                     <Link
                       href={item.url}
-                      className={`hover:text-black transition-colors ${
-                        pathname === item.url ? "text-white" : ""
-                      }`}
+                      className={`hover:text-black transition-colors ${pathname === item.url ? "text-white" : ""
+                        }`}
                     >
                       <item.icon />
                       <span>{item.title}</span>

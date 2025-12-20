@@ -3,23 +3,27 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { setUser } from "@/store/slices/user.slice";
-import { store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import logo from "@/public/logo/icons8-workflow-48.png";
+import Image from "next/image";
+import { Loader2 } from "lucide-react";
+
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState(false)
 
   const router = useRouter();
 
   const handleLogin = async () => {
     if (!email || !password) return;
     try {
+      setLoading(true)
       const payload = {
         email: email,
         password: password,
@@ -29,6 +33,8 @@ const page = () => {
       router.push("/models");
     } catch (error: any) {
       toast.error(error.response.data.message);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -36,7 +42,8 @@ const page = () => {
     <>
       <div className="flex justify-center items-center min-h-screen">
         <div className="border border-dashed p-6 w-84 space-y-4 rounded-md">
-          <div className="space-y-1">
+          <div className="space-y-2">
+            <Image src={logo} alt="logo" width={24} height={24} />
             <h1 className="text-xl font-bold">Welcome back</h1>
             <p className="text-sm text-gray-500">
               Enter your email and password to login
@@ -72,7 +79,7 @@ const page = () => {
             }}
             className="w-full"
           >
-            Continue
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Continue"}
           </Button>
 
           <p className="text-center text-sm">

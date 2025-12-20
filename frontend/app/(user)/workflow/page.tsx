@@ -160,7 +160,7 @@ const page = () => {
         <BottomCenterPanel />
         <MiniMap />
         <Background />
-        <Controls />
+        <Controls orientation="horizontal" />
       </ReactFlow>
     </div>
   );
