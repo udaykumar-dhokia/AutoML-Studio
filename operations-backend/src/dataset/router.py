@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 import pandas as pd
 from pydantic import BaseModel
 import numpy as np
@@ -24,7 +24,6 @@ class VisualiseBivariateRequest(BaseModel):
     url: str
     column: str
     target: str
-    analysisType: str
     visualiseType: str
 
 router = APIRouter()
@@ -115,6 +114,102 @@ def visualise_univariate(request: VisualiseUnivariateRequest):
         plt.hist(data, bins=20, edgecolor="black")
         plt.xlabel(request.column)
         plt.ylabel("Frequency")
+
+    elif request.visualiseType == "Box Plot":
+        if not is_numeric:
+            raise HTTPException(
+                status_code=400,
+                detail="Box Plot requires a numeric column"
+            )
+
+        data = pd.to_numeric(series, errors="coerce").dropna()
+        plt.boxplot(data, vert=True)
+        plt.ylabel(request.column)
+
+    elif request.visualiseType == "Pie Chart":
+        value_counts = series.astype(str).value_counts()
+
+        if value_counts.empty:
+            raise HTTPException(
+                status_code=400,
+                detail="No valid data to plot"
+            )
+
+        plt.pie(
+            value_counts.values,
+            labels=value_counts.index,
+            autopct="%1.1f%%",
+            startangle=90
+        )
+        plt.axis("equal")
+
+    elif request.visualiseType in ["Bar Chart", "Count Plot"]:
+        value_counts = series.astype(str).value_counts()
+
+        if len(value_counts) > 15:
+            plt.barh(value_counts.index, value_counts.values)
+            plt.xlabel("Count")
+            plt.ylabel(request.column)
+        else:
+            plt.bar(value_counts.index, value_counts.values)
+            plt.xlabel(request.column)
+            plt.ylabel("Count")
+            plt.xticks(rotation=90, ha="right")
+
+    else:
+        raise HTTPException(status_code=400, detail="Invalid visualise type")
+
+    plt.title(title)
+    plt.grid(True, linestyle="--", alpha=0.5)
+    plt.tight_layout()
+
+    img = BytesIO()
+    plt.savefig(img, format="png")
+    plt.close()
+    img.seek(0)
+
+    return StreamingResponse(img, media_type="image/png")
+
+@router.post("/visualise/bivariate")
+def visualise_bivariate(request: VisualiseBivariateRequest):
+    df = pd.read_csv(request.url)
+
+    if request.column not in df.columns:
+        raise HTTPException(status_code=400, detail="Column not found")
+
+    if request.target not in df.columns:
+        raise HTTPException(status_code=400, detail="Target not found")
+
+    series = df[request.column].dropna()
+    target = df[request.target].dropna()
+    is_numeric = pd.api.types.is_numeric_dtype(series)
+
+    plt.figure(figsize=(8, 6))
+    title = f"{request.visualiseType} of {request.column} vs {request.target}"
+
+    if request.visualiseType == "Scatter Plot":
+        if not is_numeric:
+            raise HTTPException(
+                status_code=400,
+                detail="Scatter Plot requires a numeric column"
+            )
+
+        data = pd.to_numeric(series, errors="coerce").dropna()
+        plt.scatter(data, target)
+        plt.xlabel(request.column)
+        plt.ylabel(request.target)
+
+    elif request.visualiseType == "Line Chart":
+        if not is_numeric:
+            raise HTTPException(
+                status_code=400,
+                detail="Line Chart requires a numeric column"
+            )
+
+        data = pd.to_numeric(series, errors="coerce").dropna()
+        plt.plot(data, target)
+        plt.xlabel(request.column)
+        plt.ylabel(request.target)
 
     elif request.visualiseType == "Box Plot":
         if not is_numeric:
