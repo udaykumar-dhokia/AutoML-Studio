@@ -74,6 +74,11 @@ def handle_missing_values(request: MissingValueRequest):
 
     if column not in df.columns:
         raise HTTPException(status_code=400, detail=f"Column '{column}' not found")
+    
+    is_numeric = pd.api.types.is_numeric_dtype(df[column])
+
+    if strategy in ["Replace with Mean", "Replace with Median", "Replace with Min", "Replace with Max"] and not is_numeric:
+        raise HTTPException(status_code=400, detail=f"Strategy '{strategy}' requires a numeric column")
 
     if strategy == "Drop Rows":
         df = df.dropna(subset=[column])
@@ -108,7 +113,11 @@ def visualise_univariate(request: VisualiseUnivariateRequest):
     title = f"{request.visualiseType} of {request.column}"
 
     if request.visualiseType == "Histogram":
-
+        if not is_numeric:
+            raise HTTPException(
+                status_code=400,
+                detail="Histogram requires a numeric column"
+            )
 
         data = pd.to_numeric(series, errors="coerce").dropna()
         plt.hist(data, bins=20, edgecolor="black")
@@ -183,15 +192,16 @@ def visualise_bivariate(request: VisualiseBivariateRequest):
     series = df[request.column].dropna()
     target = df[request.target].dropna()
     is_numeric = pd.api.types.is_numeric_dtype(series)
+    target_is_numeric = pd.api.types.is_numeric_dtype(target)
 
     plt.figure(figsize=(8, 6))
     title = f"{request.visualiseType} of {request.column} vs {request.target}"
 
     if request.visualiseType == "Scatter Plot":
-        if not is_numeric:
+        if not is_numeric or not target_is_numeric:
             raise HTTPException(
                 status_code=400,
-                detail="Scatter Plot requires a numeric column"
+                detail="Scatter Plot requires numeric columns for both axes"
             )
 
         data = pd.to_numeric(series, errors="coerce").dropna()
@@ -200,10 +210,10 @@ def visualise_bivariate(request: VisualiseBivariateRequest):
         plt.ylabel(request.target)
 
     elif request.visualiseType == "Line Chart":
-        if not is_numeric:
+        if not is_numeric or not target_is_numeric:
             raise HTTPException(
                 status_code=400,
-                detail="Line Chart requires a numeric column"
+                detail="Line Chart requires numeric columns for both axes"
             )
 
         data = pd.to_numeric(series, errors="coerce").dropna()

@@ -27,11 +27,13 @@ import Loader from "@/components/custom/Loader";
 import PreprocessingNode from "@/components/custom/Nodes/PreprocessingNode";
 import Edge from "@/components/custom/Edge/Edge";
 import DataVisualisationNode from "@/components/custom/Nodes/DataVisualisationNode";
+import CommentNode from "@/components/custom/Nodes/CommentNode";
 
 const nodeTypes = {
   datasetNode: DatasetNode,
   preprocessingNode: PreprocessingNode,
   dataVisualisationNode: DataVisualisationNode,
+  comment: CommentNode
 };
 
 const edgeTypes = {

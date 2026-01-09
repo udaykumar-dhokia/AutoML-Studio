@@ -114,6 +114,16 @@ const nodeController = {
             datasetId: { type: "string", required: true, label: "Dataset ID" },
           },
         },
+        {
+          label: "Comment Node",
+          description: "Node for adding comments",
+          category: "Comment",
+          type: "comment",
+          icon: "NotebookPen",
+          dataSchema: {
+            comment: { type: "string", required: true, label: "Comment" },
+          },
+        },
       ];
 
       for (const node of standardNodes) {

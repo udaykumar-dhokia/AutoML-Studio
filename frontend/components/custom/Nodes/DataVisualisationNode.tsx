@@ -34,9 +34,7 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
 
     const analysisTypes = [
         "Univariate Analysis",
-        "Bivariate Analysis",
-        "Multivariate Analysis",
-    ];
+        "Bivariate Analysis"];
 
     const handleSelectAnalysisType = (value: string) => {
         rf.setNodes((nodes) =>

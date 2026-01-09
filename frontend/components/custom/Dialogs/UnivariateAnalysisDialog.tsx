@@ -124,19 +124,6 @@ const UnivariateAnalysisDialog = ({
                                 </SelectContent>
                             </Select>
                         </div>
-
-                        <Button
-                            className="w-full mt-4"
-                            onClick={handleExecute}
-                            disabled={loading || !selectedColumn || !selectedVisualiseType}
-                        >
-                            {loading ? (
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            ) : (
-                                <Play className="h-4 w-4" />
-                            )}
-                            Execute
-                        </Button>
                     </div>
 
                     <div className="flex-1 overflow-auto p-6 flex items-center justify-center bg-muted/10 relative">
@@ -169,6 +156,14 @@ const UnivariateAnalysisDialog = ({
                 <DialogFooter className="px-6 py-4 border-t mt-auto">
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
                         Close
+                    </Button>
+                    <Button onClick={handleExecute} disabled={loading}>
+                        {loading ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        ) : (
+                            <Play className="h-4 w-4" />
+                        )}
+                        Execute
                     </Button>
                 </DialogFooter>
             </DialogContent>

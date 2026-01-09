@@ -85,7 +85,7 @@ const operationsController = {
       console.log(error);
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
-        .json({ message: "Something went wrong" });
+        .json({ message: "Something went wrong", error });
     }
   },
   univariateAnalysis: async (req, res) => {

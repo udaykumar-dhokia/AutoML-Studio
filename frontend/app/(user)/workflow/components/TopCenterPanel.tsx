@@ -35,7 +35,7 @@ const TopCenterPanel = () => {
       );
       store.dispatch(setCurrentWorkflow(res.data));
       store.dispatch(updateWorkflow(res.data));
-      toast.success("Workflow saved successfully");
+      toast.success("Workflow saved");
     } catch (error) {
       toast.error("Failed to save workflow");
     } finally {

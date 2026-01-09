@@ -5,6 +5,7 @@ import {
   FileEditIcon,
   FileSpreadsheet,
   LandPlot,
+  NotebookPen,
   Split,
 } from "lucide-react";
 import {
@@ -22,6 +23,7 @@ const iconMap: Record<string, React.ElementType> = {
   ChartLine,
   FileSpreadsheet,
   LandPlot,
+  NotebookPen,
 };
 
 const CenterRightPanel = ({
