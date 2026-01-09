@@ -12,6 +12,7 @@ import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.s
 import { store } from "@/store/store";
 import { memo, useState } from "react";
 import UnivariateAnalysisDialog from "../Dialogs/UnivariateAnalysisDialog";
+import BivariateAnalysisDialog from "../Dialogs/BivariateAnalysisDialog";
 import { toast } from "sonner";
 
 const visualizationOptions: Record<string, string[]> = {
@@ -31,6 +32,7 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
 
     const columns: string[] = data.columns ?? [];
     const [open, setOpen] = useState(false);
+    const [openAndExecute, setOpenAndExecute] = useState(false);
 
     const analysisTypes = [
         "Univariate Analysis",
@@ -93,10 +95,10 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
 
     const handleDoubleClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        handlePlay();
+        setOpen(true);
     };
 
-    const handlePlay = (e?: React.MouseEvent) => {
+    const handleExecute = (e?: React.MouseEvent) => {
         e?.stopPropagation();
         if (!selectedAnalysisType) {
             toast.error("Please select an analysis type");
@@ -112,7 +114,7 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
             toast.error("Please select a visualization type");
             return;
         }
-
+        setOpenAndExecute(true);
         setOpen(true);
     }
 
@@ -148,7 +150,7 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
                         <Button size="icon-sm" variant="ghost" onClick={handleDoubleClick}>
                             <ArrowUpRight className="w-4 h-4" />
                         </Button>
-                        <Button size="icon-sm" variant="ghost" onClick={handleDoubleClick}>
+                        <Button size="icon-sm" variant="ghost" onClick={handleExecute}>
                             <Play className="w-4 h-4" />
                         </Button>
                     </div>
@@ -279,6 +281,20 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
                     column={selectedColumnX}
                     visualiseType={selectedVisualizationType}
                     columns={columns}
+                    openAndExecute={openAndExecute}
+                />
+            )}
+
+            {selectedAnalysisType === "Bivariate Analysis" && (
+                <BivariateAnalysisDialog
+                    open={open}
+                    onOpenChange={setOpen}
+                    datasetId={selectedDataset}
+                    columnX={selectedColumnX}
+                    columnY={selectedColumnY}
+                    visualiseType={selectedVisualizationType}
+                    columns={columns}
+                    openAndExecute={openAndExecute}
                 />
             )}
         </>

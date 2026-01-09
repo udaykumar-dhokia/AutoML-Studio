@@ -22,4 +22,10 @@ router.post(
   operationsController.univariateAnalysis
 );
 
+router.post(
+  "/visualise/bivariate",
+  authMiddleware,
+  operationsController.bivariateAnalysis
+);
+
 export default router;

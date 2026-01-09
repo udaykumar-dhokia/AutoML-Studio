@@ -19,41 +19,45 @@ import { Loader2, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const visualizationOptions = ["Histogram", "Box Plot", "Bar Chart", "Pie Chart", "Count Plot"];
+const visualizationOptions = ["Scatter Plot", "Line Chart", "Bar Chart", "Box Plot", "Violin Plot", "Heatmap"];
 
 interface Props {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     datasetId: string;
-    column: string;
+    columnX: string;
+    columnY: string;
     visualiseType: string;
     columns: string[];
     openAndExecute: boolean;
 }
 
-const UnivariateAnalysisDialog = ({
+const BivariateAnalysisDialog = ({
     open,
     onOpenChange,
     datasetId,
-    column,
+    columnX,
+    columnY,
     visualiseType,
     columns,
-    openAndExecute,
+    openAndExecute
 }: Props) => {
     const [loading, setLoading] = useState(false);
     const [imageData, setImageData] = useState<string | null>(null);
-    const [selectedColumn, setSelectedColumn] = useState(column);
+    const [selectedColumnX, setSelectedColumnX] = useState(columnX);
+    const [selectedColumnY, setSelectedColumnY] = useState(columnY);
     const [selectedVisualiseType, setSelectedVisualiseType] = useState(visualiseType);
     const [execute, setExecute] = useState(openAndExecute);
 
     useEffect(() => {
         if (open) {
-            setSelectedColumn(column);
+            setSelectedColumnX(columnX);
+            setSelectedColumnY(columnY);
             setSelectedVisualiseType(visualiseType);
             setImageData(null);
             setExecute(openAndExecute);
         }
-    }, [open, column, visualiseType]);
+    }, [open, columnX, columnY, visualiseType]);
 
     useEffect(() => {
         if (open && execute) {
@@ -62,22 +66,23 @@ const UnivariateAnalysisDialog = ({
     }, [open, execute]);
 
     const handleExecute = async () => {
-        if (!datasetId || !selectedColumn || !selectedVisualiseType) {
+        if (!datasetId || !selectedColumnX || !selectedColumnY || !selectedVisualiseType) {
             toast.error("Missing required parameters for analysis");
             return;
         }
 
         try {
             setLoading(true);
-            const res = await axiosInstance.post("/operations/visualise/univariate", {
+            const res = await axiosInstance.post("/operations/visualise/bivariate", {
                 id: datasetId,
-                column: selectedColumn,
+                column: selectedColumnX,
+                target: selectedColumnY,
                 visualiseType: selectedVisualiseType,
             });
 
-            if (res.data.univariate_analysis) {
-                setImageData(`data:image/png;base64,${res.data.univariate_analysis}`);
-                toast.success("Univariate Analysis generated successfully");
+            if (res.data.bivariate_analysis) {
+                setImageData(`data:image/png;base64,${res.data.bivariate_analysis}`);
+                toast.success("Bivariate Analysis generated successfully");
             }
         } catch (error: any) {
             console.error(error);
@@ -87,27 +92,45 @@ const UnivariateAnalysisDialog = ({
         }
     };
 
-
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="w-[1200px] min-w-[1000px] h-[80vh] flex flex-col gap-0 p-0">
                 <DialogHeader className="px-6 py-4 border-b">
-                    <DialogTitle>Univariate Analysis</DialogTitle>
+                    <DialogTitle>Bivariate Analysis</DialogTitle>
                     <DialogDescription>
-                        Visualize the distribution of a single variable.
+                        Visualize the relationship between two variables.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="flex flex-1 overflow-hidden">
                     <div className="w-[300px] border-r p-4 space-y-4 bg-muted/5 overflow-y-auto">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Column</label>
+                            <label className="text-sm font-medium">Column X</label>
                             <Select
-                                value={selectedColumn}
-                                onValueChange={setSelectedColumn}
+                                value={selectedColumnX}
+                                onValueChange={setSelectedColumnX}
                             >
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select Column" />
+                                    <SelectValue placeholder="Select Column X" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {columns.map((col) => (
+                                        <SelectItem key={col} value={col}>
+                                            {col}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Column Y (Target)</label>
+                            <Select
+                                value={selectedColumnY}
+                                onValueChange={setSelectedColumnY}
+                            >
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Column Y" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {columns.map((col) => (
@@ -150,12 +173,12 @@ const UnivariateAnalysisDialog = ({
                                 <div className="relative w-full h-full min-h-[400px] flex items-center justify-center rounded-none bg-white p-4 shadow-none">
                                     <img
                                         src={imageData}
-                                        alt="Univariate Analysis Result"
+                                        alt="Bivariate Analysis Result"
                                         className="max-w-full max-h-full object-contain"
                                     />
                                 </div>
                                 <p className="mt-2 text-sm text-muted-foreground font-medium">
-                                    {selectedVisualiseType} of {selectedColumn}
+                                    {selectedVisualiseType} of {selectedColumnX} vs {selectedColumnY}
                                 </p>
                             </div>
                         ) : (
@@ -184,4 +207,4 @@ const UnivariateAnalysisDialog = ({
     );
 };
 
-export default UnivariateAnalysisDialog;
+export default BivariateAnalysisDialog;
