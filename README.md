@@ -1,4 +1,4 @@
-<img src="frontend/public/logo/icons8-workflow-48.png" />
+<img src="frontend/public/logo/README.png" width="80"/>
 
 # AutoML Studio
 
@@ -71,31 +71,44 @@ graph TD
 
 #### 1. Frontend
 
+The frontend is built with Next.js and runs on port `5173` by default.
+
 ```bash
 cd frontend
+
 npm install
+
 npm run dev
-# Running on http://localhost:5173
 ```
 
 #### 2. Node Backend
 
+The primary backend handles API requests, authentication, and workflow manaagement. It runs on port `3000`.
+
 ```bash
-cd node-backend
+cd primary-backend
+
 npm install
+
 npm run dev
-# Running on http://localhost:3000
 ```
 
 #### 3. Operations Backend
 
+The operations backend is a FastAPI service for data-intensive tasks.
+
 ```bash
 cd operations-backend
+
 python -m venv venv
+
 .\venv\Scripts\activate
+or
+source venv/bin/activate
+
 pip install -r requirements.txt
+
 python run.py
-# Running on http://localhost:8001 (approx)
 ```
 
 ---
@@ -130,4 +143,38 @@ graph LR
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions to AutoML Studio! Whether you're fixing a bug, adding a new feature, or improving documentation, we appreciate your help.
+
+### How to Contribute
+
+1.  **Fork the Repository**: Click the "Fork" button at the top right of this page to create your own copy of the repository.
+2.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/your-username/AutoML-Studio.git
+    cd AutoML-Studio
+    ```
+3.  **Create a Branch**:
+    ```bash
+    git checkout -b feature/your-feature-name
+    ```
+4.  **Make Changes**: Implement your changes and ensure everything is working as expected.
+5.  **Commit Changes**:
+    ```bash
+    git add .
+    git commit -m "feat: Add your feature description"
+    ```
+6.  **Push to Your Fork**:
+    ```bash
+    git push origin feature/your-feature-name
+    ```
+7.  **Create a Pull Request**: Go to the original repository on GitHub and open a Pull Request from your forked branch.
+
+### Guidelines
+
+- Please follow the existing code style.
+- Ensure that you have tested your changes locally.
+- Provide a clear description of your changes in the Pull Request.
+
+---
+
+Made with ❤️ by [Udaykumar Dhokia](https://github.com/udaykumar-dhokia) using Next.js, TypeScript & Python.

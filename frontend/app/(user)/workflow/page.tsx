@@ -33,7 +33,7 @@ const nodeTypes = {
   datasetNode: DatasetNode,
   preprocessingNode: PreprocessingNode,
   dataVisualisationNode: DataVisualisationNode,
-  comment: CommentNode
+  comment: CommentNode,
 };
 
 const edgeTypes = {
@@ -126,13 +126,13 @@ const page = () => {
       return nodesSnapshot.map((node) =>
         node.id === params.target
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              columns: sourceNode.data.columns,
-              selectedDataset: datasetId,
-            },
-          }
+              ...node,
+              data: {
+                ...node.data,
+                columns: sourceNode.data.columns,
+                selectedDataset: datasetId,
+              },
+            }
           : node
       );
     });
@@ -162,7 +162,6 @@ const page = () => {
         <BottomCenterPanel />
         <MiniMap />
         <Background />
-        <Controls orientation="horizontal" />
       </ReactFlow>
     </div>
   );

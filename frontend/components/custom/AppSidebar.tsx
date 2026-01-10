@@ -6,7 +6,8 @@ import {
   Database,
   BrainCircuit,
 } from "lucide-react";
-import logo from "@/public/logo/icons8-workflow-48.png";
+import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
+import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
 import {
   Sidebar,
   SidebarContent,
@@ -65,7 +66,20 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="my-4 text-black dark:text-white">
             <div className="flex items-center gap-2">
-              <Image src={logo} alt="logo" width={24} height={24} />
+              <Image
+                src={logoLight}
+                alt="logo"
+                width={28}
+                height={28}
+                className="block dark:hidden"
+              />
+              <Image
+                src={logoDark}
+                alt="logo"
+                width={28}
+                height={28}
+                className="hidden dark:block"
+              />
               <h1 className="text-xl font-bold">AutoML Studio</h1>
             </div>
           </SidebarGroupLabel>
@@ -75,13 +89,15 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className={`${pathname === item.url ? "bg-black" : ""
-                      } transition-colors hover:bg-black hover:text-white`}
+                    className={`${
+                      pathname === item.url ? "bg-black" : ""
+                    } transition-colors hover:bg-black hover:text-white`}
                   >
                     <Link
                       href={item.url}
-                      className={`hover:text-black transition-colors ${pathname === item.url ? "text-white" : ""
-                        }`}
+                      className={`hover:text-black transition-colors ${
+                        pathname === item.url ? "text-white" : ""
+                      }`}
                     >
                       <item.icon />
                       <span>{item.title}</span>

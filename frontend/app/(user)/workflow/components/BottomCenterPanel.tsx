@@ -5,7 +5,7 @@ import { Play } from "lucide-react";
 const BottomCenterPanel = () => {
   return (
     <>
-      <Panel position="bottom-center">
+      <Panel position="bottom-left">
         <Button className="">
           <Play /> Execute
         </Button>
