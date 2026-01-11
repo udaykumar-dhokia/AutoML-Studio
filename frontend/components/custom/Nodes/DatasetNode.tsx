@@ -29,19 +29,19 @@ function DatasetNode({ id, data, isConnectable }: any) {
   const [describe, setDescribe] = useState<any | null>(null);
   const [columns, setColumns] = useState<string[] | null>(null);
   const [hasRun, setHasRun] = useState<boolean | null>(null);
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSelect = (value: string) => {
     rf.setNodes((nodes) =>
       nodes.map((node) =>
         node.id === id
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              selectedDataset: value,
-            },
-          }
+              ...node,
+              data: {
+                ...node.data,
+                selectedDataset: value,
+              },
+            }
           : node
       )
     );
@@ -130,13 +130,13 @@ function DatasetNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              columns: columns,
-              selectedDataset: selectedDataset,
-            },
-          }
+              ...node,
+              data: {
+                ...node.data,
+                columns: columns,
+                selectedDataset: selectedDataset,
+              },
+            }
           : node
       )
     );
@@ -145,11 +145,16 @@ function DatasetNode({ id, data, isConnectable }: any) {
   return (
     <>
       <div
-        className={`relative w-[220px] rounded-lg shadow-sm bg-white dark:bg-sidebar border cursor-pointer ${selectedDataset ? "" : "border-red-500"
-          } ${loading ? "animate-pulse border-primary-500" : ""} ${hasRun ? "border-green-500" : ""}`}
+        className={`relative w-[220px] rounded-none shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${
+          selectedDataset ? "" : "border-red-500"
+        } ${loading ? "animate-pulse border-primary-500" : ""} ${
+          hasRun
+            ? "border-green-500 dark:border-green-500"
+            : "dark:border-white/15 border-black/25"
+        }`}
         onDoubleClickCapture={handleDoubleClick}
       >
-        <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar rounded-t-lg border-b">
+        <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">
           <span className="flex items-center gap-1 font-semibold text-sm text-gray-700 dark:text-white">
             <FileSpreadsheet className="w-4 h-4" />
             <p>Dataset</p>

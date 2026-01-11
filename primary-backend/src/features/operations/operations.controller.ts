@@ -1,3 +1,4 @@
+import redisClient from "../../config/redis.config";
 import operationsAxios from "../../utils/axios";
 import { httpStatus } from "../../utils/httpStatus";
 import datasetDao from "../dataset/dataset.dao";
@@ -28,6 +29,14 @@ const operationsController = {
           .json({ message: "Dataset not found" });
       }
 
+      const cacheKey = `dataset_operations_${id}`;
+      const cachedResults = await redisClient.get(cacheKey);
+      if (cachedResults) {
+        return res
+          .status(httpStatus.OK)
+          .json(JSON.parse(cachedResults.toString()));
+      }
+
       const results = await Promise.all(
         DATASET_OPERATIONS.map(async (operationPath) => {
           const response = await operationsAxios.get(
@@ -42,6 +51,10 @@ const operationsController = {
         (acc, current) => ({ ...acc, ...current }),
         {}
       );
+
+      await redisClient.set(cacheKey, JSON.stringify(combinedResults), {
+        EX: 60 * 60,
+      });
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
@@ -134,13 +147,15 @@ const operationsController = {
     } catch (error: any) {
       console.log(error);
       const message = error.response?.data?.detail || "Something went wrong"; // For arraybuffer responses, might need blob handling if JSON error is returned as text, but usually status code is enough to bubble up via axios interceptor or checks. However, if visualising fails, FastAPI sends JSON. Axios trying to parse arraybuffer might hide JSON.
-      // If responseType is arraybuffer, axios might not parse JSON error automatically. 
+      // If responseType is arraybuffer, axios might not parse JSON error automatically.
       // We might need to handle parsing if it's an error.
       if (error.response?.data && error.response.data instanceof Buffer) {
         try {
           const jsonError = JSON.parse(error.response.data.toString());
           if (jsonError.detail) {
-            return res.status(error.response.status).json({ message: jsonError.detail });
+            return res
+              .status(error.response.status)
+              .json({ message: jsonError.detail });
           }
         } catch (e) {
           // ignore
@@ -202,7 +217,9 @@ const operationsController = {
         try {
           const jsonError = JSON.parse(error.response.data.toString());
           if (jsonError.detail) {
-            return res.status(error.response.status).json({ message: jsonError.detail });
+            return res
+              .status(error.response.status)
+              .json({ message: jsonError.detail });
           }
         } catch (e) {
           // ignore
