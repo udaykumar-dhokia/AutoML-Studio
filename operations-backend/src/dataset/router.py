@@ -5,7 +5,9 @@ import numpy as np
 from .visualisation import visualise_univariate, visualise_bivariate
 from .model import MissingValueRequest, VisualiseUnivariateRequest, VisualiseBivariateRequest
 from .handle_missing_values import handle_missing_values
-
+from .handle_outliers import handle_outliers
+from .handle_normalization import handle_normalization
+from .handle_standardization import handle_standardization
 router = APIRouter()
 
 @router.get("/head")
@@ -49,6 +51,15 @@ def columns(url: str):
 def missing_values(request: MissingValueRequest):
     return handle_missing_values(request)
 
+@router.post("/handle_outliers")
+def outliers(request: OutlierRequest):
+    return handle_outliers(request)
+@router.post("/handle_normalization")
+def normalization(request: NormalizationRequest):
+    return handle_normalization(request)
+@router.post("/handle_standardization")
+def standardization(request: StandardizationRequest):
+    return handle_standardization(request)    
 @router.post("/visualise/univariate")
 def univariate(request: VisualiseUnivariateRequest):
     return visualise_univariate(request)
