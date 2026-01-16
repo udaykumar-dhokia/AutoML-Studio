@@ -28,12 +28,15 @@ import PreprocessingNode from "@/components/custom/Nodes/PreprocessingNode";
 import Edge from "@/components/custom/Edge/Edge";
 import DataVisualisationNode from "@/components/custom/Nodes/DataVisualisationNode";
 import CommentNode from "@/components/custom/Nodes/CommentNode";
+import usePageTitle from "@/components/custom/PageTitle";
+import TrainTestSplitNode from "@/components/custom/Nodes/TrainTestSplitNode";
 
 const nodeTypes = {
   datasetNode: DatasetNode,
   preprocessingNode: PreprocessingNode,
   dataVisualisationNode: DataVisualisationNode,
   comment: CommentNode,
+  trainTestSplitNode: TrainTestSplitNode,
 };
 
 const edgeTypes = {
@@ -50,6 +53,8 @@ const page = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const router = useRouter();
+
+  usePageTitle(`${workflow?.name} | AutoML Studio`);
 
   useEffect(() => {
     setLoading(true);
@@ -126,13 +131,13 @@ const page = () => {
       return nodesSnapshot.map((node) =>
         node.id === params.target
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                columns: sourceNode.data.columns,
-                selectedDataset: datasetId,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              columns: sourceNode.data.columns,
+              selectedDataset: datasetId,
+            },
+          }
           : node
       );
     });

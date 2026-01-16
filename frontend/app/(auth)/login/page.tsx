@@ -6,12 +6,13 @@ import { Label } from "@/components/ui/label";
 import axiosInstance from "@/utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
+import usePageTitle from "@/components/custom/PageTitle";
 
 const page = () => {
   const [email, setEmail] = useState<string>("");
@@ -19,6 +20,8 @@ const page = () => {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
+
+  usePageTitle("Login | AutoML Studio");
 
   const handleLogin = async () => {
     if (!email || !password) return;

@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "@/components/custom/Navbar";
+import usePageTitle from "@/components/custom/PageTitle";
 import RegisterDatasetSheet from "@/components/custom/Sheets/RegisterDatasetSheet";
 import { Button } from "@/components/ui/button";
 import { deleteDataset, TDataset } from "@/store/slices/datasets.slice";
@@ -19,6 +20,8 @@ import { toast } from "sonner";
 const page = () => {
   const { datasets } = useSelector((state: RootState) => state.dataset);
   const [loading, setLoading] = useState(false);
+
+  usePageTitle("Datasets | AutoML Studio");
 
   const handleDelete = async (id: string) => {
     if (!id) return;

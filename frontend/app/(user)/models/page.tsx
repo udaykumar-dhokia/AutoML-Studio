@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { Button } from "@/components/ui/button";
 import { Play, Share2, Trash, Bot } from "lucide-react";
+import usePageTitle from "@/components/custom/PageTitle";
 
 const page = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
@@ -18,6 +19,8 @@ const page = () => {
     localStorage.setItem("currentWorkflowId", workflow._id);
     router.push(`/workflow`);
   };
+
+  usePageTitle("Models | AutoML Studio");
 
   return (
     <div className="min-h-screen">

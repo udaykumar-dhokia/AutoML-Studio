@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
 import Image from "next/image";
+import usePageTitle from "@/components/custom/PageTitle";
 
 const page = () => {
   const [firstName, setFirstName] = useState<string>("");
@@ -18,6 +19,8 @@ const page = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
+
+  usePageTitle("Register | AutoML Studio");
 
   const handleRegister = async () => {
     if (!firstName || !lastName || !email || !password) return;

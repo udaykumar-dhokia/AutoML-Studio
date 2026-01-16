@@ -41,7 +41,9 @@ const CenterRightPanel = ({
           ? "preprocessingNode"
           : nodeType.type === "dataVisualisation"
             ? "dataVisualisationNode"
-            : nodeType.type;
+            : nodeType.type === "trainTestSplit"
+              ? "trainTestSplitNode"
+              : nodeType.type;
 
     if (actualType == "datasetNode") {
       const exists = rf.getNodes().some((n) => n.type === actualType);
