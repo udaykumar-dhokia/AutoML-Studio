@@ -11,6 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { addWorkflow } from "@/store/slices/allWorkflows.slice";
 import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { RootState, store } from "@/store/store";
@@ -115,7 +116,7 @@ const CreateWorkflowSheet = () => {
 
           <div className="grid gap-2">
             <Label htmlFor="sheet-description">Description</Label>
-            <Input
+            <Textarea
               id="sheet-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}

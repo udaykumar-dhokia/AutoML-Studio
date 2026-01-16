@@ -5,6 +5,7 @@ import {
   User2,
   Database,
   BrainCircuit,
+  Box,
 } from "lucide-react";
 import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
@@ -36,7 +37,7 @@ const items = [
   {
     title: "Models",
     url: "/models",
-    icon: BrainCircuit,
+    icon: Box,
   },
   {
     title: "Datasets",
@@ -89,15 +90,13 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    className={`${
-                      pathname === item.url ? "bg-black" : ""
-                    } transition-colors hover:bg-black hover:text-white`}
+                    className={`${pathname === item.url ? "bg-black" : ""
+                      } transition-colors hover:bg-black hover:text-white`}
                   >
                     <Link
                       href={item.url}
-                      className={`hover:text-black transition-colors ${
-                        pathname === item.url ? "text-white" : ""
-                      }`}
+                      className={`hover:text-black transition-colors ${pathname === item.url ? "text-white" : ""
+                        }`}
                     >
                       <item.icon />
                       <span>{item.title}</span>

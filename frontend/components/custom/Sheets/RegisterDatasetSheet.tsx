@@ -11,6 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { addDataset } from "@/store/slices/datasets.slice";
 import { store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
@@ -83,7 +84,7 @@ const RegisterDatasetSheet = () => {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="sheet-description">Description</Label>
-            <Input
+            <Textarea
               id="sheet-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}

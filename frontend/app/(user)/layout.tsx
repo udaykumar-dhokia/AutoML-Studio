@@ -7,12 +7,13 @@ import { fetchDatasets } from "@/store/slices/datasets.slice";
 import { fetchUser } from "@/store/slices/user.slice";
 import { RootState, store } from "@/store/store";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const { loading: userLoading } = useSelector(
     (state: RootState) => state.user
   );
@@ -25,20 +26,32 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const checkUser = async () => {
+      setLoading(true);
       try {
-        await store.dispatch(fetchUser());
-        await store.dispatch(fetchDatasets());
-        await store.dispatch(fetchAllWorkflows());
-      } catch (error: any) {
-        toast.error(error);
+        await store.dispatch(fetchUser()).unwrap();
+      } catch (error) {
+        toast.error(
+          typeof error === "string" ? error : "Unauthorized. Please login."
+        );
         router.push("/");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        await store.dispatch(fetchDatasets()).unwrap();
+        await store.dispatch(fetchAllWorkflows()).unwrap();
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     checkUser();
   }, []);
 
-  if (userLoading || datasetLoading || workflowLoading) {
+  if (userLoading || datasetLoading || workflowLoading || loading) {
     return <Loader />;
   }
 

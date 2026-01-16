@@ -7,12 +7,16 @@ import CreateWorkflowSheet from "@/components/custom/Sheets/CreateWorkflowSheet"
 import { useRouter } from "next/navigation";
 import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { Button } from "@/components/ui/button";
-import { Play, Share2, Trash, Bot } from "lucide-react";
+import { Play, Share2, Trash, Bot, Box } from "lucide-react";
 import usePageTitle from "@/components/custom/PageTitle";
+import Loader from "@/components/custom/Loader";
 
 const page = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
   const router = useRouter();
+  const { loading: workflowLoading } = useSelector(
+    (state: RootState) => state.allWorkflows
+  );
 
   const handleNavigate = (workflow: any) => {
     store.dispatch(setCurrentWorkflow(workflow));
@@ -21,6 +25,10 @@ const page = () => {
   };
 
   usePageTitle("Models | AutoML Studio");
+
+  if (workflowLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="min-h-screen">
@@ -51,7 +59,7 @@ const page = () => {
               >
                 <div className="flex justify-between items-start mb-2">
                   <div className="rounded-lg">
-                    <Bot className="w-7 h-7 text-black dark:text-white" />
+                    <Box className="w-7 h-7 text-black dark:text-white" />
                   </div>
                 </div>
 

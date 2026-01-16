@@ -27,8 +27,14 @@ const initialState: IUserState = {
 export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   try {
     const response = await axiosInstance.get("/user/");
+    if (response.status == 401) {
+      throw Error("Unauthorized");
+    }
     return response.data.user;
   } catch (error: any) {
+    if (error.response.status == 401) {
+      throw Error("Unauthorized");
+    }
     throw Error(error.response.data.message);
   }
 });

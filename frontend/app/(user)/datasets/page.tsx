@@ -1,4 +1,6 @@
 "use client";
+
+import Loader from "@/components/custom/Loader";
 import Navbar from "@/components/custom/Navbar";
 import usePageTitle from "@/components/custom/PageTitle";
 import RegisterDatasetSheet from "@/components/custom/Sheets/RegisterDatasetSheet";
@@ -8,7 +10,7 @@ import { RootState, store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import {
   BrainCircuit,
-  FileSpreadsheet,
+  Database,
   Loader2,
   Share2,
   Trash,
@@ -20,6 +22,9 @@ import { toast } from "sonner";
 const page = () => {
   const { datasets } = useSelector((state: RootState) => state.dataset);
   const [loading, setLoading] = useState(false);
+  const { loading: datasetLoading } = useSelector(
+    (state: RootState) => state.dataset
+  );
 
   usePageTitle("Datasets | AutoML Studio");
 
@@ -37,6 +42,9 @@ const page = () => {
     }
   };
 
+  if (datasetLoading) {
+    return <Loader />;
+  }
   return (
     <div className=" min-h-screen">
       <Navbar title="Datasets">
@@ -46,7 +54,7 @@ const page = () => {
         {datasets && datasets.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[60vh] text-center">
             <div className="bg-gray-100 dark:bg-muted p-4 rounded-full mb-4">
-              <FileSpreadsheet className="w-8 h-8 text-gray-400" />
+              <Database className="w-8 h-8 text-gray-400" />
             </div>
             <h3 className="text-xl font-semibold mb-2 text-foreground">
               No datasets registered yet
@@ -66,7 +74,7 @@ const page = () => {
               >
                 <div className="flex justify-between items-start">
                   <div className="rounded-lg">
-                    <FileSpreadsheet className="w-7 h-7 text-black dark:text-white" />
+                    <Database className="w-7 h-7 text-black dark:text-white" />
                   </div>
                 </div>
 

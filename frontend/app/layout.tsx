@@ -40,8 +40,8 @@ export default function RootLayout({
       >
         <ThemeProvider defaultTheme="system" attribute="class" enableSystem>
           <ClientProviders>{children}</ClientProviders>
+          <Toaster />
         </ThemeProvider>
-        <Toaster />
       </body>
     </html>
   );

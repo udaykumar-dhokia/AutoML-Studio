@@ -45,8 +45,14 @@ export const fetchAllWorkflows = createAsyncThunk(
   async () => {
     try {
       const response = await axiosInstance.get("/workflow");
+      if (response.status == 401) {
+        throw Error("Unauthorized");
+      }
       return response.data;
     } catch (error: any) {
+      if (error.response.status == 401) {
+        throw Error("Unauthorized");
+      }
       throw error.response.data.message;
     }
   }
