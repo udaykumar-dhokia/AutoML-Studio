@@ -43,20 +43,22 @@ const page = () => {
       <div className="flex justify-center items-center min-h-screen">
         <div className="border border-dashed p-6 w-84 space-y-4 rounded-md">
           <div className="space-y-2">
-            <Image
-              src={logoLight}
-              alt="logo"
-              width={28}
-              height={28}
-              className="block dark:hidden"
-            />
-            <Image
-              src={logoDark}
-              alt="logo"
-              width={28}
-              height={28}
-              className="hidden dark:block"
-            />
+            <div className="cursor-pointer" onClick={() => router.push("/")}>
+              <Image
+                src={logoLight}
+                alt="logo"
+                width={28}
+                height={28}
+                className="block dark:hidden"
+              />
+              <Image
+                src={logoDark}
+                alt="logo"
+                width={28}
+                height={28}
+                className="hidden dark:block"
+              />
+            </div>
             <h1 className="text-xl font-bold">Welcome back</h1>
             <p className="text-sm text-gray-500">
               Enter your email and password to login

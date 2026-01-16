@@ -9,7 +9,7 @@ def handle_outliers(request: OutlierRequest):
 
     column = request.column
     method = request.method
-    threshold = request.threshold or 3.0  # default for Z-score
+    threshold = request.threshold or 3.0
 
     if column not in df.columns:
         raise HTTPException(status_code=400, detail=f"Column '{column}' not found")

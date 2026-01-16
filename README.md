@@ -47,7 +47,7 @@ graph TD
     - **Tech Stack**: Next.js 16, React 19, Redux Toolkit, Tailwind CSS.
     - **Role**: The user interface for designing workflows and managing datasets. Features the drag-and-drop canvas.
 
-2.  **Node Backend (`/node-backend`)**:
+2.  **Primary Backend (`/primary-backend`)**:
 
     - **Tech Stack**: Express.js, TypeScript, Mongoose.
     - **Role**: Acts as the primary API gateway. Handles user authentication, project management, and orchestration between services.

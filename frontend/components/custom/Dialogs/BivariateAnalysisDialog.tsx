@@ -47,7 +47,6 @@ const BivariateAnalysisDialog = ({
     const [selectedColumnX, setSelectedColumnX] = useState(columnX);
     const [selectedColumnY, setSelectedColumnY] = useState(columnY);
     const [selectedVisualiseType, setSelectedVisualiseType] = useState(visualiseType);
-    const [execute, setExecute] = useState(openAndExecute);
 
     useEffect(() => {
         if (open) {
@@ -55,15 +54,14 @@ const BivariateAnalysisDialog = ({
             setSelectedColumnY(columnY);
             setSelectedVisualiseType(visualiseType);
             setImageData(null);
-            setExecute(openAndExecute);
         }
     }, [open, columnX, columnY, visualiseType]);
 
     useEffect(() => {
-        if (open && execute) {
+        if (open && openAndExecute) {
             handleExecute();
         }
-    }, [open, execute]);
+    }, [open, openAndExecute]);
 
     const handleExecute = async () => {
         if (!datasetId || !selectedColumnX || !selectedColumnY || !selectedVisualiseType) {

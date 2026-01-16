@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: automl-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      # If your frontend calls backend client-side, this must be the public URL (localhost from browser perspective)
+      - NEXT_PUBLIC_API_URL=http://localhost:3001/api
+    depends_on:
+      - primary-backend
+    restart: always
+
+  primary-backend:
+    build: ./primary-backend
+    container_name: automl-primary-backend
+    ports:
+      - "3001:3000" # Mapped to host 3001 to avoid conflict with frontend
+    environment:
+      - PORT=3000
+      - MONGODB_URL=mongodb://mongo:27017/automl
+      - JWT_SECRET=changeme_in_production
+      - REDIS_URL=redis://redis:6379
+      - OPERATIONS_BACKEND_URL=http://operations-backend:8000/api
+      # Cloudinary credentials - replace with real values in .env or here
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    depends_on:
+      - mongo
+      - redis
+      - operations-backend
+    restart: always
+
+  operations-backend:
+    build: ./operations-backend
+    container_name: automl-operations-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    restart: always
+
+  mongo:
+    image: mongo:latest
+    container_name: automl-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: automl-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  mongo_data:

@@ -54,13 +54,13 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                operation: value,
-                strategy: "",
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              operation: value,
+              strategy: "",
+            },
+          }
           : node
       )
     );
@@ -100,9 +100,8 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
     <>
       <div
         onDoubleClickCapture={handleDoubleClick}
-        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${
-          selectedOperation && selectedStrategy ? "" : "border-red-500"
-        }`}
+        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${selectedOperation && selectedStrategy ? "" : "border-red-500"
+          }`}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">
           <span className="flex items-center gap-1 font-semibold text-sm text-gray-700 dark:text-white">

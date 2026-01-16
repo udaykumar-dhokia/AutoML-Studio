@@ -58,15 +58,15 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                analysisType: value,
-                visualizationType: "",
-                columnX: "",
-                columnY: "",
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              analysisType: value,
+              visualizationType: "",
+              columnX: "",
+              columnY: "",
+            },
+          }
           : node
       )
     );
@@ -77,12 +77,12 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                visualizationType: value,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              visualizationType: value,
+            },
+          }
           : node
       )
     );
@@ -153,9 +153,8 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
     <>
       <div
         onDoubleClickCapture={handleDoubleClick}
-        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${
-          isValid ? "" : "border-red-500"
-        }`}
+        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${isValid ? "" : "border-red-500"
+          }`}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">
           <span className="flex items-center gap-2 font-semibold text-sm text-gray-700 dark:text-white">
@@ -227,8 +226,8 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
                   {selectedAnalysisType === "Bivariate Analysis"
                     ? "Column One"
                     : selectedAnalysisType === "Multivariate Analysis"
-                    ? "Target Column"
-                    : "Column"}
+                      ? "Target Column"
+                      : "Column"}
                 </label>
                 <Select
                   value={selectedColumnX}
@@ -299,7 +298,10 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
       {selectedAnalysisType === "Univariate Analysis" && (
         <UnivariateAnalysisDialog
           open={open}
-          onOpenChange={setOpen}
+          onOpenChange={(value) => {
+            setOpen(value);
+            setOpenAndExecute(false);
+          }}
           datasetId={selectedDataset}
           column={selectedColumnX}
           visualiseType={selectedVisualizationType}
@@ -311,7 +313,10 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
       {selectedAnalysisType === "Bivariate Analysis" && (
         <BivariateAnalysisDialog
           open={open}
-          onOpenChange={setOpen}
+          onOpenChange={(value) => {
+            setOpen(value);
+            setOpenAndExecute(false);
+          }}
           datasetId={selectedDataset}
           columnX={selectedColumnX}
           columnY={selectedColumnY}

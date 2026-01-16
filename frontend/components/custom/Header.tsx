@@ -1,11 +1,22 @@
+"use client"
+
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { Menu } from "lucide-react";
+import { ArrowUpRight, Github, Menu } from "lucide-react";
 import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+  const [stars, setStars] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetch("https://api.github.com/repos/udaykumar-dhokia/AutoML-Studio")
+      .then((res) => res.json())
+      .then((data) => setStars(data.stargazers_count))
+      .catch(() => setStars(null))
+  }, [])
   return (
     <>
       <header className="bg-white dark:bg-background">
@@ -101,6 +112,21 @@ const Header = () => {
 
             <div className="flex items-center gap-4">
               <div className="sm:flex sm:gap-4">
+                <Link
+                  href="https://github.com/udaykumar-dhokia/AutoML-Studio"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hidden lg:flex"
+                >
+                  <Button variant="outline" className="flex items-center gap-2 px-3">
+                    <Github />
+                    {stars !== null && (
+                      <span className="text-sm font-semibold">
+                        {stars}
+                      </span>
+                    )}
+                  </Button>
+                </Link>
                 <Link href={"/login"}>
                   <Button variant={"outline"} className="">
                     Login
@@ -108,8 +134,8 @@ const Header = () => {
                 </Link>
 
                 <div className="hidden sm:flex">
-                  <Link href={"/login"}>
-                    <Button>Get Started for Free</Button>
+                  <Link href={"/register"}>
+                    <Button>Get Started for Free <ArrowUpRight /></Button>
                   </Link>
                 </div>
               </div>

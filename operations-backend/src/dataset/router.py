@@ -3,7 +3,7 @@ import pandas as pd
 from pydantic import BaseModel
 import numpy as np
 from .visualisation import visualise_univariate, visualise_bivariate
-from .model import MissingValueRequest, VisualiseUnivariateRequest, VisualiseBivariateRequest
+from .model import MissingValueRequest, VisualiseUnivariateRequest, VisualiseBivariateRequest, NormalizationRequest, StandardizationRequest, OutlierRequest
 from .handle_missing_values import handle_missing_values
 from .handle_outliers import handle_outliers
 from .handle_normalization import handle_normalization

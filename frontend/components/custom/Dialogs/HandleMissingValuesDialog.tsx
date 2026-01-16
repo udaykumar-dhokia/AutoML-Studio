@@ -114,7 +114,7 @@ const HandleMissingValuesDialog = ({
                             <label className="text-sm font-medium">Select Column</label>
                             <Select
                                 value={column}
-                                onValueChange={(value) => setColumn(value)}
+                                onValueChange={(value) => setSelectedColumn(value)}
                                 disabled={loading}
                             >
                                 <SelectTrigger className="w-full">
@@ -134,7 +134,7 @@ const HandleMissingValuesDialog = ({
                             <label className="text-sm font-medium">Select Strategy</label>
                             <Select
                                 value={strategy}
-                                onValueChange={(value) => setStrategy(value)}
+                                onValueChange={(value) => setSelectedStrategy(value)}
                                 disabled={loading}
                             >
                                 <SelectTrigger className="w-full">

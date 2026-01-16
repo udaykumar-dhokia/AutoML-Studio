@@ -44,22 +44,20 @@ const UnivariateAnalysisDialog = ({
     const [imageData, setImageData] = useState<string | null>(null);
     const [selectedColumn, setSelectedColumn] = useState(column);
     const [selectedVisualiseType, setSelectedVisualiseType] = useState(visualiseType);
-    const [execute, setExecute] = useState(openAndExecute);
 
     useEffect(() => {
         if (open) {
             setSelectedColumn(column);
             setSelectedVisualiseType(visualiseType);
             setImageData(null);
-            setExecute(openAndExecute);
         }
     }, [open, column, visualiseType]);
 
     useEffect(() => {
-        if (open && execute) {
+        if (open && openAndExecute) {
             handleExecute();
         }
-    }, [open, execute]);
+    }, [open, openAndExecute]);
 
     const handleExecute = async () => {
         if (!datasetId || !selectedColumn || !selectedVisualiseType) {
