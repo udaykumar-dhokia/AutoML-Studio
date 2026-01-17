@@ -12,6 +12,9 @@ import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.s
 import { store } from "@/store/store";
 import { memo, useState } from "react";
 import HandleMissingValuesDialog from "../Dialogs/HandleMissingValuesDialog";
+import HandleOutliersDialog from "../Dialogs/HandleOutliersDialog";
+import NormalizationDialog from "../Dialogs/NormalizationDialog";
+import StandardizationDialog from "../Dialogs/StandardizationDialog";
 
 const operationOptionsMap: Record<string, string[]> = {
   "Handle Missing Values": [
@@ -42,7 +45,6 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
     "Handle Outliers",
     "Normalization",
     "Standardization",
-    "No Operation",
   ];
 
   const handlePlay = () => {
@@ -54,15 +56,15 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              operation: value,
-              strategy: "",
-            },
-          }
-          : node
-      )
+              ...node,
+              data: {
+                ...node.data,
+                operation: value,
+                strategy: "",
+              },
+            }
+          : node,
+      ),
     );
   };
 
@@ -71,8 +73,8 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? { ...node, data: { ...node.data, strategy: value } }
-          : node
-      )
+          : node,
+      ),
     );
   };
 
@@ -81,8 +83,8 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? { ...node, data: { ...node.data, column: value } }
-          : node
-      )
+          : node,
+      ),
     );
   };
 
@@ -100,8 +102,9 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
     <>
       <div
         onDoubleClickCapture={handleDoubleClick}
-        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${selectedOperation && selectedStrategy ? "" : "border-red-500"
-          }`}
+        className={`relative w-60 rounded-none shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${
+          selectedOperation && selectedStrategy ? "" : "border-red-500"
+        }`}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">
           <span className="flex items-center gap-1 font-semibold text-sm text-gray-700 dark:text-white">
@@ -217,6 +220,36 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
           columns={columns}
         />
       )}
+      {selectedOperation === "Handle Outliers" && (
+        <HandleOutliersDialog
+          selectedStrategy={selectedStrategy}
+          selectedColumn={selectedColumn}
+          open={open}
+          onOpenChange={setOpen}
+          datasetId={selectedDataset}
+          columns={columns}
+        />
+      )}
+      {selectedOperation === "Normalization" && (
+        <NormalizationDialog
+          selectedStrategy={selectedStrategy}
+          selectedColumn={selectedColumn}
+          open={open}
+          onOpenChange={setOpen}
+          datasetId={selectedDataset}
+          columns={columns}
+        />
+      )}
+      {selectedOperation === "Standardization" && (
+        <StandardizationDialog
+          selectedStrategy={selectedStrategy}
+          selectedColumn={selectedColumn}
+          open={open}
+          onOpenChange={setOpen}
+          datasetId={selectedDataset}
+          columns={columns}
+        />
+      )}
     </>
   );
 }
@@ -225,5 +258,5 @@ export default memo(
   PreprocessingNode,
   (prev, next) =>
     prev.isConnectable === next.isConnectable &&
-    JSON.stringify(prev.data) === JSON.stringify(next.data)
+    JSON.stringify(prev.data) === JSON.stringify(next.data),
 );

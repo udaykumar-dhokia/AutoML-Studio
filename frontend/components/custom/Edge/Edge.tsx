@@ -33,7 +33,7 @@ export default function Edge({
 
       <EdgeLabelRenderer>
         <div
-          className="opacity-0 hover:opacity-100"
+          className="opacity-100"
           style={{
             position: "absolute",
             transform: `translate(-50%, -50%) translate(${labelX}px, ${labelY}px)`,

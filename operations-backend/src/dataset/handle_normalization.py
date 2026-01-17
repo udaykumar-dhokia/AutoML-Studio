@@ -19,7 +19,7 @@ def handle_normalization(request: NormalizationRequest):
             detail="Normalization requires a numeric column"
         )
 
-    if method == "Min-Max":
+    if method == "Min-Max Scaling":
         min_val = df[column].min()
         max_val = df[column].max()
 
@@ -31,7 +31,7 @@ def handle_normalization(request: NormalizationRequest):
 
         df[column] = (df[column] - min_val) / (max_val - min_val)
 
-    elif method == "Max-Abs":
+    elif method == "Max Abs Scaling":
         max_abs = df[column].abs().max()
 
         if max_abs == 0:
@@ -48,5 +48,6 @@ def handle_normalization(request: NormalizationRequest):
     return {
         "method": method,
         "column": column,
+        "columns": df.columns.tolist(),
         "data": df.head().replace({np.nan: None}).to_dict(orient="records"),
     }

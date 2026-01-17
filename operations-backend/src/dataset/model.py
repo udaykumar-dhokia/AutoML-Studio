@@ -4,17 +4,20 @@ class MissingValueRequest(BaseModel):
     url: str
     strategy: str
     column: str
+
 class StandardizationRequest(BaseModel):
     url: str
     column: str
+    
 class NormalizationRequest(BaseModel):
     url: str
     column: str
-    method: str  # Min-Max | Max-Abs
+    method: str
+
 class OutlierRequest(BaseModel):
     url: str
     column: str
-    method: str  # IQR | Z-Score | Capping
+    method: str 
     threshold: float | None = None
 
 class VisualiseUnivariateRequest(BaseModel):

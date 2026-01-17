@@ -27,15 +27,9 @@ import { Loader2, Play } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const STRATEGIES = [
-  "Drop Rows",
-  "Replace with Mean",
-  "Replace with Median",
-  "Replace with Min",
-  "Replace with Max",
-];
+const STRATEGIES = ["Min-Max Scaling", "Max Abs Scaling"];
 
-const HandleMissingValuesDialog = ({
+const NormalizationDialog = ({
   open,
   onOpenChange,
   datasetId,
@@ -54,7 +48,6 @@ const HandleMissingValuesDialog = ({
   const [result, setResult] = useState<{
     columns: string[];
     data: any[];
-    null_count: number;
   } | null>(null);
   const [column, setColumn] = useState<string>();
   const [strategy, setStrategy] = useState<string>();
@@ -80,18 +73,18 @@ const HandleMissingValuesDialog = ({
 
     try {
       setLoading(true);
-      const res = await axiosInstance.post(
-        "/operations/handle_missing_values",
-        {
-          id: datasetId,
-          column: column,
-          strategy: strategy,
-        },
-      );
+      const res = await axiosInstance.post("/operations/handle_normalization", {
+        id: datasetId,
+        column: column,
+        method: strategy,
+      });
 
-      if (res.data.handle_missing_values) {
-        setResult(res.data.handle_missing_values);
-        toast.success("Successfully processed missing values");
+      if (res.data.handle_normalization) {
+        setResult(res.data.handle_normalization);
+        toast.success("Successfully normalized data");
+      } else {
+        setResult(res.data);
+        toast.success("Successfully normalized data");
       }
     } catch (error: any) {
       console.error(error);
@@ -105,9 +98,9 @@ const HandleMissingValuesDialog = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[100vw] h-[70vh] flex flex-col gap-0 p-0">
         <DialogHeader className="px-6 py-4 border-b">
-          <DialogTitle>Handle Missing Values</DialogTitle>
+          <DialogTitle>Normalization</DialogTitle>
           <DialogDescription>
-            Choose a column and a strategy to handle missing values.
+            Choose a column and a strategy to normalize data.
           </DialogDescription>
         </DialogHeader>
 
@@ -157,12 +150,8 @@ const HandleMissingValuesDialog = ({
           {result && (
             <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
               <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border">
-                <span className="text-sm font-medium">
-                  Remaining Null Values:
-                </span>
-                <span className="font-mono text-lg font-bold">
-                  {result.null_count}
-                </span>
+                <span className="text-sm font-medium">Result Info:</span>
+                <span className="font-mono text-lg font-bold">Processed</span>
               </div>
 
               <div className="border rounded-md overflow-hidden">
@@ -224,4 +213,4 @@ const HandleMissingValuesDialog = ({
   );
 };
 
-export default HandleMissingValuesDialog;
+export default NormalizationDialog;

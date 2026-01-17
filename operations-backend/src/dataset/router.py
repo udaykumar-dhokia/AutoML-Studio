@@ -54,12 +54,15 @@ def missing_values(request: MissingValueRequest):
 @router.post("/handle_outliers")
 def outliers(request: OutlierRequest):
     return handle_outliers(request)
+
 @router.post("/handle_normalization")
 def normalization(request: NormalizationRequest):
     return handle_normalization(request)
+
 @router.post("/handle_standardization")
 def standardization(request: StandardizationRequest):
     return handle_standardization(request)    
+
 @router.post("/visualise/univariate")
 def univariate(request: VisualiseUnivariateRequest):
     return visualise_univariate(request)

@@ -34,5 +34,6 @@ def handle_standardization(request: StandardizationRequest):
         "column": column,
         "mean": mean,
         "std": std,
+        "columns": df.columns.tolist(),
         "data": df.head().replace({np.nan: None}).to_dict(orient="records"),
     }

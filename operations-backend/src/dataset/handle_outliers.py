@@ -22,7 +22,7 @@ def handle_outliers(request: OutlierRequest):
 
     original_count = df.shape[0]
 
-    if method == "IQR":
+    if method == "IQR Method":
         Q1 = df[column].quantile(0.25)
         Q3 = df[column].quantile(0.75)
         IQR = Q3 - Q1
@@ -31,7 +31,7 @@ def handle_outliers(request: OutlierRequest):
 
         df = df[(df[column] >= lower) & (df[column] <= upper)]
 
-    elif method == "Z-Score":
+    elif method == "Z-Score Method":
         z_scores = np.abs((df[column] - df[column].mean()) / df[column].std())
         df = df[z_scores <= threshold]
 
@@ -51,5 +51,6 @@ def handle_outliers(request: OutlierRequest):
         "method": method,
         "original_rows": original_count,
         "remaining_rows": df.shape[0],
+        "columns": df.columns.tolist(),
         "data": df.head().replace({np.nan: None}).to_dict(orient="records"),
     }
