@@ -5,7 +5,7 @@ import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { RootState, store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import { Panel, useReactFlow } from "@xyflow/react";
-import { CloudUpload, Download, Loader2 } from "lucide-react";
+import { CloudUpload, Download, Loader2, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -15,6 +15,22 @@ const TopCenterPanel = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
   const rf = useReactFlow();
   const [loading, setLoading] = useState<boolean>(false);
+  const [isRefresh, setIsRefresh] = useState<boolean>(false);
+
+  const handleRefresh = async () => {
+    try {
+      setIsRefresh(true);
+      const res = await axiosInstance.get(`/workflow/${workflow?._id}`);
+      store.dispatch(setCurrentWorkflow(res.data));
+      store.dispatch(updateWorkflow(res.data));
+      rf.setNodes(res.data.nodes);
+      rf.setEdges(res.data.edges);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    } finally {
+      setIsRefresh(false);
+    }
+  };
 
   const handleSave = async () => {
     setLoading(true);
@@ -23,15 +39,13 @@ const TopCenterPanel = () => {
       const nodes = rf.getNodes();
       const edges = rf.getEdges();
 
-      console.log(nodes);
-
       const updatedWorkflow = {
         nodes,
         edges,
       };
       const res = await axiosInstance.put(
         `/workflow/${workflow?._id}`,
-        updatedWorkflow
+        updatedWorkflow,
       );
       store.dispatch(setCurrentWorkflow(res.data));
       store.dispatch(updateWorkflow(res.data));
@@ -54,6 +68,13 @@ const TopCenterPanel = () => {
           <h1 className="text-2xl font-bold">{workflow?.name}</h1>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant={"outline"}
+            onClick={handleRefresh}
+            disabled={isRefresh}
+          >
+            <RefreshCw className={`${isRefresh ? "animate-spin" : ""}`} />
+          </Button>
           <Button variant={"outline"}>
             <Download /> Export
           </Button>

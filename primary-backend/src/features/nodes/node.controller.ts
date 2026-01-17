@@ -1,4 +1,3 @@
-import { type } from "node:os";
 import { httpStatus } from "../../utils/httpStatus";
 import Node from "./node.model";
 
@@ -124,13 +123,39 @@ const nodeController = {
             comment: { type: "string", required: true, label: "Comment" },
           },
         },
+        {
+          label: "Sequence Node",
+          description: "Node for creating a sequence of operations",
+          category: "Sequence",
+          type: "sequence",
+          icon: "Network",
+          dataSchema: {
+            datasetId: { type: "string", required: true, label: "Dataset ID" },
+            preprocessingSequence: {
+              type: "array",
+              required: true,
+              label: "Preprocessing Sequence",
+              items: {
+                type: "object",
+                required: true,
+                properties: {
+                  parameters: {
+                    type: "object",
+                    required: true,
+                    properties: {},
+                  },
+                },
+              },
+            },
+          },
+        },
       ];
 
       for (const node of standardNodes) {
         await Node.updateOne(
           { type: node.type },
           { $set: node },
-          { upsert: true }
+          { upsert: true },
         );
       }
 

@@ -30,6 +30,7 @@ import DataVisualisationNode from "@/components/custom/Nodes/DataVisualisationNo
 import CommentNode from "@/components/custom/Nodes/CommentNode";
 import usePageTitle from "@/components/custom/PageTitle";
 import TrainTestSplitNode from "@/components/custom/Nodes/TrainTestSplitNode";
+import SequenceNode from "@/components/custom/Nodes/SequenceNode";
 
 const nodeTypes = {
   datasetNode: DatasetNode,
@@ -37,6 +38,7 @@ const nodeTypes = {
   dataVisualisationNode: DataVisualisationNode,
   comment: CommentNode,
   trainTestSplitNode: TrainTestSplitNode,
+  sequenceNode: SequenceNode,
 };
 
 const edgeTypes = {
@@ -48,7 +50,7 @@ const page = () => {
   const [nodes, setNodes] = useState<TNode[]>([]);
   const [edges, setEdges] = useState<TEdge[]>([]);
   const { nodes: availableNodes } = useSelector(
-    (state: RootState) => state.node
+    (state: RootState) => state.node,
   );
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -91,17 +93,17 @@ const page = () => {
   const onNodesChange = useCallback(
     (changes: any) =>
       setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
-    []
+    [],
   );
   const onEdgesChange = useCallback(
     (changes: any) =>
       setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
-    []
+    [],
   );
 
   const onNodesDelete = useCallback((deletedNodes: any) => {
     setNodes((nds) =>
-      nds.filter((n) => !deletedNodes.some((d: any) => d.id === n.id))
+      nds.filter((n) => !deletedNodes.some((d: any) => d.id === n.id)),
     );
   }, []);
 
@@ -118,7 +120,7 @@ const page = () => {
             itemCount: columns.length,
           },
         },
-        edgesSnapshot
+        edgesSnapshot,
       );
     });
 
@@ -131,14 +133,14 @@ const page = () => {
       return nodesSnapshot.map((node) =>
         node.id === params.target
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              columns: sourceNode.data.columns,
-              selectedDataset: datasetId,
-            },
-          }
-          : node
+              ...node,
+              data: {
+                ...node.data,
+                columns: sourceNode.data.columns,
+                selectedDataset: datasetId,
+              },
+            }
+          : node,
       );
     });
   }, []);

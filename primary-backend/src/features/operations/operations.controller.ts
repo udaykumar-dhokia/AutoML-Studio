@@ -40,16 +40,16 @@ const operationsController = {
       const results = await Promise.all(
         DATASET_OPERATIONS.map(async (operationPath) => {
           const response = await operationsAxios.get(
-            `/dataset${operationPath}?url=${dataset.url}`,
+            `/dataset${operationPath}?url=${dataset.url}`
           );
           const operationKey = operationPath.substring(1);
           return { [operationKey]: response.data };
-        }),
+        })
       );
 
       const combinedResults = results.reduce(
         (acc, current) => ({ ...acc, ...current }),
-        {},
+        {}
       );
 
       await redisClient.set(cacheKey, JSON.stringify(combinedResults), {
@@ -90,7 +90,7 @@ const operationsController = {
 
       const response = await operationsAxios.post(
         `/dataset/handle_missing_values`,
-        { url: dataset.url, strategy, column },
+        { url: dataset.url, strategy, column }
       );
       const combinedResults = { handle_missing_values: response.data };
 
@@ -167,7 +167,7 @@ const operationsController = {
 
       const response = await operationsAxios.post(
         `/dataset/handle_normalization`,
-        { url: dataset.url, method, column },
+        { url: dataset.url, method, column }
       );
       const combinedResults = { handle_normalization: response.data };
 
@@ -205,7 +205,7 @@ const operationsController = {
 
       const response = await operationsAxios.post(
         `/dataset/handle_standardization`,
-        { url: dataset.url, column },
+        { url: dataset.url, column }
       );
       const combinedResults = { handle_standardization: response.data };
 
@@ -250,11 +250,11 @@ const operationsController = {
         },
         {
           responseType: "arraybuffer",
-        },
+        }
       );
 
       const base64Image = Buffer.from(response.data, "binary").toString(
-        "base64",
+        "base64"
       );
       const combinedResults = { univariate_analysis: base64Image };
 
@@ -311,11 +311,11 @@ const operationsController = {
         },
         {
           responseType: "arraybuffer",
-        },
+        }
       );
 
       const base64Image = Buffer.from(response.data, "binary").toString(
-        "base64",
+        "base64"
       );
       const combinedResults = { bivariate_analysis: base64Image };
 
