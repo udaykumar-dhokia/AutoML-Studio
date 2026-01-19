@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .dataset.router import router as dataset_router
+from .routers.dataset import router as dataset_router
+from .routers.train_test_split import router as train_test_split_router
 
 app = FastAPI()
 
@@ -16,8 +17,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/")
 def health_check():
     return {"message": "Server is running"}
 
+
 app.include_router(dataset_router, prefix="/api/dataset")
+app.include_router(train_test_split_router, prefix="/api/train-test-split")

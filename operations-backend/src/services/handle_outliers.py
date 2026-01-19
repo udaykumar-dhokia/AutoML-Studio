@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 import pandas as pd
 import numpy as np
-from .model import OutlierRequest
+from ..models.models import OutlierRequest
 
 
 def handle_outliers(request: OutlierRequest):
@@ -16,8 +16,7 @@ def handle_outliers(request: OutlierRequest):
 
     if not pd.api.types.is_numeric_dtype(df[column]):
         raise HTTPException(
-            status_code=400,
-            detail="Outlier handling requires a numeric column"
+            status_code=400, detail="Outlier handling requires a numeric column"
         )
 
     original_count = df.shape[0]

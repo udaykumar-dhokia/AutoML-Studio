@@ -1,7 +1,8 @@
 from fastapi import HTTPException
 import pandas as pd
 import numpy as np
-from .model import MissingValueRequest
+from ..models.models import MissingValueRequest
+
 
 def handle_missing_values(request: MissingValueRequest):
     df = pd.read_csv(request.url)
@@ -11,11 +12,22 @@ def handle_missing_values(request: MissingValueRequest):
 
     if column not in df.columns:
         raise HTTPException(status_code=400, detail=f"Column '{column}' not found")
-    
+
     is_numeric = pd.api.types.is_numeric_dtype(df[column])
 
-    if strategy in ["Replace with Mean", "Replace with Median", "Replace with Min", "Replace with Max"] and not is_numeric:
-        raise HTTPException(status_code=400, detail=f"Strategy '{strategy}' requires a numeric column")
+    if (
+        strategy
+        in [
+            "Replace with Mean",
+            "Replace with Median",
+            "Replace with Min",
+            "Replace with Max",
+        ]
+        and not is_numeric
+    ):
+        raise HTTPException(
+            status_code=400, detail=f"Strategy '{strategy}' requires a numeric column"
+        )
 
     if strategy == "Drop Rows":
         df = df.dropna(subset=[column])

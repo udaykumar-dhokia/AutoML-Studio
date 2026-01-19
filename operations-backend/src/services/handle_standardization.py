@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 import pandas as pd
 import numpy as np
-from .model import StandardizationRequest
+from ..models.models import StandardizationRequest
 
 
 def handle_standardization(request: StandardizationRequest):
@@ -14,8 +14,7 @@ def handle_standardization(request: StandardizationRequest):
 
     if not pd.api.types.is_numeric_dtype(df[column]):
         raise HTTPException(
-            status_code=400,
-            detail="Standardization requires a numeric column"
+            status_code=400, detail="Standardization requires a numeric column"
         )
 
     mean = df[column].mean()
@@ -23,8 +22,7 @@ def handle_standardization(request: StandardizationRequest):
 
     if std == 0:
         raise HTTPException(
-            status_code=400,
-            detail="Standard deviation is 0; cannot standardize"
+            status_code=400, detail="Standard deviation is 0; cannot standardize"
         )
 
     df[column] = (df[column] - mean) / std

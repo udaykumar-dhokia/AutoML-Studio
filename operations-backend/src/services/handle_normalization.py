@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 import pandas as pd
 import numpy as np
-from .model import NormalizationRequest
+from ..models.models import NormalizationRequest
 
 
 def handle_normalization(request: NormalizationRequest):
@@ -15,8 +15,7 @@ def handle_normalization(request: NormalizationRequest):
 
     if not pd.api.types.is_numeric_dtype(df[column]):
         raise HTTPException(
-            status_code=400,
-            detail="Normalization requires a numeric column"
+            status_code=400, detail="Normalization requires a numeric column"
         )
 
     if method == "Min-Max Scaling":
@@ -26,7 +25,7 @@ def handle_normalization(request: NormalizationRequest):
         if min_val == max_val:
             raise HTTPException(
                 status_code=400,
-                detail="Min and Max are equal; cannot apply Min-Max scaling"
+                detail="Min and Max are equal; cannot apply Min-Max scaling",
             )
 
         df[column] = (df[column] - min_val) / (max_val - min_val)
@@ -36,8 +35,7 @@ def handle_normalization(request: NormalizationRequest):
 
         if max_abs == 0:
             raise HTTPException(
-                status_code=400,
-                detail="Maximum absolute value is 0; cannot scale"
+                status_code=400, detail="Maximum absolute value is 0; cannot scale"
             )
 
         df[column] = df[column] / max_abs
