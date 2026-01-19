@@ -270,7 +270,7 @@ const operationsController = {
               .status(error.response.status)
               .json({ message: jsonError.detail });
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       return res
@@ -337,6 +337,50 @@ const operationsController = {
         }
       }
 
+      return res
+        .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message });
+    }
+  },
+
+  handleTrainTestSplit: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const { id, test_size, random_state, shuffle, stratify_column } = req.body;
+    if (!id) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Dataset ID is required" });
+    }
+
+    try {
+      const dataset = await datasetDao.getDatasetById(id);
+      if (!dataset) {
+        return res
+          .status(httpStatus.NOT_FOUND)
+          .json({ message: "Dataset not found" });
+      }
+
+      const response = await operationsAxios.post(
+        `/train-test-split/train-test-split`,
+        {
+          url: dataset.url,
+          test_size,
+          random_state,
+          shuffle,
+          stratify_column,
+        }
+      );
+
+      return res.status(httpStatus.OK).json(response.data);
+    } catch (error: any) {
+      console.log(error);
+      const message = error.response?.data?.detail || "Something went wrong";
       return res
         .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)
         .json({ message });

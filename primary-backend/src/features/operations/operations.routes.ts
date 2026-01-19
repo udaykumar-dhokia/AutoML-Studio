@@ -46,4 +46,10 @@ router.post(
   operationsController.handleStandardization,
 );
 
+router.post(
+  "/train-test-split",
+  authMiddleware,
+  operationsController.handleTrainTestSplit,
+);
+
 export default router;

@@ -21,7 +21,7 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [hasRun, setHasRun] = useState<boolean | null>(null);
+  const [hasRun, setHasRun] = useState<boolean>(false);
 
   const [testSize, setTestSize] = useState(data.test_size ?? 0.2);
   const [shuffle, setShuffle] = useState(data.shuffle ?? true);
@@ -41,19 +41,9 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
   const handlePlay = async (e: React.MouseEvent) => {
     e.stopPropagation();
     setLoading(true);
-    try {
-      // const res = await axiosInstance.post("/operations/train-test-split", { ... });
-      setHasRun(true);
-      toast.success("Split executed successfully");
-    } catch (error: any) {
-      setHasRun(false);
-      toast.error(error.response?.data?.message || "Failed to execute split");
-      if (error.status === 401) {
-        router.push("/login");
-      }
-    } finally {
-      setLoading(false);
-    }
+    setOpen(true);
+    setHasRun(true);
+    setLoading(false);
   };
 
   const handleUpdate = (newData: any) => {
@@ -61,12 +51,12 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                ...newData,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              ...newData,
+            },
+          }
           : node,
       ),
     );
@@ -75,13 +65,11 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
   return (
     <>
       <div
-        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${
-          loading ? "animate-pulse border-primary-500" : ""
-        } ${
-          hasRun
+        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${loading ? "animate-pulse border-primary-500" : ""
+          } ${hasRun
             ? "border-green-500 dark:border-green-500"
             : "dark:border-white/15 border-black/25"
-        }`}
+          }`}
         onDoubleClickCapture={handleDoubleClick}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">
@@ -220,10 +208,15 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
 
       <TrainTestSplitDialog
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(v) => {
+          setOpen(v);
+          setHasRun(false);
+        }}
         nodeId={id}
         data={data}
         onUpdate={handleUpdate}
+        datasetId={data.selectedDataset}
+        hasRun={hasRun}
       />
     </>
   );

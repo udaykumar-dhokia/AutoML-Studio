@@ -12,12 +12,14 @@ import { store } from "@/store/store";
 import { memo, useEffect, useCallback } from "react";
 
 function SequenceStep({
+  id,
   handleId,
   index,
   isConnectable,
   removeHandle,
   inputsLength,
 }: {
+  id: string;
   handleId: string;
   index: number;
   isConnectable: boolean;
@@ -141,6 +143,7 @@ function SequenceNode({ id, data, isConnectable }: any) {
         <div className="flex flex-col gap-3">
           {inputs.map((handleId, index) => (
             <SequenceStep
+              id={id}
               key={handleId}
               handleId={handleId}
               index={index}
