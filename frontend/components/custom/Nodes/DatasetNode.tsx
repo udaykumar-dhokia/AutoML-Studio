@@ -31,19 +31,53 @@ function DatasetNode({ id, data, isConnectable }: any) {
   const [hasRun, setHasRun] = useState<boolean | null>(null);
   const router = useRouter();
 
+  const getDownstreamNodes = (sourceId: string, edges: any[]) => {
+    const downstreamNodeIds = new Set<string>();
+    const queue = [sourceId];
+    const visited = new Set<string>();
+
+    while (queue.length > 0) {
+      const currentId = queue.shift()!;
+      if (visited.has(currentId)) continue;
+      visited.add(currentId);
+
+      const outgoingEdges = edges.filter((e) => e.source === currentId);
+      for (const edge of outgoingEdges) {
+        if (!visited.has(edge.target)) {
+          downstreamNodeIds.add(edge.target);
+          queue.push(edge.target);
+        }
+      }
+    }
+    return downstreamNodeIds;
+  };
+
   const handleSelect = (value: string) => {
+    const edges = rf.getEdges();
+    const downstreamNodeIds = getDownstreamNodes(id, edges);
+
     rf.setNodes((nodes) =>
-      nodes.map((node) =>
-        node.id === id
-          ? {
+      nodes.map((node) => {
+        if (node.id === id) {
+          return {
             ...node,
             data: {
               ...node.data,
               selectedDataset: value,
             },
-          }
-          : node,
-      ),
+          };
+        }
+        if (downstreamNodeIds.has(node.id)) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              selectedDataset: value,
+            },
+          };
+        }
+        return node;
+      })
     );
   };
 
@@ -80,11 +114,8 @@ function DatasetNode({ id, data, isConnectable }: any) {
         setColumns(res.data["columns"] || null);
 
         const cols = res.data.columns;
-
-        const connectedNodeIds = rf
-          .getEdges()
-          .filter((e) => e.source === id)
-          .map((e) => e.target);
+        const edges = rf.getEdges();
+        const downstreamNodeIds = getDownstreamNodes(id, edges);
 
         rf.setNodes((nds) =>
           nds.map((node) => {
@@ -98,7 +129,7 @@ function DatasetNode({ id, data, isConnectable }: any) {
                 },
               };
             }
-            if (connectedNodeIds.includes(node.id)) {
+            if (downstreamNodeIds.has(node.id)) {
               return {
                 ...node,
                 data: {
@@ -109,7 +140,7 @@ function DatasetNode({ id, data, isConnectable }: any) {
               };
             }
             return node;
-          }),
+          })
         );
         setHasRun(true);
         toast.success("Dataset executed successfully");
@@ -126,19 +157,33 @@ function DatasetNode({ id, data, isConnectable }: any) {
   };
 
   const handleColumnsUpdate = (columns: string[]) => {
+    const edges = rf.getEdges();
+    const downstreamNodeIds = getDownstreamNodes(id, edges);
+
     rf.setNodes((nodes) =>
-      nodes.map((node) =>
-        node.id === id
-          ? {
+      nodes.map((node) => {
+        if (node.id === id) {
+          return {
             ...node,
             data: {
               ...node.data,
               columns: columns,
               selectedDataset: selectedDataset,
             },
-          }
-          : node,
-      ),
+          };
+        }
+        if (downstreamNodeIds.has(node.id)) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              columns: columns,
+              selectedDataset: selectedDataset,
+            },
+          };
+        }
+        return node;
+      })
     );
   };
 
