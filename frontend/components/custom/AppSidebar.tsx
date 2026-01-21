@@ -30,7 +30,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ModeToggle } from "../ModeToggle";
 import Image from "next/image";
 import CreateWorkflowSheet from "./Sheets/CreateWorkflowSheet";
 
@@ -97,7 +96,7 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
-                      className={`${pathname === item.url ? "bg-black" : ""
+                      className={`${pathname === item.url ? "border border-primary/50 border-dashed" : ""
                         } transition-colors hover:bg-black hover:text-white`}
                     >
                       <Link

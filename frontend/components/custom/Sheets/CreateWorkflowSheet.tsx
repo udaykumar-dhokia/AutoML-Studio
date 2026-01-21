@@ -83,9 +83,9 @@ const CreateWorkflowSheet = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="bg-white rounded-none">
+      <SheetTrigger className="bg-primary rounded-none">
         <Button
-          className="bg-black dark:bg-white rounded-none"
+          className="bg-black dark:bg-primary rounded-none"
           disabled={loading}
         >
           <Plus className="" />

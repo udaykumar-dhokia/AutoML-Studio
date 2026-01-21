@@ -9,7 +9,7 @@ import { motion } from "motion/react"
 const Hero = () => {
     return (
         <div className='flex flex-col justify-center items-center min-h-screen mt-10'>
-            <p className='text-xl'><i>Build your <Highlighter action="underline" color="#FF9800">first model</Highlighter> in <Highlighter action="strike-through" color="#FF9800">hours</Highlighter> minutes with </i></p>
+            <p className='text-xl'><i>Build your <Highlighter action="underline" color="#22c55e">first model</Highlighter> in <Highlighter action="strike-through" color="#22c55e">hours</Highlighter> minutes with </i></p>
             <h1 className='text-6xl font-bold my-2'>AutoML Studio</h1>
             <p className='text-md text-center max-w-xl'>A visual, workflow-based platform that enables you to design, train, and evaluate machine learning models using intuitive node-based pipelines.</p>
             <div className="my-4 flex gap-2">

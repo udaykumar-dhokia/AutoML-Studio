@@ -62,7 +62,7 @@ const page = () => {
             {workflows.map((workflow) => (
               <div
                 key={workflow._id}
-                className="group bg-white dark:bg-sidebar border border-gray-200 dark:border-gray-800 rounded-none p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 cursor-pointer flex flex-col h-44"
+                className="group bg-white dark:bg-sidebar border hover:dark:border-primary/40 rounded-none p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 cursor-pointer flex flex-col h-44"
               >
                 <div className="flex justify-between items-start mb-2">
                   <div className="rounded-none">

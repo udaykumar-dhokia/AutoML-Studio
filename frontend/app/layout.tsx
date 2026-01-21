@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${raleway.variable} ${geistSans.variable} ${geistMono.variable} antialiased dark bg-radial-[at_50%_75%] from-[#130F40] dark:from-[#130F40] dark:via-black dark:to-black`}
+        className={`${raleway.variable} ${geistSans.variable} ${geistMono.variable} antialiased dark bg-radial from-primary/20 dark:via-black dark:to-black`}
       >
         {/* <ThemeProvider defaultTheme="system" attribute="class" enableSystem> */}
         <ClientProviders>{children}</ClientProviders>

@@ -19,7 +19,7 @@ const Header = () => {
   }, [])
   return (
     <>
-      <header className="bg-transparent border-b border-dashed border-gray-700">
+      <header className="bg-transparent border-b border-dashed border-primary/20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="md:flex md:items-center md:gap-12">
