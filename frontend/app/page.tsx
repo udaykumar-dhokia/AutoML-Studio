@@ -5,9 +5,11 @@ import Hero from "@/components/custom/Hero";
 const page = () => {
   return (
     <>
-      <Header />
-      {/* <Announcement /> */}
-      <Hero />
+      <div className="flex flex-col justify-center mx-auto max-w-5xl border-r border-l border-dashed border-gray-700">
+        <Header />
+        {/* <Announcement /> */}
+        <Hero />
+      </div>
     </>
   );
 };

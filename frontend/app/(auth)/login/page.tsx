@@ -43,8 +43,8 @@ const page = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="border border-dashed p-6 w-84 space-y-4 rounded-md">
+      <div className="flex justify-center items-center min-h-screen bg-transparent max-w-6xl mx-auto">
+        <div className="flex flex-col justify-center border border-dashed border-gray-700 p-6 w-84 space-y-4 rounded-none">
           <div className="space-y-2">
             <div className="cursor-pointer" onClick={() => router.push("/")}>
               <Image

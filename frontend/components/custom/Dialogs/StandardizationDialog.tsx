@@ -149,12 +149,12 @@ const StandardizationDialog = ({
 
           {result && (
             <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
-              <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border">
+              <div className="flex items-center justify-between p-4 bg-muted/30 rounded-none border">
                 <span className="text-sm font-medium">Result Info:</span>
                 <span className="font-mono text-lg font-bold">Processed</span>
               </div>
 
-              <div className="border rounded-md overflow-hidden">
+              <div className="border rounded-none overflow-hidden">
                 <Table>
                   <TableHeader className="bg-muted">
                     <TableRow>

@@ -92,7 +92,7 @@ const CenterRightPanel = ({
     <>
       <Panel
         position="center-right"
-        className="flex flex-col gap-2 bg-gray-50 dark:bg-sidebar p-2 rounded-md"
+        className="flex flex-col gap-2 bg-gray-50 dark:bg-sidebar p-2 rounded-none"
       >
         {availableNodes.map((nodeType) => {
           const Icon = iconMap[nodeType.icon];
@@ -105,7 +105,7 @@ const CenterRightPanel = ({
             >
               <Tooltip>
                 <TooltipTrigger>
-                  <div className="border p-2 rounded-md cursor-pointer">
+                  <div className="border p-2 rounded-none cursor-pointer">
                     {Icon && <Icon />}
                   </div>
                 </TooltipTrigger>

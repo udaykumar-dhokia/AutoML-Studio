@@ -51,13 +51,16 @@ const UnivariateAnalysisDialog = ({
             setSelectedVisualiseType(visualiseType);
             setImageData(null);
         }
-    }, [open, column, visualiseType]);
-
-    useEffect(() => {
         if (open && openAndExecute) {
             handleExecute();
         }
-    }, [open, openAndExecute]);
+    }, [open, column, visualiseType]);
+
+    // useEffect(() => {
+    //     if (open && openAndExecute) {
+    //         handleExecute();
+    //     }
+    // }, [open, openAndExecute]);
 
     const handleExecute = async () => {
         if (!datasetId || !selectedColumn || !selectedVisualiseType) {

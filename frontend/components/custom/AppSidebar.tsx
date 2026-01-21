@@ -29,9 +29,10 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ModeToggle } from "../ModeToggle";
 import Image from "next/image";
+import CreateWorkflowSheet from "./Sheets/CreateWorkflowSheet";
 
 const items = [
   {
@@ -58,8 +59,12 @@ const items = [
 
 export function AppSidebar() {
   const { user } = useSelector((state: RootState) => state.user);
-
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    router.push("/");
+  }
 
   return (
     <Sidebar>
@@ -86,33 +91,36 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    className={`${pathname === item.url ? "bg-black" : ""
-                      } transition-colors hover:bg-black hover:text-white`}
-                  >
-                    <Link
-                      href={item.url}
-                      className={`hover:text-black transition-colors ${pathname === item.url ? "text-white" : ""
-                        }`}
+              <CreateWorkflowSheet />
+              <div className="my-2">
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      className={`${pathname === item.url ? "bg-black" : ""
+                        } transition-colors hover:bg-black hover:text-white`}
                     >
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                      <Link
+                        href={item.url}
+                        className={`hover:text-black transition-colors ${pathname === item.url ? "text-white" : ""
+                          }`}
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </div>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu>
+        <SidebarMenu >
           <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            <DropdownMenu >
+              <DropdownMenuTrigger className="cursor-pointer" asChild>
                 <SidebarMenuButton>
                   <User2 />
                   <span>{user?.email}</span>
@@ -123,15 +131,15 @@ export function AppSidebar() {
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
               >
-                <DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
                   <span>Account</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer">
                   <span>Sign out</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                {/* <DropdownMenuItem>
                   <ModeToggle />
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>

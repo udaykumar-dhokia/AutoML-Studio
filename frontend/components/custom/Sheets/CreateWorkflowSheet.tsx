@@ -70,6 +70,7 @@ const CreateWorkflowSheet = () => {
       setName("");
       setDescription("");
       store.dispatch(setCurrentWorkflow(res.data));
+      localStorage.setItem("currentWorkflowId", res.data._id);
       setOpen(false);
       router.push("/workflow");
     } catch (error: any) {
@@ -82,9 +83,9 @@ const CreateWorkflowSheet = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="bg-black rounded-md">
+      <SheetTrigger className="bg-white rounded-none">
         <Button
-          className="bg-black dark:bg-white rounded-md"
+          className="bg-black dark:bg-white rounded-none"
           disabled={loading}
         >
           <Plus className="" />

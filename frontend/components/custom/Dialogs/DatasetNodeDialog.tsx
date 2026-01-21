@@ -80,7 +80,7 @@ const DatasetNodeDialog = ({
   };
 
   const renderTable = (data: any[]) => (
-    <div className="border rounded-md overflow-auto h-[60vh] relative">
+    <div className="border rounded-none overflow-auto h-[60vh] relative">
       <Table>
         <TableHeader className="sticky top-0 bg-secondary z-10 shadow-sm">
           <TableRow>
@@ -159,7 +159,7 @@ const DatasetNodeDialog = ({
                   className="h-full m-0 overflow-auto pr-2"
                 >
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
-                    <div className="p-4 border rounded-lg bg-card text-card-foreground shadow-sm">
+                    <div className="p-4 border rounded-none bg-card text-card-foreground shadow-sm">
                       <h3 className="text-sm font-medium text-muted-foreground">
                         Total Rows
                       </h3>
@@ -167,7 +167,7 @@ const DatasetNodeDialog = ({
                         {info?.rows?.toLocaleString()}
                       </div>
                     </div>
-                    <div className="p-4 border rounded-lg bg-card text-card-foreground shadow-sm">
+                    <div className="p-4 border rounded-none bg-card text-card-foreground shadow-sm">
                       <h3 className="text-sm font-medium text-muted-foreground">
                         Total Columns
                       </h3>
@@ -178,7 +178,7 @@ const DatasetNodeDialog = ({
                   </div>
 
                   <h3 className="text-lg font-semibold mb-3">Column Details</h3>
-                  <div className="border rounded-md overflow-hidden">
+                  <div className="border rounded-none overflow-hidden">
                     <Table>
                       <TableHeader className="bg-muted">
                         <TableRow>
@@ -200,7 +200,7 @@ const DatasetNodeDialog = ({
                                 {col}
                               </TableCell>
                               <TableCell>
-                                <span className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                                <span className="inline-flex items-center rounded-none border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
                                   {stats.dtype}
                                 </span>
                               </TableCell>
@@ -238,7 +238,7 @@ const DatasetNodeDialog = ({
                   value="describe"
                   className="h-full m-0 overflow-auto"
                 >
-                  <div className="border rounded-md overflow-auto">
+                  <div className="border rounded-none overflow-auto">
                     <Table>
                       <TableHeader className="bg-muted">
                         <TableRow>
@@ -292,7 +292,7 @@ const DatasetNodeDialog = ({
                     {columns?.map((item, index) => (
                       <div
                         key={item}
-                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors group"
+                        className="flex items-center justify-between p-3 border rounded-none hover:bg-muted/50 transition-colors group"
                       >
                         <div className="flex items-center gap-3 overflow-hidden">
                           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium text-muted-foreground">

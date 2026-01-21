@@ -43,7 +43,7 @@ function SequenceStep({
   );
 
   return (
-    <div className="relative flex items-center justify-between p-2 bg-muted/20 border rounded-md">
+    <div className="relative flex items-center justify-between p-2 bg-muted/20 border rounded-none">
       <div className="flex items-center">
         <div className="relative w-4 h-4 mr-2">
           <Handle

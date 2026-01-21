@@ -56,9 +56,9 @@ const RegisterDatasetSheet = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="bg-black dark:bg-white rounded-md">
+      <SheetTrigger className="bg-black dark:bg-white rounded-none">
         <Button
-          className="bg-black dark:bg-white rounded-md"
+          className="bg-black dark:bg-white rounded-none"
           disabled={loading}
         >
           <Plus className="" />

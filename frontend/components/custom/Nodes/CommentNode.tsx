@@ -16,7 +16,6 @@ const CommentNode = ({ id, data, selected, isConnectable }: any) => {
     const handleCommentChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const val = e.target.value;
         setComment(val);
-        // Debounce could be good here, but for now direct update
         rf.setNodes((nodes) =>
             nodes.map((node) => {
                 if (node.id === id) {
@@ -44,7 +43,6 @@ const CommentNode = ({ id, data, selected, isConnectable }: any) => {
                 color="#a1a1aa"
             />
 
-            {/* Header: visible on hover or selected to keep "transparent" clean look when inactive */}
             <div className={`flex items-center justify-between px-3 py-1 transition-opacity duration-200 ${selected || comment === "" ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
                 <span className="flex items-center gap-2 text-xs font-medium text-gray-500/80">
                     <NotebookPen className="w-3 h-3" />
@@ -60,8 +58,7 @@ const CommentNode = ({ id, data, selected, isConnectable }: any) => {
                 </Button>
             </div>
 
-            {/* Content Area */}
-            <div className="flex-1 w-full h-full relative p-2">
+            <div className="flex-1 w-full scroll-container h-full relative p-2">
                 <textarea
                     value={comment}
                     onChange={handleCommentChange}

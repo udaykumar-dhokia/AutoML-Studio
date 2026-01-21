@@ -119,7 +119,7 @@ const workflowController = {
         .json({ message: "Unauthorized" });
     }
 
-    const { id } = req.body;
+    const id = req.params.id;
     if (!id) {
       return res
         .status(httpStatus.BAD_REQUEST)
@@ -128,7 +128,7 @@ const workflowController = {
 
     try {
       const workflow = await workflowDao.deleteWorkflowById(id);
-      return res.status(httpStatus.OK).json(workflow);
+      return res.status(httpStatus.OK).json({ workflow, message: "Deleted successfully" });
     } catch (error) {
       console.error(error);
       return res

@@ -1,5 +1,6 @@
 "use client";
 
+import { DeleteDatasetDialog } from "@/components/custom/Dialogs/DeleteDatasetDialog";
 import Loader from "@/components/custom/Loader";
 import Navbar from "@/components/custom/Navbar";
 import usePageTitle from "@/components/custom/PageTitle";
@@ -9,15 +10,14 @@ import { deleteDataset, TDataset } from "@/store/slices/datasets.slice";
 import { RootState, store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import {
-  BrainCircuit,
   Database,
   Loader2,
-  Share2,
   Trash,
 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+
 
 const page = () => {
   const { datasets } = useSelector((state: RootState) => state.dataset);
@@ -28,25 +28,13 @@ const page = () => {
 
   usePageTitle("Datasets | AutoML Studio");
 
-  const handleDelete = async (id: string) => {
-    if (!id) return;
-    try {
-      setLoading(true);
-      const res = await axiosInstance.delete(`/dataset/${id}`);
-      store.dispatch(deleteDataset(id));
-      toast.success(res.data.message);
-    } catch (error: any) {
-      toast.error(error.response.data.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   if (datasetLoading) {
     return <Loader />;
   }
   return (
-    <div className=" min-h-screen">
+    <div className="min-h-screen bg-black">
       <Navbar title="Datasets">
         <RegisterDatasetSheet />
       </Navbar>
@@ -70,10 +58,10 @@ const page = () => {
             {datasets?.map((dataset: TDataset) => (
               <div
                 key={dataset._id}
-                className="group bg-white dark:bg-sidebar border border-gray-200 dark:border-gray-800 rounded-xl p-3 shadow-sm transition-shadow cursor-pointer flex flex-col h-44 hover:border-blue-500 "
+                className="group bg-white dark:bg-sidebar border border-gray-200 dark:border-gray-800 rounded-none p-3 shadow-sm transition-shadow cursor-pointer flex flex-col h-44 hover:border-blue-500 "
               >
                 <div className="flex justify-between items-start">
-                  <div className="rounded-lg">
+                  <div className="rounded-none">
                     <Database className="w-7 h-7 text-black dark:text-white" />
                   </div>
                 </div>
@@ -91,38 +79,12 @@ const page = () => {
                 </div>
 
                 <div className="border-t pt-2 flex justify-end gap-1 transition-opacity">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 hover:bg-gray-100"
-                  >
-                    <Share2 className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => {
-                      handleDelete(dataset._id);
-                    }}
-                    className="h-7 w-7 hover:bg-red-50 hover:text-red-600"
-                  >
-                    {loading ? (
-                      <Loader2 className="w-3.5 h-3.5 dark:text-gray-400 animate-spin" />
-                    ) : (
-                      <Trash className="w-3.5 h-3.5 dark:text-gray-400" />
-                    )}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 hover:bg-blue-50 hover:text-black"
-                  >
-                    <BrainCircuit className="w-3.5 h-3.5 dark:text-gray-400" />
-                  </Button>
+                  <DeleteDatasetDialog dataset={dataset} />
                 </div>
               </div>
             ))}
           </div>
+
         )}
       </div>
     </div>

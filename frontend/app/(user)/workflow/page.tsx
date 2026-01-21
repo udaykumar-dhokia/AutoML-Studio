@@ -133,13 +133,13 @@ const page = () => {
       return nodesSnapshot.map((node) =>
         node.id === params.target
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                columns: sourceNode.data.columns,
-                selectedDataset: datasetId,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              columns: sourceNode.data.columns,
+              selectedDataset: datasetId,
+            },
+          }
           : node,
       );
     });
@@ -148,7 +148,7 @@ const page = () => {
   if (loading) return <Loader />;
 
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100vh", width: "100%" }} className="bg-black">
       <ReactFlow
         nodes={nodes}
         edges={edges}

@@ -75,6 +75,11 @@ const allWorkflowsSlice = createSlice({
         workflow._id === action.payload._id ? action.payload : workflow
       );
     },
+    deleteWorkflow: (state, action: PayloadAction<string>) => {
+      state.workflows = state.workflows.filter(
+        (workflow) => workflow._id !== action.payload
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllWorkflows.pending, (state) => {
@@ -90,6 +95,6 @@ const allWorkflowsSlice = createSlice({
   },
 });
 
-export const { addWorkflow, updateWorkflow } = allWorkflowsSlice.actions;
+export const { addWorkflow, updateWorkflow, deleteWorkflow } = allWorkflowsSlice.actions;
 
 export default allWorkflowsSlice.reducer;

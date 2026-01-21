@@ -10,6 +10,11 @@ import { Button } from "@/components/ui/button";
 import { Play, Share2, Trash, Bot, Box } from "lucide-react";
 import usePageTitle from "@/components/custom/PageTitle";
 import Loader from "@/components/custom/Loader";
+import { DeleteWorkflowDialog } from "@/components/custom/Dialogs/DeleteWorkflowDialog";
+import { toast } from "sonner";
+import { useState } from "react";
+import axiosInstance from "@/utils/axios";
+import { deleteWorkflow } from "@/store/slices/allWorkflows.slice";
 
 const page = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
@@ -17,6 +22,7 @@ const page = () => {
   const { loading: workflowLoading } = useSelector(
     (state: RootState) => state.allWorkflows
   );
+  const [loading, setLoading] = useState(false);
 
   const handleNavigate = (workflow: any) => {
     store.dispatch(setCurrentWorkflow(workflow));
@@ -30,8 +36,10 @@ const page = () => {
     return <Loader />;
   }
 
+
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-black">
       <Navbar title="Models">
         <CreateWorkflowSheet />
       </Navbar>
@@ -54,11 +62,10 @@ const page = () => {
             {workflows.map((workflow) => (
               <div
                 key={workflow._id}
-                onClick={() => handleNavigate(workflow)}
-                className="group bg-white dark:bg-sidebar border border-gray-200 dark:border-gray-800 rounded-xl p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 cursor-pointer flex flex-col h-44"
+                className="group bg-white dark:bg-sidebar border border-gray-200 dark:border-gray-800 rounded-none p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 cursor-pointer flex flex-col h-44"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <div className="rounded-lg">
+                  <div className="rounded-none">
                     <Box className="w-7 h-7 text-black dark:text-white" />
                   </div>
                 </div>
@@ -76,26 +83,7 @@ const page = () => {
                 </div>
 
                 <div className="border-t border-gray-100 dark:border-gray-800 pt-2 flex justify-end gap-1 opacity-100 transition-opacity">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 hover:bg-gray-100 dark:hover:bg-muted"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Share2 className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 hover:bg-red-50 hover:text-red-500"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <Trash className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400 group-hover/btn:text-red-500" />
-                  </Button>
+                  <DeleteWorkflowDialog id={workflow._id} />
                   <Button
                     variant="ghost"
                     size="icon"
