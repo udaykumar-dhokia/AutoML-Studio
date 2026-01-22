@@ -39,7 +39,7 @@ const Header = () => {
                     height={28}
                     className="hidden dark:block"
                   />
-                  <h1 className="text-2xl font-bold">AutoML Studio</h1>
+                  <h1 className="text-xl font-bold">AutoML Studio</h1>
                 </div>
               </Link>
             </div>

@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { store } from "@/store/store";
-import { Handle, NodeResizer, Position, useReactFlow } from "@xyflow/react";
+import { NodeResizer, useReactFlow } from "@xyflow/react";
 import { NotebookPen, X } from "lucide-react";
 import { memo, useCallback, useEffect, useState } from "react";
 import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.slice";
 
-const CommentNode = ({ id, data, selected, isConnectable }: any) => {
+const CommentNode = ({ id, data, selected }: any) => {
     const rf = useReactFlow();
     const [comment, setComment] = useState(data.comment || "");
 

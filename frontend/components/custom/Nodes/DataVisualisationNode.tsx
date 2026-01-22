@@ -58,15 +58,15 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                analysisType: value,
-                visualizationType: "",
-                columnX: "",
-                columnY: "",
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              analysisType: value,
+              visualizationType: "",
+              columnX: "",
+              columnY: "",
+            },
+          }
           : node,
       ),
     );
@@ -77,12 +77,12 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                visualizationType: value,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              visualizationType: value,
+            },
+          }
           : node,
       ),
     );
@@ -153,9 +153,8 @@ function DataVisualisationNode({ id, data, isConnectable }: any) {
     <>
       <div
         onDoubleClickCapture={handleDoubleClick}
-        className={`relative w-60 rounded-md shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${
-          isValid ? "" : "border-red-500"
-        }`}
+        className={`relative w-60 rounded-md shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${isValid ? "" : "border-red-500"
+          }`}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">
           <span className="flex items-center gap-2 font-semibold text-sm text-gray-700 dark:text-white">

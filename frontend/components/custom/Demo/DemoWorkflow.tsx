@@ -14,7 +14,6 @@ import "@xyflow/react/dist/style.css";
 import DatasetDemoNode from "./DatasetDemoNode";
 import PreprocessingDemoNode from "./PreprocessingDemoNode";
 import VisualizationDemoNode from "./VisualizationDemoNode";
-import TopCenterPanel from "@/app/(user)/workflow/components/TopCenterPanel";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 

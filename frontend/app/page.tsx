@@ -1,6 +1,9 @@
 import Announcement from "@/components/custom/Announcement";
+import Footer from "@/components/custom/Footer";
 import Header from "@/components/custom/Header";
 import Hero from "@/components/custom/Hero";
+import FeaturesSectionDemo from "@/components/ui/features-section-demo-2";
+import { TextHoverEffect } from "@/components/ui/text-hover-effect";
 
 const page = () => {
   return (
@@ -9,6 +12,11 @@ const page = () => {
         <Header />
         <Announcement />
         <Hero />
+        <FeaturesSectionDemo />
+        <div className="h-80 flex items-center justify-center">
+          <TextHoverEffect text="AutoML Studio" />
+        </div>
+        <Footer />
       </div>
     </>
   );

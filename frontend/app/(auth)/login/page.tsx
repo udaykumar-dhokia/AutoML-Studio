@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import axiosInstance from "@/utils/axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";

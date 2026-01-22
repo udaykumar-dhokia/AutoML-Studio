@@ -10,7 +10,6 @@ import { Play, Bot, Box } from "lucide-react";
 import usePageTitle from "@/components/custom/PageTitle";
 import Loader from "@/components/custom/Loader";
 import { DeleteWorkflowDialog } from "@/components/custom/Dialogs/DeleteWorkflowDialog";
-import { useState } from "react";
 import { handleWorkflowRoute } from "@/utils/handleWorkflowRoute";
 
 const page = () => {
@@ -19,7 +18,6 @@ const page = () => {
   const { loading: workflowLoading } = useSelector(
     (state: RootState) => state.allWorkflows,
   );
-  const [loading, setLoading] = useState(false);
 
   usePageTitle("Models | AutoML Studio");
 

@@ -5,23 +5,13 @@ import Loader from "@/components/custom/Loader";
 import Navbar from "@/components/custom/Navbar";
 import usePageTitle from "@/components/custom/PageTitle";
 import RegisterDatasetSheet from "@/components/custom/Sheets/RegisterDatasetSheet";
-import { Button } from "@/components/ui/button";
-import { deleteDataset, TDataset } from "@/store/slices/datasets.slice";
-import { RootState, store } from "@/store/store";
-import axiosInstance from "@/utils/axios";
-import {
-  Database,
-  Loader2,
-  Trash,
-} from "lucide-react";
-import { useState } from "react";
+import { TDataset } from "@/store/slices/datasets.slice";
+import { RootState } from "@/store/store";
+import { Database } from "lucide-react";
 import { useSelector } from "react-redux";
-import { toast } from "sonner";
-
 
 const page = () => {
   const { datasets } = useSelector((state: RootState) => state.dataset);
-  const [loading, setLoading] = useState(false);
   const { loading: datasetLoading } = useSelector(
     (state: RootState) => state.dataset
   );

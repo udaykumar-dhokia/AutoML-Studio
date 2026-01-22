@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import SmoothScrollProvider, { ClientProviders } from "./providers";
-import { ThemeProvider } from "@/components/theme-provider";
 
 const raleway = Raleway({
   variable: "--font-raleway",

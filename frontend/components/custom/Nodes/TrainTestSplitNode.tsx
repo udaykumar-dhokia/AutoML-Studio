@@ -5,7 +5,6 @@ import { ArrowUpRight, Play, X, Split } from "lucide-react";
 import { deleteNode as deleteNodeAction } from "@/store/slices/currentWorkflow.slice";
 import { useState, memo } from "react";
 import TrainTestSplitDialog from "../Dialogs/TrainTestSplitDialog";
-import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import {
   Select,
@@ -26,7 +25,7 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
   const [testSize, setTestSize] = useState(data.test_size ?? 0.2);
   const [shuffle, setShuffle] = useState(data.shuffle ?? true);
   const [stratify, setStratify] = useState(data.stratify ?? "None");
-  const [columns, setColumns] = useState(data.columns ?? []);
+  const [columns, _] = useState(data.columns ?? []);
 
   const handleDoubleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -51,12 +50,12 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-              ...node,
-              data: {
-                ...node.data,
-                ...newData,
-              },
-            }
+            ...node,
+            data: {
+              ...node.data,
+              ...newData,
+            },
+          }
           : node,
       ),
     );
@@ -65,13 +64,11 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
   return (
     <>
       <div
-        className={`relative w-60 rounded-md shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${
-          loading ? "animate-pulse border-primary-500" : ""
-        } ${
-          hasRun
+        className={`relative w-60 rounded-md shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${loading ? "animate-pulse border-primary-500" : ""
+          } ${hasRun
             ? "border-green-500 dark:border-green-500"
             : "dark:border-white/15 border-black/25"
-        }`}
+          }`}
         onDoubleClickCapture={handleDoubleClick}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">
