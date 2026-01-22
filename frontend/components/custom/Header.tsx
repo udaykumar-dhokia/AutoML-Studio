@@ -39,7 +39,7 @@ const Header = () => {
                     height={28}
                     className="hidden dark:block"
                   />
-                  <h1 className="text-xl font-bold">AutoML Studio</h1>
+                  <h1 className="text-md md:text-xl font-bold">AutoML Studio</h1>
                 </div>
               </Link>
             </div>
@@ -81,11 +81,11 @@ const Header = () => {
                 </div>
               </div>
 
-              <div className="block md:hidden">
+              {/* <div className="block md:hidden">
                 <Button>
                   <Menu />
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

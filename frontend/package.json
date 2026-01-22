@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^2.11.1",
     "@studio-freight/lenis": "^1.0.42",
     "@tabler/icons-react": "^3.36.1",
+    "@vercel/analytics": "^1.6.1",
     "@xyflow/react": "^12.10.0",
     "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import SmoothScrollProvider, { ClientProviders } from "./providers";
+import { Analytics } from "@vercel/analytics/next"
 
 const raleway = Raleway({
   variable: "--font-raleway",
@@ -40,7 +41,10 @@ export default function RootLayout({
         {/* <ThemeProvider defaultTheme="system" attribute="class" enableSystem> */}
 
         <SmoothScrollProvider>
-          <ClientProviders>{children}</ClientProviders>
+          <ClientProviders>
+            {children}
+            <Analytics />
+          </ClientProviders>
         </SmoothScrollProvider>
         <Toaster />
         {/* </ThemeProvider> */}

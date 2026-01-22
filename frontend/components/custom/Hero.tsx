@@ -21,7 +21,7 @@ const Hero = () => {
           "mask-[linear-gradient(to_bottom_right,white,transparent,transparent)] -z-100 opacity-20"
         )}
       />
-      <p className="text-lg md:text-xl mt-10 text-center">
+      <p className="text-sm sm:text-lg md:text-xl mt-10 text-center">
         <i>
           Build your{" "}
           <Highlighter action="underline" color="#22c55e">
