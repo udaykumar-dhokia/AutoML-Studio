@@ -58,10 +58,10 @@ const page = () => {
             {datasets?.map((dataset: TDataset) => (
               <div
                 key={dataset._id}
-                className="group bg-white dark:bg-sidebar border hover:dark:border-primary/40 rounded-none p-3 shadow-sm transition-shadow cursor-pointer flex flex-col h-44 hover:border-blue-500 "
+                className="group bg-white dark:bg-sidebar border hover:dark:border-primary/40 rounded-md p-3 shadow-sm transition-shadow cursor-pointer flex flex-col h-44 hover:border-blue-500 "
               >
                 <div className="flex justify-between items-start">
-                  <div className="rounded-none">
+                  <div className="rounded-md">
                     <Database className="w-7 h-7 text-black dark:text-white" />
                   </div>
                 </div>

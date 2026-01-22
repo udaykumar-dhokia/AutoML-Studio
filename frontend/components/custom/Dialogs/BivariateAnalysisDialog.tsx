@@ -168,7 +168,7 @@ const BivariateAnalysisDialog = ({
                             </div>
                         ) : imageData ? (
                             <div className="flex flex-col items-center justify-center w-full h-full">
-                                <div className="relative w-full h-full min-h-[400px] flex items-center justify-center rounded-none bg-white p-4 shadow-none">
+                                <div className="relative w-full h-full min-h-[400px] flex items-center justify-center rounded-md bg-white p-4 shadow-none">
                                     <img
                                         src={imageData}
                                         alt="Bivariate Analysis Result"

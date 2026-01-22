@@ -42,7 +42,7 @@ const page = () => {
   return (
     <>
       <div className="flex justify-center items-center min-h-screen">
-        <div className="border border-dashed border-primary/20 p-6 w-84 space-y-4 rounded-none">
+        <div className="flex flex-col justify-center border border-dashed border-primary/20 p-6 w-84 space-y-4 rounded-md">
           <div className="space-y-2">
             <div className="cursor-pointer" onClick={() => router.push("/")}>
               <Image
@@ -107,6 +107,7 @@ const page = () => {
           </div>
 
           <Button
+            size={"sm"}
             disabled={!firstName || !lastName || !email || !password}
             className="w-full"
             onClick={handleRegister}

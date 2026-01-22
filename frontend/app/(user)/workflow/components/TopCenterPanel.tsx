@@ -12,7 +12,6 @@ import { toast } from "sonner";
 
 const TopCenterPanel = () => {
   const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
-  const { workflows } = useSelector((state: RootState) => state.allWorkflows);
   const rf = useReactFlow();
   const [loading, setLoading] = useState<boolean>(false);
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
@@ -72,13 +71,14 @@ const TopCenterPanel = () => {
             variant={"outline"}
             onClick={handleRefresh}
             disabled={isRefresh}
+            size={"sm"}
           >
             <RefreshCw className={`${isRefresh ? "animate-spin" : ""}`} />
           </Button>
-          <Button variant={"outline"}>
+          <Button variant={"outline"} size={"sm"}>
             <Download /> Export
           </Button>
-          <Button onClick={handleSave} disabled={loading}>
+          <Button onClick={handleSave} disabled={loading} size={"sm"}>
             <CloudUpload />{" "}
             {loading ? <Loader2 className="animate-spin" /> : "Save"}
           </Button>

@@ -197,7 +197,7 @@ const TrainTestSplitDialog = ({
                                         <h4 className="text-xs font-bold  tracking-widest text-muted-foreground">Train Set Preview</h4>
                                         <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded font-medium">First 5 rows</span>
                                     </div>
-                                    <div className="overflow-x-auto border rounded-none shadow-sm bg-white dark:bg-sidebar max-h-[220px]">
+                                    <div className="overflow-x-auto border rounded-md shadow-sm bg-white dark:bg-sidebar max-h-[220px]">
                                         <table className="min-w-full text-[11px] border-collapse">
                                             <thead className="bg-muted/50 sticky top-0">
                                                 <tr className="border-b">
@@ -226,7 +226,7 @@ const TrainTestSplitDialog = ({
                                         <h4 className="text-xs font-bold  tracking-widest text-muted-foreground">Test Set Preview</h4>
                                         <span className="text-[10px] bg-orange-500/10 text-orange-600 px-2 py-0.5 rounded font-medium">First 5 rows</span>
                                     </div>
-                                    <div className="overflow-x-auto border rounded-none shadow-sm bg-white dark:bg-sidebar max-h-[220px]">
+                                    <div className="overflow-x-auto border rounded-md shadow-sm bg-white dark:bg-sidebar max-h-[220px]">
                                         <table className="min-w-full text-[11px] border-collapse">
                                             <thead className="bg-muted/50 sticky top-0">
                                                 <tr className="border-b">

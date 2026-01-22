@@ -156,7 +156,7 @@ const HandleMissingValuesDialog = ({
 
           {result && (
             <div className="space-y-4 animate-in fade-in zoom-in-95 duration-300">
-              <div className="flex items-center justify-between p-4 bg-muted/30 rounded-none border">
+              <div className="flex items-center justify-between p-4 bg-muted/30 rounded-md border">
                 <span className="text-sm font-medium">
                   Remaining Null Values:
                 </span>
@@ -165,7 +165,7 @@ const HandleMissingValuesDialog = ({
                 </span>
               </div>
 
-              <div className="border rounded-none overflow-hidden">
+              <div className="border rounded-md overflow-hidden">
                 <Table>
                   <TableHeader className="bg-muted">
                     <TableRow>

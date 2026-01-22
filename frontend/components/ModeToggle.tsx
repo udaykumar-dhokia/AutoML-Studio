@@ -19,7 +19,7 @@ export function ModeToggle() {
     <Button
       variant={"outline"}
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="w-full rounded-none flex items-center gap-2"
+      className="w-full rounded-md flex items-center gap-2"
     >
       {theme === "dark" ? (
         <div className="flex items-center gap-2">

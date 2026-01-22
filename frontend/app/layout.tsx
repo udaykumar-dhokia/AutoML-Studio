@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { ClientProviders } from "./providers";
+import SmoothScrollProvider, { ClientProviders } from "./providers";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const raleway = Raleway({
@@ -39,7 +39,10 @@ export default function RootLayout({
         className={`${raleway.variable} ${geistSans.variable} ${geistMono.variable} antialiased dark bg-radial from-primary/20 dark:via-black dark:to-black`}
       >
         {/* <ThemeProvider defaultTheme="system" attribute="class" enableSystem> */}
-        <ClientProviders>{children}</ClientProviders>
+
+        <SmoothScrollProvider>
+          <ClientProviders>{children}</ClientProviders>
+        </SmoothScrollProvider>
         <Toaster />
         {/* </ThemeProvider> */}
       </body>

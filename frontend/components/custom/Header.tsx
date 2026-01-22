@@ -59,7 +59,7 @@ const Header = () => {
                   rel="noreferrer"
                   className="hidden lg:flex"
                 >
-                  <Button variant="outline" className="flex items-center gap-2 px-3">
+                  <Button size={"sm"} variant="outline" className="flex items-center gap-2 px-3">
                     <Github />
                     {stars !== null && (
                       <span className="text-sm font-semibold">
@@ -69,14 +69,14 @@ const Header = () => {
                   </Button>
                 </Link>
                 <Link href={"/login"}>
-                  <Button variant={"outline"} className="">
+                  <Button size={"sm"} variant={"outline"} className="">
                     Login
                   </Button>
                 </Link>
 
                 <div className="hidden sm:flex">
                   <Link href={"/register"}>
-                    <Button>Get Started for Free <ArrowUpRight /></Button>
+                    <Button size={"sm"}>Get Started for Free <ArrowUpRight /></Button>
                   </Link>
                 </div>
               </div>

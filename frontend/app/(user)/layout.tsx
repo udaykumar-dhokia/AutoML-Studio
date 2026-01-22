@@ -15,13 +15,13 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { loading: userLoading } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.user,
   );
   const { loading: datasetLoading } = useSelector(
-    (state: RootState) => state.dataset
+    (state: RootState) => state.dataset,
   );
   const { loading: workflowLoading } = useSelector(
-    (state: RootState) => state.allWorkflows
+    (state: RootState) => state.allWorkflows,
   );
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
         await store.dispatch(fetchUser()).unwrap();
       } catch (error) {
         toast.error(
-          typeof error === "string" ? error : "Unauthorized. Please login."
+          typeof error === "string" ? error : "Unauthorized. Please login.",
         );
         router.push("/");
         setLoading(false);
@@ -57,7 +57,7 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <div className="">
+      <div className="bg-black">
         <SidebarProvider>
           <AppSidebar />
           <div className="w-full">

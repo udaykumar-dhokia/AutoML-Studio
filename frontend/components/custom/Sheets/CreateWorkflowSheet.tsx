@@ -38,7 +38,7 @@ const CreateWorkflowSheet = () => {
         return;
       }
       const workflowExists = workflows.some(
-        (workflow) => workflow.name === workflowName
+        (workflow) => workflow.name === workflowName,
       );
       if (workflowExists) {
         setNameExists(true);
@@ -83,11 +83,8 @@ const CreateWorkflowSheet = () => {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="bg-primary rounded-none">
-        <Button
-          className="bg-black dark:bg-primary rounded-none"
-          disabled={loading}
-        >
+      <SheetTrigger className="rounded-md">
+        <Button className="rounded-md" disabled={loading} size={"sm"}>
           <Plus className="" />
           Create Workflow
         </Button>
@@ -130,13 +127,16 @@ const CreateWorkflowSheet = () => {
           <Button
             disabled={!name || !description || loading || nameExists}
             type="submit"
-            className="bg-black dark:bg-white"
+            className="w-full"
+            size={"sm"}
             onClick={handleSubmit}
           >
             {loading ? <Loader2 className="animate-spin" /> : "Create Workflow"}
           </Button>
           <SheetClose asChild>
-            <Button variant="outline">Close</Button>
+            <Button size={"sm"} variant="outline" className="w-full">
+              Close
+            </Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

@@ -190,7 +190,7 @@ function DatasetNode({ id, data, isConnectable }: any) {
   return (
     <>
       <div
-        className={`relative w-[220px] rounded-none shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${selectedDataset ? "" : "border-red-500"
+        className={`relative w-[220px] rounded-md shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${selectedDataset ? "" : "border-red-500"
           } ${loading ? "animate-pulse border-primary-500" : ""} ${hasRun
             ? "border-green-500 dark:border-green-500"
             : "dark:border-white/15 border-black/25"

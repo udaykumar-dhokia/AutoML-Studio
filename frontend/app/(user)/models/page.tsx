@@ -5,38 +5,27 @@ import { RootState, store } from "@/store/store";
 import { useSelector } from "react-redux";
 import CreateWorkflowSheet from "@/components/custom/Sheets/CreateWorkflowSheet";
 import { useRouter } from "next/navigation";
-import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { Button } from "@/components/ui/button";
-import { Play, Share2, Trash, Bot, Box } from "lucide-react";
+import { Play, Bot, Box } from "lucide-react";
 import usePageTitle from "@/components/custom/PageTitle";
 import Loader from "@/components/custom/Loader";
 import { DeleteWorkflowDialog } from "@/components/custom/Dialogs/DeleteWorkflowDialog";
-import { toast } from "sonner";
 import { useState } from "react";
-import axiosInstance from "@/utils/axios";
-import { deleteWorkflow } from "@/store/slices/allWorkflows.slice";
+import { handleWorkflowRoute } from "@/utils/handleWorkflowRoute";
 
 const page = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
   const router = useRouter();
   const { loading: workflowLoading } = useSelector(
-    (state: RootState) => state.allWorkflows
+    (state: RootState) => state.allWorkflows,
   );
   const [loading, setLoading] = useState(false);
-
-  const handleNavigate = (workflow: any) => {
-    store.dispatch(setCurrentWorkflow(workflow));
-    localStorage.setItem("currentWorkflowId", workflow._id);
-    router.push(`/workflow`);
-  };
 
   usePageTitle("Models | AutoML Studio");
 
   if (workflowLoading) {
     return <Loader />;
   }
-
-
 
   return (
     <div className="min-h-screen bg-black">
@@ -62,10 +51,10 @@ const page = () => {
             {workflows.map((workflow) => (
               <div
                 key={workflow._id}
-                className="group bg-white dark:bg-sidebar border hover:dark:border-primary/40 rounded-none p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 cursor-pointer flex flex-col h-44"
+                className="group bg-white dark:bg-sidebar border hover:dark:border-primary/40 rounded-md p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 cursor-pointer flex flex-col h-44"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <div className="rounded-none">
+                  <div className="rounded-md">
                     <Box className="w-7 h-7 text-black dark:text-white" />
                   </div>
                 </div>
@@ -87,10 +76,10 @@ const page = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-7 w-7 hover:bg-blue-50 hover:text-blue-600"
+                    className="h-7 w-7 hover:text-blue-600"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleNavigate(workflow);
+                      handleWorkflowRoute(workflow, router);
                     }}
                   >
                     <Play className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />

@@ -102,7 +102,7 @@ function PreprocessingNode({ id, data, isConnectable }: any) {
     <>
       <div
         onDoubleClickCapture={handleDoubleClick}
-        className={`relative w-60 rounded-none shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${
+        className={`relative w-60 rounded-md shadow-sm bg-white dark:bg-sidebar border-dashed border border-black/25 dark:border-white/15 cursor-pointer ${
           selectedOperation && selectedStrategy ? "" : "border-red-500"
         }`}
       >

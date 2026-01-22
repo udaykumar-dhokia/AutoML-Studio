@@ -133,13 +133,13 @@ const page = () => {
       return nodesSnapshot.map((node) =>
         node.id === params.target
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              columns: sourceNode.data.columns,
-              selectedDataset: datasetId,
-            },
-          }
+              ...node,
+              data: {
+                ...node.data,
+                columns: sourceNode.data.columns,
+                selectedDataset: datasetId,
+              },
+            }
           : node,
       );
     });

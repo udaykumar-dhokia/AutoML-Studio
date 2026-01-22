@@ -51,12 +51,12 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
       nodes.map((node) =>
         node.id === id
           ? {
-            ...node,
-            data: {
-              ...node.data,
-              ...newData,
-            },
-          }
+              ...node,
+              data: {
+                ...node.data,
+                ...newData,
+              },
+            }
           : node,
       ),
     );
@@ -65,11 +65,13 @@ function TrainTestSplitNode({ id, data, isConnectable }: any) {
   return (
     <>
       <div
-        className={`relative w-[240px] rounded-none shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${loading ? "animate-pulse border-primary-500" : ""
-          } ${hasRun
+        className={`relative w-60 rounded-md shadow-sm bg-white dark:bg-sidebar border border-dashed border-black/25 cursor-pointer ${
+          loading ? "animate-pulse border-primary-500" : ""
+        } ${
+          hasRun
             ? "border-green-500 dark:border-green-500"
             : "dark:border-white/15 border-black/25"
-          }`}
+        }`}
         onDoubleClickCapture={handleDoubleClick}
       >
         <div className="flex items-center justify-between px-3 py-2 bg-gray-100 dark:bg-sidebar border-b">

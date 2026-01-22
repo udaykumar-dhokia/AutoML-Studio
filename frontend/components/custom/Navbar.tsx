@@ -13,7 +13,9 @@ const Navbar = ({
         <SidebarTrigger className="cursor-pointer" />
         <h1 className="text-2xl font-bold">{title}</h1>
       </div>
-      {children}
+      <div className="">
+        {children}
+      </div>
     </div>
   );
 };
