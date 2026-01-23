@@ -1,4 +1,4 @@
-import { ChevronUp, User2, Database, Box, CloudCog } from "lucide-react";
+import { ChevronUp, User2, Database, Box } from "lucide-react";
 import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
 import {
