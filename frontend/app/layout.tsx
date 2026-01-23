@@ -26,6 +26,28 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicons/web/icons8-workflow-isometric-line-32.png",
   },
+  openGraph: {
+    title: "AutoML Studio - Train models with flow",
+    description: "Build and deploy ML models quickly and easily.",
+    url: "https://automlstudio.vercel.app",
+    siteName: "AutoML Studio - Train models with flow",
+    images: [
+      {
+        url: "https://automlstudio.vercel.app/banner.png",
+        width: 1200,
+        height: 630,
+        alt: "AutoML Studio - Train models with flow",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AutoML Studio - Train models with flow",
+    description: "Build and deploy ML models quickly and easily.",
+    images: ["https://automlstudio.vercel.app/banner.png"],
+  },
 };
 
 export default function RootLayout({
