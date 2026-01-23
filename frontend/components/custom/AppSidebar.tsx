@@ -1,4 +1,4 @@
-import { ChevronUp, User2, Database, Box } from "lucide-react";
+import { ChevronUp, User2, Database, Box, CloudCog } from "lucide-react";
 import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
 import {
@@ -27,6 +27,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { handleWorkflowRoute } from "@/utils/handleWorkflowRoute";
+import UsageCard from "./Cards/UsageCard";
+import UsageCardSkeleton from "./Skeletons/UsageCardSkeleton";
 
 const items = [
   {
@@ -57,6 +59,8 @@ export function AppSidebar() {
   const router = useRouter();
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
   const { datasets } = useSelector((state: RootState) => state.dataset);
+
+  console.log(user);
 
   const handleSignOut = () => {
     router.push("/");
@@ -92,46 +96,49 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
-                      className={`${pathname === item.url
+                      className={`${
+                        pathname === item.url
                           ? "border-primary/50 border inset-shadow-sm inset-shadow-white/5"
                           : ""
-                        } transition-colors hover:bg-black hover:text-white`}
+                      } transition-colors hover:bg-black hover:text-white`}
                     >
                       <Link
                         href={item.url}
-                        className={`hover:text-black transition-colors ${pathname === item.url ? "text-white" : ""
-                          }`}
+                        className={`hover:text-black transition-colors ${
+                          pathname === item.url ? "text-white" : ""
+                        }`}
                       >
                         <item.icon />
                         <span>{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
-                    {item.url == "/models"
-                      ? workflows.map((workflow, idx) => {
-                        return (
-                          <SidebarMenuSubItem className="my-1">
-                            <SidebarMenuSub>
-                              <SidebarMenuSubButton
-                                onClick={() => {
-                                  handleWorkflowRoute(workflow, router);
-                                }}
-                                className="cursor-pointer"
-                              >
-                                {workflow.name}
-                              </SidebarMenuSubButton>
-                            </SidebarMenuSub>
+                    {item.url == "/models" && workflows.length > 0 && (
+                      <SidebarMenuSub>
+                        {workflows.map((workflow, idx) => (
+                          <SidebarMenuSubItem key={idx} className="my-1">
+                            <SidebarMenuSubButton
+                              onClick={() =>
+                                handleWorkflowRoute(workflow, router)
+                              }
+                              className="cursor-pointer"
+                            >
+                              <p className="truncate">{workflow.name}</p>
+                            </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
-                        );
-                      })
-                      : item.url == "/datasets"
-                        ? datasets.map((dataset, idx) => {
-                          return (
-                            <SidebarMenuSubItem className="my-1">
-                              <SidebarMenuSub>{dataset.name}</SidebarMenuSub>
-                            </SidebarMenuSubItem>
-                          );
-                        })
-                        : ""}
+                        ))}
+                      </SidebarMenuSub>
+                    )}
+                    {item.url == "/datasets" && datasets.length > 0 && (
+                      <SidebarMenuSub>
+                        {datasets.map((dataset, idx) => (
+                          <SidebarMenuSubItem key={idx} className="my-1">
+                            <SidebarMenuSubButton className="cursor-default">
+                              <p className="truncate">{dataset.name}</p>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    )}
                   </SidebarMenuItem>
                 ))}
               </div>
@@ -141,6 +148,9 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem className="my-2">
+            {user ? <UsageCard /> : <UsageCardSkeleton />}
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger className="cursor-pointer" asChild>

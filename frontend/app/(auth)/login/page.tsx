@@ -42,78 +42,85 @@ const page = () => {
   };
 
   return (
-    <>
-      <div className="flex justify-center items-center min-h-screen bg-transparent max-w-6xl mx-auto">
-        <div className="flex flex-col justify-center border border-dashed border-primary/20 p-6 w-84 space-y-4 rounded-md">
+    <div className="w-full min-h-screen grid lg:grid-cols-2">
+      <div className="flex w-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col w-full max-w-sm space-y-6">
           <div className="space-y-2">
             <div className="cursor-pointer" onClick={() => router.push("/")}>
               <Image
                 src={logoLight}
                 alt="logo"
-                width={28}
-                height={28}
+                width={32}
+                height={32}
                 className="block dark:hidden"
               />
               <Image
                 src={logoDark}
                 alt="logo"
-                width={28}
-                height={28}
+                width={32}
+                height={32}
                 className="hidden dark:block"
               />
             </div>
-            <h1 className="text-xl font-bold">Welcome back</h1>
-            <p className="text-sm text-gray-500">
+            <h1 className="text-2xl font-bold tracking-tight">Welcome back</h1>
+            <p className="text-sm text-muted-foreground">
               Enter your email and password to login
             </p>
           </div>
 
-          <div className="space-y-2">
-            <Label>Email</Label>
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <div className="space-y-4 w-full">
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Password</Label>
+              <Input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <Button
+              disabled={!email || !password || loading}
+              onClick={handleLogin}
+              className="w-full"
+            >
+              <span className={loading ? "opacity-0" : "opacity-100"}>
+                Continue
+              </span>
+
+              {loading && (
+                <Loader2 className="absolute h-4 w-4 animate-spin" />
+              )}
+            </Button>
+
+
+            <p className="text-center text-sm text-muted-foreground">
+              Don&apos;t have an account?{" "}
+              <Link href="/register" className="underline hover:text-primary">
+                Register
+              </Link>
+            </p>
           </div>
-
-          <div className="space-y-2">
-            <Label>Password</Label>
-            <Input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <Button
-            size={"sm"}
-            disabled={!email || !password}
-            onClick={() => {
-              if (email && password) {
-                handleLogin();
-              }
-            }}
-            className="w-full"
-          >
-            {loading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              "Continue"
-            )}
-          </Button>
-
-          <p className="text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="underline">
-              Register
-            </Link>
-          </p>
         </div>
       </div>
-    </>
+      <div className="hidden lg:block relative h-full pl-2 py-2 bg-transparent rounded-md">
+        <img
+          src="/images/demo2.png"
+          alt="Authentication background"
+          className="object-cover object-left h-full w-full rounded-md blur-xs"
+        />
+      </div>
+    </div>
   );
 };
 

@@ -58,7 +58,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
       return res
         .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)
@@ -96,7 +95,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
       return res
         .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)
@@ -135,7 +133,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
       return res
         .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)
@@ -173,7 +170,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
       return res
         .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)
@@ -211,7 +207,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
       return res
         .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)
@@ -260,7 +255,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
       if (error.response?.data && error.response.data instanceof Buffer) {
         try {
@@ -321,7 +315,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(combinedResults);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
 
       if (error.response?.data && error.response.data instanceof Buffer) {
@@ -379,7 +372,6 @@ const operationsController = {
 
       return res.status(httpStatus.OK).json(response.data);
     } catch (error: any) {
-      console.log(error);
       const message = error.response?.data?.detail || "Something went wrong";
       return res
         .status(error.response?.status || httpStatus.INTERNAL_SERVER_ERROR)

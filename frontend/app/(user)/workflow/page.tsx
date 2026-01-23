@@ -87,7 +87,7 @@ const page = () => {
 
     setNodes(workflow.nodes || []);
     setEdges(workflow.edges || []);
-  }, []);
+  }, [workflow]);
 
   const onNodesChange = useCallback(
     (changes: any) =>

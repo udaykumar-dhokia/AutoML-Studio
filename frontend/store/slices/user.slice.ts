@@ -10,6 +10,8 @@ export type TUser = {
   first_name: string;
   last_name: string;
   email: string;
+  totalLimit: number,
+  currentLimit: number,
 };
 
 interface IUserState {

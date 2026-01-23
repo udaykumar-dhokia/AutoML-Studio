@@ -74,7 +74,6 @@ const CreateWorkflowSheet = () => {
       setOpen(false);
       router.push("/workflow");
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);

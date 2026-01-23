@@ -19,6 +19,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    totalLimit: {
+      type: Number,
+      default: 5
+    },
+    currentLimit: {
+      type: Number,
+      default: 5,
+    }
   },
   {
     timestamps: true,

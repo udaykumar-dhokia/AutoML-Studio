@@ -17,7 +17,7 @@ const server = http.createServer(app);
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://automlstudio.vercel.app"],
     credentials: true,
   }),
 );
@@ -32,6 +32,6 @@ app.use("/api/node", nodeRoutes);
 app.use("/api/operations", operationsRoutes);
 
 server.listen(process.env.PORT || 3000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 3000}`);
+  console.log(`🟢 Server is running on port ${process.env.PORT || 3000}`);
   connectDB();
 });

@@ -70,7 +70,6 @@ const datasetController = {
       const dataset = await datasetDao.createDataset(payload);
       return res.status(httpStatus.OK).json(dataset);
     } catch (error) {
-      console.log(error);
       return res
         .status(httpStatus.INTERNAL_SERVER_ERROR)
         .json({ message: "Internal Server Error" });

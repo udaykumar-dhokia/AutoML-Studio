@@ -12,12 +12,14 @@ import logoLight from "@/public/logo/logo-light/icons8-workflow-100.png";
 import logoDark from "@/public/logo/logo-dark/icons8-workflow-100.png";
 import Image from "next/image";
 import usePageTitle from "@/components/custom/PageTitle";
+import { Loader2 } from "lucide-react";
 
 const page = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   usePageTitle("Register | AutoML Studio");
@@ -25,6 +27,7 @@ const page = () => {
   const handleRegister = async () => {
     if (!firstName || !lastName || !email || !password) return;
     try {
+      setLoading(true);
       const payload = {
         first_name: firstName,
         last_name: lastName,
@@ -36,94 +39,110 @@ const page = () => {
       router.push("/models");
     } catch (error: any) {
       toast.error(error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="flex flex-col justify-center border border-dashed border-primary/20 p-6 w-84 space-y-4 rounded-md">
+    <div className="w-full min-h-screen grid lg:grid-cols-2">
+      <div className="flex w-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col w-full max-w-sm space-y-6">
           <div className="space-y-2">
             <div className="cursor-pointer" onClick={() => router.push("/")}>
               <Image
                 src={logoLight}
                 alt="logo"
-                width={28}
-                height={28}
+                width={32}
+                height={32}
                 className="block dark:hidden"
               />
               <Image
                 src={logoDark}
                 alt="logo"
-                width={28}
-                height={28}
+                width={32}
+                height={32}
                 className="hidden dark:block"
               />
             </div>
-            <h1 className="text-xl font-bold">Get Started for FREE</h1>
-            <p className="text-sm text-gray-500">
+            <h1 className="text-2xl font-bold tracking-tight">Get Started for FREE</h1>
+            <p className="text-sm text-muted-foreground">
               Enter below details to register
             </p>
           </div>
 
-          <div className="space-y-2">
-            <Label>First Name</Label>
-            <Input
-              type="text"
-              placeholder="Enter your first name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
+          <div className="space-y-4 w-full">
+            <div className="space-y-2">
+              <Label>First Name</Label>
+              <Input
+                type="text"
+                placeholder="Enter your first name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Last Name</Label>
+              <Input
+                type="text"
+                placeholder="Enter your last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Password</Label>
+              <Input
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <Button
+              disabled={!firstName || !lastName || !email || !password || loading}
+              onClick={handleRegister}
+              className="w-full"
+            >
+              <span className={loading ? "opacity-0" : "opacity-100"}>
+                Get Started
+              </span>
+
+              {loading && (
+                <Loader2 className="absolute h-4 w-4 animate-spin" />
+              )}
+            </Button>
+
+            <p className="text-center text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link href="/login" className="underline hover:text-primary">
+                Login
+              </Link>
+            </p>
           </div>
-
-          <div className="space-y-2">
-            <Label>Last Name</Label>
-            <Input
-              type="text"
-              placeholder="Enter your last name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>Email</Label>
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>Password</Label>
-            <Input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <Button
-            size={"sm"}
-            disabled={!firstName || !lastName || !email || !password}
-            className="w-full"
-            onClick={handleRegister}
-          >
-            Get Started
-          </Button>
-
-          <p className="text-center text-sm">
-            Already have an account?{" "}
-            <Link href="/login" className="underline">
-              Login
-            </Link>
-          </p>
         </div>
       </div>
-    </>
+      <div className="hidden lg:block relative h-full pl-2 py-2 bg-transparent rounded-md">
+        <img
+          src="/images/demo2.png"
+          alt="Authentication background"
+          className="object-cover object-left h-full w-full rounded-md blur-xs"
+        />
+      </div>
+    </div>
   );
 };
 

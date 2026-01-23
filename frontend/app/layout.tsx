@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import SmoothScrollProvider, { ClientProviders } from "./providers";
+import { ClientProviders } from "./providers";
 import { Analytics } from "@vercel/analytics/next"
 
 const raleway = Raleway({
@@ -40,12 +40,10 @@ export default function RootLayout({
       >
         {/* <ThemeProvider defaultTheme="system" attribute="class" enableSystem> */}
 
-        <SmoothScrollProvider>
-          <ClientProviders>
-            {children}
-            <Analytics />
-          </ClientProviders>
-        </SmoothScrollProvider>
+        <ClientProviders>
+          {children}
+          <Analytics />
+        </ClientProviders>
         <Toaster />
         {/* </ThemeProvider> */}
       </body>

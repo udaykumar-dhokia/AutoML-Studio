@@ -47,7 +47,6 @@ const RegisterDatasetSheet = () => {
       toast.success("Dataset uploaded successfully");
       setOpen(false);
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response.data.message);
     } finally {
       setLoading(false);
