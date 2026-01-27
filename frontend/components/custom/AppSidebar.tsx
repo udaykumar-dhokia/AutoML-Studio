@@ -60,8 +60,6 @@ export function AppSidebar() {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
   const { datasets } = useSelector((state: RootState) => state.dataset);
 
-  console.log(user);
-
   const handleSignOut = () => {
     router.push("/");
   };

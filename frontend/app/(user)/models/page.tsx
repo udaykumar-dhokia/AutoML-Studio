@@ -6,14 +6,16 @@ import { useSelector } from "react-redux";
 import CreateWorkflowSheet from "@/components/custom/Sheets/CreateWorkflowSheet";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Play, Bot, Box } from "lucide-react";
+import { Play, Bot, Box, Square } from "lucide-react";
 import usePageTitle from "@/components/custom/PageTitle";
 import Loader from "@/components/custom/Loader";
 import { DeleteWorkflowDialog } from "@/components/custom/Dialogs/DeleteWorkflowDialog";
 import { handleWorkflowRoute } from "@/utils/handleWorkflowRoute";
+import { useContainerStatus } from "@/hooks/useContainerStatus";
 
 const page = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
+  const { statuses } = useContainerStatus();
   const router = useRouter();
   const { loading: workflowLoading } = useSelector(
     (state: RootState) => state.allWorkflows,
@@ -46,45 +48,47 @@ const page = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-            {workflows.map((workflow) => (
-              <div
-                key={workflow._id}
-                className="group bg-white dark:bg-sidebar border hover:dark:border-primary/40 rounded-md p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 flex flex-col h-44"
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <div className="rounded-md">
-                    <Box className="w-7 h-7 text-black dark:text-white" />
+            {workflows.map((workflow) => {
+              return (
+                <div
+                  key={workflow._id}
+                  className="group bg-white dark:bg-sidebar border hover:dark:border-primary/40 rounded-md p-3 shadow-sm transition-all duration-200 hover:shadow-md hover:border-blue-500 flex flex-col h-44"
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="rounded-md">
+                      <Box className="w-7 h-7 text-black dark:text-white" />
+                    </div>
+                  </div>
+
+                  <div className="flex-1 min-h-0 flex flex-col justify-end">
+                    <h2
+                      className="text-lg font-semibold text-gray-900 dark:text-white truncate mb-1"
+                      title={workflow.name}
+                    >
+                      {workflow.name}
+                    </h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate mb-3">
+                      {workflow.description || "No description provided"}
+                    </p>
+                  </div>
+
+                  <div className="border-t border-gray-100 dark:border-gray-800 pt-2 flex justify-end gap-1 opacity-100 transition-opacity">
+                    <DeleteWorkflowDialog id={workflow._id} />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 hover:text-blue-600"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleWorkflowRoute(workflow, router);
+                      }}
+                    >
+                      <Play className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
+                    </Button>
                   </div>
                 </div>
-
-                <div className="flex-1 min-h-0 flex flex-col justify-end">
-                  <h2
-                    className="text-lg font-semibold text-gray-900 dark:text-white truncate mb-1"
-                    title={workflow.name}
-                  >
-                    {workflow.name}
-                  </h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 truncate mb-3">
-                    {workflow.description || "No description provided"}
-                  </p>
-                </div>
-
-                <div className="border-t border-gray-100 dark:border-gray-800 pt-2 flex justify-end gap-1 opacity-100 transition-opacity">
-                  <DeleteWorkflowDialog id={workflow._id} />
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 hover:text-blue-600"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleWorkflowRoute(workflow, router);
-                    }}
-                  >
-                    <Play className="w-3.5 h-3.5 text-gray-600 dark:text-gray-400" />
-                  </Button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

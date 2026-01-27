@@ -1,16 +1,6 @@
-<img
-  src="frontend/public/banner.png"
-  alt="Banner"
-  style="
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    object-position: top;
-    display: block;
-  "
-/>
+<img src="frontend/public/logo/README.png" width="80"/>
 
----
+# AutoML Studio
 
 **AutoML Studio** is a powerful No-Code Machine Learning Platform that empowers users to build, train, and evaluate machine learning models using an intuitive drag-and-drop interface. Whether you are a data scientist or a beginner, AutoML Studio streamlines the complex process of ML workflows into simple, visual steps.
 

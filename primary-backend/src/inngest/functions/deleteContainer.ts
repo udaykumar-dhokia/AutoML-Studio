@@ -11,12 +11,19 @@ const deleteContainer = inngest.createFunction(
     await step.run("stop-container", async () => {
       const container = docker.getContainer(containerId);
 
+      if (!container) {
+        console.log(`Container ${containerId} not found, skipping stop.`);
+        return `${containerId} not found`;
+      }
+
       try {
         await container.stop();
+        console.log(`Stop requested for container ${containerId}`);
       } catch (err: any) {
         if (err?.statusCode !== 304) {
           throw err;
         }
+        console.log(`Container ${containerId} already stopped.`);
       }
 
       await inngest.send({
@@ -40,12 +47,19 @@ const deleteContainer = inngest.createFunction(
     await step.run("remove-container", async () => {
       const container = docker.getContainer(containerId);
 
+      if (!container) {
+        console.log(`Container ${containerId} not found, skipping removal.`);
+        return `${containerId} not found`;
+      }
+
       try {
         await container.remove({ force: true });
+        console.log(`Container ${containerId} removed.`);
       } catch (err: any) {
         if (err?.statusCode !== 404) {
           throw err;
         }
+        console.log(`Container ${containerId} already removed.`);
       }
 
       return `${containerId} removed`;
