@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db.config";
 import { serve } from "inngest/express";
 import { inngest, functions } from "./inngest/index";
+import { Server as SocketIOServer } from "socket.io";
 
 import authRoutes from "./features/auth/auth.routes";
 import userRoutes from "./features/user/user.routes";
@@ -16,6 +17,21 @@ import operationsRoutes from "./features/operations/operations.routes";
 
 const app = express();
 const server = http.createServer(app);
+
+export const io = new SocketIOServer(server, {
+  cors: {
+    origin: ["http://localhost:5173", "https://automlstudio.vercel.app"],
+    credentials: true,
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`🟢 Client connected: ${socket.id}`);
+
+  socket.on("disconnect", () => {
+    console.log(`🔴 Client disconnected: ${socket.id}`);
+  });
+});
 
 app.use(
   cors({

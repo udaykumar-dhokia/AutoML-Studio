@@ -33,6 +33,7 @@ export type TWorflow = {
   edges: TEdge[];
   createdAt: string;
   updatedAt: string;
+  dockerId: string;
 };
 
 interface IAllWorkflowsState {
@@ -55,7 +56,7 @@ export const fetchAllWorkflows = createAsyncThunk(
       }
       throw error.response.data.message;
     }
-  }
+  },
 );
 
 const initialState: IAllWorkflowsState = {
@@ -72,12 +73,12 @@ const allWorkflowsSlice = createSlice({
     },
     updateWorkflow: (state, action: PayloadAction<TWorflow>) => {
       state.workflows = state.workflows.map((workflow) =>
-        workflow._id === action.payload._id ? action.payload : workflow
+        workflow._id === action.payload._id ? action.payload : workflow,
       );
     },
     deleteWorkflow: (state, action: PayloadAction<string>) => {
       state.workflows = state.workflows.filter(
-        (workflow) => workflow._id !== action.payload
+        (workflow) => workflow._id !== action.payload,
       );
     },
   },
@@ -95,6 +96,7 @@ const allWorkflowsSlice = createSlice({
   },
 });
 
-export const { addWorkflow, updateWorkflow, deleteWorkflow } = allWorkflowsSlice.actions;
+export const { addWorkflow, updateWorkflow, deleteWorkflow } =
+  allWorkflowsSlice.actions;
 
 export default allWorkflowsSlice.reducer;
