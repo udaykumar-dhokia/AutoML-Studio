@@ -25,6 +25,7 @@ const workflowSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     description: { type: String },
+    dockerId: {type: String},
     nodes: { type: [], default: [] },
     edges: { type: [], default: [] },
     userId: {

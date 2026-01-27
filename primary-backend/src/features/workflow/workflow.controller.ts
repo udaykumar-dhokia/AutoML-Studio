@@ -1,3 +1,4 @@
+import { inngest } from "../../inngest";
 import { httpStatus } from "../../utils/httpStatus";
 import workflowDao from "./workflow.dao";
 import { TWorkflow } from "./workflow.type";
@@ -35,6 +36,18 @@ const workflowController = {
       };
 
       const workflow = await workflowDao.createWorkflow(payload);
+      inngest
+        .send({
+          name: "workflow/workflow.created",
+          data: {
+            id: workflow._id.toString(),
+          },
+        })
+        .catch((error) => {
+          return res
+            .status(httpStatus.INTERNAL_SERVER_ERROR)
+            .json({ error, message: "Internal Server Error" });
+        });
       return res.status(httpStatus.OK).json(workflow);
     } catch (error) {
       console.error(error);
@@ -127,8 +140,17 @@ const workflowController = {
     }
 
     try {
-      const workflow = await workflowDao.deleteWorkflowById(id);
-      return res.status(httpStatus.OK).json({ workflow, message: "Deleted successfully" });
+      const workflow = await workflowDao.getWorkflowById(id);
+      inngest.send({
+        name: "workflow/workflow.deleted",
+        data: {
+          id: workflow.dockerId,
+        },
+      });
+      await workflowDao.deleteWorkflowById(id);
+      return res
+        .status(httpStatus.OK)
+        .json({ workflow, message: "Deleted successfully" });
     } catch (error) {
       console.error(error);
       return res

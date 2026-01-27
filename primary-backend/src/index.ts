@@ -4,6 +4,8 @@ import cors from "cors";
 import http from "http";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.config";
+import { serve } from "inngest/express";
+import { inngest, functions } from "./inngest/index";
 
 import authRoutes from "./features/auth/auth.routes";
 import userRoutes from "./features/user/user.routes";
@@ -23,6 +25,8 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser());
+
+app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);

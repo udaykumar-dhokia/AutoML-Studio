@@ -31,4 +31,5 @@ export type TWorkflow = {
   nodes: (TDatasetNode[] | TPreprocessingNode[] | TModelNode[])[];
   edges: TEdge[];
   userId: string;
+  dockerId?: string;
 };
