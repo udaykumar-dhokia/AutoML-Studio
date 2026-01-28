@@ -10,8 +10,14 @@ export function useSocket() {
 
   useEffect(() => {
     if (!socket) {
-      socket = io("http://localhost:3000", {
+      const socketUrl =
+        process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:3000";
+      socket = io(socketUrl, {
         withCredentials: true,
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 5,
       });
     }
 
@@ -21,12 +27,17 @@ export function useSocket() {
       console.log("✅ Connected to Socket.IO server", socket?.id);
     });
 
+    socket.on("connect_error", (error) => {
+      console.error("❌ Socket connection error:", error);
+    });
+
     socket.on("disconnect", () => {
       console.log("🔴 Disconnected from Socket.IO server");
     });
 
     return () => {
       socket?.off("connect");
+      socket?.off("connect_error");
       socket?.off("disconnect");
     };
   }, []);

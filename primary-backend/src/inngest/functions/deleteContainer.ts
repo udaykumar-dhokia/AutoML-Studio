@@ -1,5 +1,7 @@
+import { io } from "../../index";
 import docker from "../../config/docker.config";
 import { inngest } from "../client";
+import redisClient from "../../config/redis.config";
 
 const deleteContainer = inngest.createFunction(
   { id: "delete-container" },
@@ -54,6 +56,8 @@ const deleteContainer = inngest.createFunction(
 
       try {
         await container.remove({ force: true });
+        await redisClient.del(`container:${containerId}`);
+        io.emit("container_removed", container);
         console.log(`Container ${containerId} removed.`);
       } catch (err: any) {
         if (err?.statusCode !== 404) {

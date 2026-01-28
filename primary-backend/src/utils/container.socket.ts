@@ -1,5 +1,6 @@
 import { createClient } from "redis";
 import { io } from "../index";
+import docker from "../config/docker.config";
 
 const subscriber = createClient({ url: process.env.REDIS_URL });
 
@@ -11,8 +12,9 @@ await subscriber.configSet("notify-keyspace-events", "Khx");
 
 await subscriber.pSubscribe(
   "__keyspace@0__:container:*",
-  (message, channel) => {
-    const containerId = channel.split(":")[1];
+  async (message, channel) => {
+    const containerId = channel.split(":")[2];
+    console.log(channel);
 
     if (message === "hset") {
       console.log(`Container added/updated: ${containerId}`);
@@ -24,6 +26,7 @@ await subscriber.pSubscribe(
 
     if (message === "expired") {
       console.log(`Container expired/removed: ${containerId}`);
+      await docker.getContainer(containerId).stop();
       io.emit("container_removed", {
         containerId,
         timestamp: Date.now(),
