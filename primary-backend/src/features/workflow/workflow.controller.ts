@@ -2,6 +2,7 @@ import { inngest } from "../../inngest";
 import { httpStatus } from "../../utils/httpStatus";
 import workflowDao from "./workflow.dao";
 import { TWorkflow } from "./workflow.type";
+import redisClient from "../../config/redis.config";
 
 const workflowController = {
   createWorkflow: async (req, res) => {
@@ -86,6 +87,17 @@ const workflowController = {
 
     try {
       const workflow = await workflowDao.getWorkflowById(req.params.id);
+
+      if (workflow && workflow.dockerId) {
+        const containerData: any = await redisClient.hGetAll(`container:${workflow.dockerId}`);
+        if (containerData && containerData.status === "up") {
+          return res.status(httpStatus.OK).json({
+            ...workflow.toObject(),
+            isInitializing: true
+          });
+        }
+      }
+
       return res.status(httpStatus.OK).json(workflow);
     } catch (error) {
       console.error(error);

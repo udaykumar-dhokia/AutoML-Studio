@@ -18,6 +18,7 @@ export function useContainerStatus() {
     setSocket(s);
 
     s.on("container_added", (data: ContainerStatus) => {
+      console.log(data);
       setStatuses((prev) => ({
         ...prev,
         [data.workflowId]: data,
@@ -25,6 +26,7 @@ export function useContainerStatus() {
     });
 
     s.on("container_removed", (data: ContainerStatus) => {
+      console.log(data);
       setStatuses((prev) => ({
         ...prev,
         [data.workflowId]: { ...data, status: "down" },

@@ -11,7 +11,9 @@ import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const TopCenterPanel = () => {
-  const { workflow } = useSelector((state: RootState) => state.currentWorkflow);
+  const { workflow, isInitializing } = useSelector(
+    (state: RootState) => state.currentWorkflow,
+  );
   const rf = useReactFlow();
   const [loading, setLoading] = useState<boolean>(false);
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
@@ -65,6 +67,14 @@ const TopCenterPanel = () => {
         <div className="flex items-center gap-2">
           <SidebarTrigger className="cursor-pointer" />
           <h1 className="text-2xl font-bold">{workflow?.name}</h1>
+          {isInitializing && (
+            <div className="flex items-center gap-2 ml-4 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full animate-pulse">
+              <Loader2 className="h-4 w-4 animate-spin text-primary" />
+              <span className="text-xs font-medium text-primary">
+                Spinning up environment...
+              </span>
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <Button

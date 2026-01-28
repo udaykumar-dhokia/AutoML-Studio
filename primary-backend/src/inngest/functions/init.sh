@@ -19,5 +19,9 @@ apt-get install -y curl vim git
 
 echo "Container setup complete. Folder created at $FOLDER_PATH"
 
+# Notify backend that container is ready
+echo "Notifying backend at http://192.168.1.100:3000/api/container/workflow/$WORKFLOW_ID/ready"
+curl -X POST "http://192.168.1.100:3000/api/container/workflow/$WORKFLOW_ID/ready"
+
 # Keep the container running
 sleep infinity

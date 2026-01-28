@@ -4,6 +4,7 @@ import docker from "../../config/docker.config";
 import workflowDao from "../../features/workflow/workflow.dao";
 import { inngest } from "../client";
 import redisClient from "../../config/redis.config";
+import { io } from "../../index";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,12 +23,15 @@ async function createAndStartContainer(
   let attempt = 0;
   while (attempt < maxRetries) {
     try {
+      const backendUrl = process.env.BACKEND_URL || "http://host.docker.internal:3000";
+
       const container = await docker.createContainer({
         Image: "workflow-container-init",
         name: `w_${workflowId}`,
         HostConfig: {
           Binds: [`${join(__dirname, "init.sh")}:/init.sh`],
         },
+        Env: [`BACKEND_URL=${backendUrl}`],
         Cmd: ["/bin/bash", "/init.sh", workflowId],
       });
 
@@ -40,6 +44,8 @@ async function createAndStartContainer(
       });
 
       await redisClient.expire(`container:${container.id}`, 300);
+
+      io.emit("container_added", { id: container.id, workflowId });
 
       return container;
     } catch (err: any) {

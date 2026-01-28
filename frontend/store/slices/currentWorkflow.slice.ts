@@ -1,16 +1,23 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { TNode, TWorflow } from "./allWorkflows.slice";
 
-const initialState: { workflow: TWorflow | null } = {
+const initialState: { workflow: TWorflow | null; isInitializing: boolean } = {
   workflow: null,
+  isInitializing: false,
 };
 
 const currentWorkflowSlice = createSlice({
   name: "currentWorkflow",
   initialState,
   reducers: {
-    setCurrentWorkflow: (state, action: PayloadAction<TWorflow>) => {
+    setCurrentWorkflow: (state, action: PayloadAction<TWorflow & { isInitializing?: boolean }>) => {
       state.workflow = action.payload;
+      if (action.payload.isInitializing !== undefined) {
+        state.isInitializing = action.payload.isInitializing;
+      }
+    },
+    setIsInitializing: (state, action: PayloadAction<boolean>) => {
+      state.isInitializing = action.payload;
     },
     clearCurrentWorkflow: (state) => {
       state.workflow = null;
@@ -30,6 +37,11 @@ const currentWorkflowSlice = createSlice({
   },
 });
 
-export const { setCurrentWorkflow, clearCurrentWorkflow, addNode, deleteNode } =
-  currentWorkflowSlice.actions;
+export const {
+  setCurrentWorkflow,
+  clearCurrentWorkflow,
+  addNode,
+  deleteNode,
+  setIsInitializing,
+} = currentWorkflowSlice.actions;
 export default currentWorkflowSlice.reducer;

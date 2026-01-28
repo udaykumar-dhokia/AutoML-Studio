@@ -15,7 +15,6 @@ import { useContainerStatus } from "@/hooks/useContainerStatus";
 
 const page = () => {
   const { workflows } = useSelector((state: RootState) => state.allWorkflows);
-  const { statuses } = useContainerStatus();
   const router = useRouter();
   const { loading: workflowLoading } = useSelector(
     (state: RootState) => state.allWorkflows,

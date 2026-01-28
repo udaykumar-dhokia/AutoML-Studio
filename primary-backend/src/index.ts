@@ -14,15 +14,23 @@ import datasetRoutes from "./features/dataset/dataset.routes";
 import workflowRoutes from "./features/workflow/workflow.routes";
 import nodeRoutes from "./features/nodes/node.routes";
 import operationsRoutes from "./features/operations/operations.routes";
+import containerRoutes from "./features/container/container.routes";
+import "./utils/container.socket";
 
 const app = express();
 const server = http.createServer(app);
 
 export const io = new SocketIOServer(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://automlstudio.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://automlstudio.vercel.app",
+    ],
     credentials: true,
+    methods: ["GET", "POST"],
   },
+  transports: ["websocket", "polling"],
 });
 
 io.on("connection", (socket) => {
@@ -30,6 +38,10 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log(`🔴 Client disconnected: ${socket.id}`);
+  });
+
+  socket.on("error", (error) => {
+    console.error(`❌ Socket error from ${socket.id}:`, error);
   });
 });
 
@@ -50,6 +62,7 @@ app.use("/api/dataset", datasetRoutes);
 app.use("/api/workflow", workflowRoutes);
 app.use("/api/node", nodeRoutes);
 app.use("/api/operations", operationsRoutes);
+app.use("/api/container", containerRoutes);
 
 server.listen(process.env.PORT || 3000, () => {
   console.log(`🟢 Server is running on port ${process.env.PORT || 3000}`);
