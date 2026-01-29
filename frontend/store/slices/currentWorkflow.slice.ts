@@ -14,6 +14,8 @@ const currentWorkflowSlice = createSlice({
       state.workflow = action.payload;
       if (action.payload.isInitializing !== undefined) {
         state.isInitializing = action.payload.isInitializing;
+      } else {
+        state.isInitializing = false;
       }
     },
     setIsInitializing: (state, action: PayloadAction<boolean>) => {
@@ -34,6 +36,18 @@ const currentWorkflowSlice = createSlice({
         );
       }
     },
+    spinUpWorkflow: (state, action: PayloadAction<string>) => {
+      if (state.workflow) {
+        state.workflow.status = true;
+      }
+    },
+
+    spinDownWorkflow: (state, action: PayloadAction<string>) => {
+      if (state.workflow) {
+        state.workflow.status = false;
+      }
+    },
+
   },
 });
 
@@ -43,5 +57,7 @@ export const {
   addNode,
   deleteNode,
   setIsInitializing,
+  spinUpWorkflow,
+  spinDownWorkflow,
 } = currentWorkflowSlice.actions;
 export default currentWorkflowSlice.reducer;

@@ -9,5 +9,7 @@ router.get("/", authMiddleware, workflowController.getWorkflows);
 router.get("/:id", authMiddleware, workflowController.getWorkflowById);
 router.put("/:id", authMiddleware, workflowController.updateWorkflowById);
 router.delete("/:id", authMiddleware, workflowController.deleteWorkflowById);
+router.put("/:id/activate", authMiddleware, workflowController.activateWorkflowById);
+router.put("/:id/deactivate", authMiddleware, workflowController.deactivateWorkflowById);
 
 export default router;
