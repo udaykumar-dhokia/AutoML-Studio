@@ -20,7 +20,7 @@ class WorkflowDao {
 
   async updateWorkflowById(
     id: string,
-    workflowData: { nodes?: []; edges?: []; dockerId?: string },
+    workflowData: { nodes?: []; edges?: []; dockerId?: string; status?: boolean },
   ) {
     return await Workflow.findByIdAndUpdate(id, workflowData);
   }

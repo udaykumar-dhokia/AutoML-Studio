@@ -7,12 +7,13 @@ import { RootState, store } from "@/store/store";
 import { useSelector } from "react-redux";
 import { fetchUser } from "@/store/slices/user.slice";
 import { fetchDatasets } from "@/store/slices/datasets.slice";
-import { fetchAllWorkflows } from "@/store/slices/allWorkflows.slice";
-import { setIsInitializing } from "@/store/slices/currentWorkflow.slice";
+import { fetchAllWorkflows, spinDownWorkflow, spinUpWorkflow } from "@/store/slices/allWorkflows.slice";
+
+import { setIsInitializing, spinDownWorkflow as currentSpinDownWorkflow, spinUpWorkflow as currentSpinUpWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { toast } from "sonner";
-import { Loader } from "lucide-react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/custom/AppSidebar";
+import Loader from "@/components/custom/Loader";
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -58,42 +59,63 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
     console.log("Setting up socket listeners", socket.id);
 
     const onAdded = (data: any) => {
-      // Check if this container belongs to the current user's workflows
-      const isUserWorkflow = workflows.some(w => w._id === data.workflowId);
+      store.dispatch(spinUpWorkflow(data.workflowId));
 
-      if (!isUserWorkflow) {
-        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
-        return;
-      }
-
-      console.log("Container added:", data);
       if (workflow?._id === data.workflowId) {
         store.dispatch(setIsInitializing(true));
+        store.dispatch(currentSpinUpWorkflow(data.workflowId));
+      } else {
+        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
       }
-      toast.success("We are initialising your env");
     };
 
-    const onRemoved = (data: any) => {
+    const onExpired = (data: any) => {
+      store.dispatch(spinDownWorkflow(data.workflowId));
       console.log("Container removed:", data);
-      toast.success("We are removing your env");
+
+      if (workflow?._id === data.workflowId) {
+        store.dispatch(setIsInitializing(false));
+        store.dispatch(currentSpinDownWorkflow(data.workflowId));
+      } else {
+        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
+      }
     };
 
     const onReady = (data: any) => {
       console.log("Container ready:", data);
+
+      store.dispatch(spinUpWorkflow(data.workflowId));
+
+      if (workflow?._id === data.workflowId) {
+        store.dispatch(currentSpinUpWorkflow(data.workflowId));
+        store.dispatch(setIsInitializing(false));
+      } else {
+        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
+      }
+    };
+
+    const onDeleted = (data: any) => {
+      store.dispatch(spinDownWorkflow(data.workflowId));
+      console.log("Container deleted:", data);
+
       if (workflow?._id === data.workflowId) {
         store.dispatch(setIsInitializing(false));
+        store.dispatch(currentSpinDownWorkflow(data.workflowId));
+      } else {
+        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
       }
-      toast.success("Environment initialized!");
     };
 
     socket.on("container_added", onAdded);
-    socket.on("container_removed", onRemoved);
+    socket.on("container_expired", onExpired);
     socket.on("container_ready", onReady);
+    socket.on("container_deleted", onDeleted);
 
     return () => {
       socket.off("container_added", onAdded);
-      socket.off("container_removed", onRemoved);
+      socket.off("container_expired", onExpired);
       socket.off("container_ready", onReady);
+      socket.off("container_deleted", onDeleted);
     };
   }, [socket, workflows, workflow]);
 

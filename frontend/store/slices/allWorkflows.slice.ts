@@ -33,6 +33,7 @@ export type TWorflow = {
   edges: TEdge[];
   createdAt: string;
   updatedAt: string;
+  status: boolean;
   dockerId: string;
 };
 
@@ -81,6 +82,16 @@ const allWorkflowsSlice = createSlice({
         (workflow) => workflow._id !== action.payload,
       );
     },
+    spinDownWorkflow: (state, action: PayloadAction<string>) => {
+      state.workflows = state.workflows.map((workflow) =>
+        workflow._id === action.payload ? { ...workflow, status: false } : workflow,
+      );
+    },
+    spinUpWorkflow: (state, action: PayloadAction<string>) => {
+      state.workflows = state.workflows.map((workflow) =>
+        workflow._id === action.payload ? { ...workflow, status: true } : workflow,
+      );
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllWorkflows.pending, (state) => {
@@ -96,7 +107,7 @@ const allWorkflowsSlice = createSlice({
   },
 });
 
-export const { addWorkflow, updateWorkflow, deleteWorkflow } =
+export const { addWorkflow, updateWorkflow, deleteWorkflow, spinDownWorkflow, spinUpWorkflow } =
   allWorkflowsSlice.actions;
 
 export default allWorkflowsSlice.reducer;

@@ -32,6 +32,7 @@ const workflowController = {
         name,
         description,
         userId,
+        status: false,
         nodes: [],
         edges: [],
       };
@@ -163,6 +164,79 @@ const workflowController = {
       return res
         .status(httpStatus.OK)
         .json({ workflow, message: "Deleted successfully" });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Internal server error" });
+    }
+  },
+
+  activateWorkflowById: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const id = req.params.id;
+    if (!id) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Id is required" });
+    }
+
+    try {
+      const workflow = await workflowDao.getWorkflowById(id);
+      inngest.send({
+        name: "workflow/workflow.activated",
+        data: {
+          containerId: workflow.dockerId,
+          workflowId: id,
+        },
+      });
+      return res
+        .status(httpStatus.OK)
+        .json({ message: "Activated successfully" });
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(httpStatus.INTERNAL_SERVER_ERROR)
+        .json({ message: "Internal server error" });
+    }
+  },
+
+  deactivateWorkflowById: async (req, res) => {
+    const userId = req.id;
+    if (!userId) {
+      return res
+        .status(httpStatus.UNAUTHORIZED)
+        .json({ message: "Unauthorized" });
+    }
+
+    const id = req.params.id;
+    if (!id) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ message: "Id is required" });
+    }
+
+    try {
+      const workflow = await workflowDao.getWorkflowById(id);
+      inngest.send({
+        name: "workflow/workflow.deactivated",
+        data: {
+          containerId: workflow.dockerId,
+          workflowId: id,
+        },
+      });
+      await workflowDao.updateWorkflowById(id, {
+        status: false,
+      });
+      return res
+        .status(httpStatus.OK)
+        .json({ message: "Deactivated successfully" });
     } catch (error) {
       console.error(error);
       return res

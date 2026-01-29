@@ -20,22 +20,19 @@ export const markContainerReady = async (req: Request, res: Response) => {
         const containerId = workflow.dockerId;
         console.log(`✅ Container ${containerId} for workflow ${workflowId} is ready!`);
 
-        // Update status in Redis
         const containerKey = `container:${containerId}`;
         const containerData = await redisClient.hGetAll(containerKey);
 
         if (containerData && Object.keys(containerData).length > 0) {
             await redisClient.hSet(containerKey, { ...containerData, status: "ready" });
         } else {
-            // Fallback if redis data is missing
             await redisClient.hSet(containerKey, {
                 workflowId,
                 status: "ready",
                 updatedAt: Date.now().toString()
             });
         }
-
-        // Emit event to frontend
+        await workflowDao.updateWorkflowById(workflowId, { status: true });
         io.emit("container_ready", { id: containerId, workflowId });
 
         res.status(200).json({ message: "Container marked as ready" });

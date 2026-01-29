@@ -1,14 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { updateWorkflow } from "@/store/slices/allWorkflows.slice";
-import { setCurrentWorkflow } from "@/store/slices/currentWorkflow.slice";
+import { ContainerStartupProgress } from "./ContainerStartupProgress";
+import { spinDownWorkflow, updateWorkflow } from "@/store/slices/allWorkflows.slice";
+import { setCurrentWorkflow, spinUpWorkflow as currentSpinUpWorkflow } from "@/store/slices/currentWorkflow.slice";
 import { RootState, store } from "@/store/store";
 import axiosInstance from "@/utils/axios";
 import { Panel, useReactFlow } from "@xyflow/react";
-import { CloudUpload, Download, Loader2, RefreshCw } from "lucide-react";
+import { CircleDot, CircleDotDashed, CloudUpload, Download, Loader2, LoaderCircle, Pause, Play, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+
 
 const TopCenterPanel = () => {
   const { workflow, isInitializing } = useSelector(
@@ -66,17 +68,47 @@ const TopCenterPanel = () => {
       >
         <div className="flex items-center gap-2">
           <SidebarTrigger className="cursor-pointer" />
-          <h1 className="text-2xl font-bold">{workflow?.name}</h1>
-          {isInitializing && (
-            <div className="flex items-center gap-2 ml-4 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full animate-pulse">
-              <Loader2 className="h-4 w-4 animate-spin text-primary" />
-              <span className="text-xs font-medium text-primary">
-                Spinning up environment...
-              </span>
-            </div>
-          )}
+          <div className="flex items-center gap-1">
+            <h1 className="text-2xl font-bold">{workflow?.name}</h1>
+            {workflow?.status ? (
+              <div className="flex items-center gap-1 ml-2 px-2 py-0.5 border-green-500 border rounded-full">
+                <span className="text-xs font-medium text-green-500">Active</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 ml-2 px-2 py-0.5 border-red-500/50 border rounded-full">
+                <span className="text-xs font-medium text-red-500/50">Inactive</span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-2">
+          {isInitializing &&
+            <ContainerStartupProgress />
+          }
+          {workflow?.status && (
+            <Button onClick={
+              async () => {
+                try {
+                  await axiosInstance.put(`/workflow/${workflow?._id}/deactivate`);
+                } catch (error: any) {
+                  toast.error(error?.response?.data?.message);
+                }
+              }
+            } variant={"outline"} size={"sm"} disabled={!workflow?.status || isInitializing}>
+              <Pause />
+            </Button>
+          )}
+          {!workflow?.status && (
+            <Button onClick={async () => {
+              try {
+                await axiosInstance.put(`/workflow/${workflow?._id}/activate`);
+              } catch (error: any) {
+                toast.error(error?.response?.data?.message);
+              }
+            }} variant={"default"} size={"sm"} disabled={workflow?.status || isInitializing}>
+              <Play />
+            </Button>
+          )}
           <Button
             variant={"outline"}
             onClick={handleRefresh}
