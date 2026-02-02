@@ -7,9 +7,17 @@ import { RootState, store } from "@/store/store";
 import { useSelector } from "react-redux";
 import { fetchUser } from "@/store/slices/user.slice";
 import { fetchDatasets } from "@/store/slices/datasets.slice";
-import { fetchAllWorkflows, spinDownWorkflow, spinUpWorkflow } from "@/store/slices/allWorkflows.slice";
+import {
+  fetchAllWorkflows,
+  spinDownWorkflow,
+  spinUpWorkflow,
+} from "@/store/slices/allWorkflows.slice";
 
-import { setIsInitializing, spinDownWorkflow as currentSpinDownWorkflow, spinUpWorkflow as currentSpinUpWorkflow } from "@/store/slices/currentWorkflow.slice";
+import {
+  setIsInitializing,
+  spinDownWorkflow as currentSpinDownWorkflow,
+  spinUpWorkflow as currentSpinUpWorkflow,
+} from "@/store/slices/currentWorkflow.slice";
 import { toast } from "sonner";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/custom/AppSidebar";
@@ -65,7 +73,10 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
         store.dispatch(setIsInitializing(true));
         store.dispatch(currentSpinUpWorkflow(data.workflowId));
       } else {
-        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
+        console.log(
+          "Ignoring container event for unrelated workflow:",
+          data.workflowId,
+        );
       }
     };
 
@@ -77,7 +88,10 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
         store.dispatch(setIsInitializing(false));
         store.dispatch(currentSpinDownWorkflow(data.workflowId));
       } else {
-        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
+        console.log(
+          "Ignoring container event for unrelated workflow:",
+          data.workflowId,
+        );
       }
     };
 
@@ -90,7 +104,10 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
         store.dispatch(currentSpinUpWorkflow(data.workflowId));
         store.dispatch(setIsInitializing(false));
       } else {
-        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
+        console.log(
+          "Ignoring container event for unrelated workflow:",
+          data.workflowId,
+        );
       }
     };
 
@@ -102,7 +119,10 @@ const UserLayout = ({ children }: { children: React.ReactNode }) => {
         store.dispatch(setIsInitializing(false));
         store.dispatch(currentSpinDownWorkflow(data.workflowId));
       } else {
-        console.log("Ignoring container event for unrelated workflow:", data.workflowId);
+        console.log(
+          "Ignoring container event for unrelated workflow:",
+          data.workflowId,
+        );
       }
     };
 
