@@ -30,6 +30,7 @@ import CommentNode from "@/components/custom/Nodes/CommentNode";
 import usePageTitle from "@/components/custom/PageTitle";
 import TrainTestSplitNode from "@/components/custom/Nodes/TrainTestSplitNode";
 import SequenceNode from "@/components/custom/Nodes/SequenceNode";
+import ModelNode from "@/components/custom/Nodes/ModelNode";
 
 const nodeTypes = {
   datasetNode: DatasetNode,
@@ -38,6 +39,7 @@ const nodeTypes = {
   comment: CommentNode,
   trainTestSplitNode: TrainTestSplitNode,
   sequenceNode: SequenceNode,
+  modelNode: ModelNode
 };
 
 const edgeTypes = {

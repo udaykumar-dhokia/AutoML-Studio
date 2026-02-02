@@ -56,7 +56,9 @@ const CenterRightPanel = ({
               ? "trainTestSplitNode"
               : nodeType.type === "sequence"
                 ? "sequenceNode"
-                : nodeType.type;
+                : nodeType.type === "model"
+                  ? "modelNode"
+                  : nodeType.type;
 
     if (actualType == "datasetNode") {
       const exists = rf.getNodes().some((n) => n.type === actualType);
