@@ -52,4 +52,10 @@ router.post(
   operationsController.handleTrainTestSplit,
 );
 
+router.post(
+  "/model/linear-regression",
+  authMiddleware,
+  operationsController.handleLinearRegression,
+);
+
 export default router;

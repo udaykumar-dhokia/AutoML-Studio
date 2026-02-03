@@ -44,3 +44,11 @@ class TrainTestSplitRequest(BaseModel):
     random_state: int | None = 42
     shuffle: bool = True
     stratify_column: str | None = None
+
+
+class LinearRegressionRequest(BaseModel):
+    url: str
+    features: list[str]
+    target: str
+    test_size: float = 0.2
+    random_state: int = 42

@@ -89,7 +89,7 @@ const page = () => {
 
     setNodes(workflow.nodes || []);
     setEdges(workflow.edges || []);
-  }, [workflow]);
+  }, [workflow?._id]);
 
   const onNodesChange = useCallback(
     (changes: any) =>
@@ -102,11 +102,7 @@ const page = () => {
     [],
   );
 
-  const onNodesDelete = useCallback((deletedNodes: any) => {
-    setNodes((nds) =>
-      nds.filter((n) => !deletedNodes.some((d: any) => d.id === n.id)),
-    );
-  }, []);
+
 
   const onConnect = useCallback((params: any) => {
     setEdges((edgesSnapshot) => {
@@ -139,6 +135,9 @@ const page = () => {
               ...node.data,
               columns: sourceNode.data.columns,
               selectedDataset: datasetId,
+              test_size: sourceNode.data.test_size ?? node.data.test_size,
+              random_state: sourceNode.data.random_state ?? node.data.random_state,
+              shuffle: sourceNode.data.shuffle ?? node.data.shuffle,
             },
           }
           : node,
@@ -155,7 +154,6 @@ const page = () => {
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onNodesDelete={onNodesDelete}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onConnect={onConnect}

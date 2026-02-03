@@ -13,6 +13,10 @@ export type TNode = {
     label?: string;
     selectedDataset?: string;
     columns?: string[];
+    test_size?: number;
+    random_state?: number;
+    target?: string;
+    shuffle?: boolean;
   };
 };
 
