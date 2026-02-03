@@ -22,7 +22,7 @@ class WorkflowDao {
     id: string,
     workflowData: { nodes?: []; edges?: []; dockerId?: string; status?: boolean },
   ) {
-    return await Workflow.findByIdAndUpdate(id, workflowData);
+    return await Workflow.findByIdAndUpdate(id, workflowData, { new: true });
   }
 
   async deleteWorkflowById(id: string) {
