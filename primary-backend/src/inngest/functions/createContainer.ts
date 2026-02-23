@@ -43,7 +43,7 @@ async function createAndStartContainer(
         createdAt: Date.now().toString(),
       });
 
-      await redisClient.expire(`container:${container.id}`, 300);
+      await redisClient.expire(`container:${container.id}`, 30 * 60);
 
       io.emit("container_added", { containerId: container.id, workflowId });
 
